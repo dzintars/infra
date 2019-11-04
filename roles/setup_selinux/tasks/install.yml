@@ -1,0 +1,14 @@
+---
+# tasks file for roles/setup_selinux
+
+- name: install policycoreutils-python3 to provide `semanage` for seboolean module
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - policycoreutils-python3
+    # - libselinux-python
+    # - libsemanage-python
+    # - libsemanage
+    # - selinux
+    # - semanage

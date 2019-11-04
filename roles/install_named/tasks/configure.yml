@@ -1,0 +1,27 @@
+---
+# tasks file for install_named
+
+- name: Copy named.conf and zone files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: named
+    group: named
+    setype: named_conf_t
+    mode: '0644'
+  loop:
+    - {src: 'named.conf.j2', dest: '/etc/named.conf'}
+    - {src: 'ocp.example.com.zone.j2', dest: '/var/named/{{ cluster.name }}.{{ cluster.fqdn }}.zone'}
+    - {src: '1.168.192.in-addr.arpa.zone.j2', dest: "/var/named/{{ cluster.network | ipaddr('revdns') | regex_replace('^[0-9]+\\.', '') }}zone"}
+  notify: Restart Bind
+
+- name: Deploy resolv.conf template
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - Reload NetworkManager

@@ -1,0 +1,12 @@
+---
+# tasks file for install_haproxy
+
+- name: install HAProxy
+  import_tasks: install.yml
+  tags:
+    - haproxy:install
+
+- name: update configuration
+  import_tasks: configure.yml
+  tags:
+    - haproxy:config

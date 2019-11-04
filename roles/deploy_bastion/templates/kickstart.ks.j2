@@ -1,0 +1,71 @@
+install
+url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-30&arch=x86_64"
+reboot
+text
+keyboard --vckeymap=us --xlayouts='us'
+lang en_US.UTF-8
+timezone Europe/Riga --isUtc
+eula --agreed
+#selinux --disabled
+
+services --enabled="NetworkManager,sshd,chronyd"
+
+network --hostname=bastion.ocp.example.com
+# network --device=enp1s0
+network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.252 --netmask=255.255.255.0 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
+
+ignoredisk --only-use=vda
+bootloader --location=mbr --driveorder=vda
+zerombr
+clearpart --none --initlabel
+autopart --type=lvm
+
+rootpw --iscrypted {{ bastion_root_pass }} --lock
+user --name=ansible --password {{ bastion_ansible_pass }} --iscrypted --groups=wheel --gecos="Ansible"
+sshkey --username=ansible "{{ ssh_key }}"
+
+firewall --enabled --ssh
+
+
+%packages --ignoremissing
+    @core
+    @base
+    #vim
+    #tar
+    #python
+    #python-dnf
+    #libselinux-python
+    #libsemanage-python
+    #git
+%end
+
+%addon
+# com_redhat_kdump --enable --reserve-mb='auto'
+%end
+
+%anaconda
+# pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+# pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post --interpreter=/bin/bash --log=/root/ks-post.log
+    #dnf install epel-release -y
+    #dnf install ansible git -y
+    #dnf update -y
+
+    #useradd -p '$6$HpkbIwlR0GAMPaDz$eNvnNozGR1K9kFff5sVng1cUN5G8LVj8LagVfM6d/6lYnVksfiR/XFtKMrPCd8VdpH3kdE4VnLx7IVjdyjaIu.' ansible
+    echo "ansible ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ansible
+    echo "Defaults:ansible !requiretty" | tee -a /etc/sudoers.d/ansible
+    chmod 0440 /etc/sudoers.d/ansible
+
+
+    # Setup sudo with wheel group 
+    #cp /etc/sudoers /etc/sudoers.bak 
+    #echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+    # Allow Ansible to execute commands as root on the system
+    #echo "# Ansible" >> /etc/sudoers 
+    #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers 
+    # Disable SeLinux 
+    #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
+%end

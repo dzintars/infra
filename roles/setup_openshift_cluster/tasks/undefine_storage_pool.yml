@@ -1,0 +1,16 @@
+---
+
+- name: Stop a "{{ cluster.name }}" storage pool
+  virt_pool:
+    command: destroy
+    name: '{{ cluster.name }}'
+
+- name: Undefine a "{{ cluster.name }}" storage pool
+  virt_pool:
+    command: undefine
+    name: '{{ cluster.name }}'
+
+- name: Remove storage pool directory /home/dzintars/kvm/pools/{{ cluster.name }}
+  file:
+    state: absent
+    path: '/home/dzintars/kvm/pools/{{ cluster.name }}'

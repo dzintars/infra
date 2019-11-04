@@ -1,0 +1,19 @@
+---
+# handlers file for install_named
+
+- name: Restart Bind
+  service:
+    name: named-chroot
+    state: restarted
+
+- name: Restart Firewalld
+  service:
+    name: firewalld
+    state: restarted
+
+- name: Reload NetworkManager
+  service:
+    name: NetworkManager
+    state: restarted
+    # TODO: I should prefer reload if possible
+    # state: reloaded

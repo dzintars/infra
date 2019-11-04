@@ -1,0 +1,14 @@
+---
+
+- name: Download openshift-installer
+  unarchive:
+    src: '{{ openshift_installer }}'
+    dest: $HOME
+    remote_src: yes
+
+- name: Copy openshift-install binary
+  copy:
+    src: $HOME/openshift-install
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes

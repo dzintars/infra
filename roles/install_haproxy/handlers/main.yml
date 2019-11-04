@@ -1,0 +1,8 @@
+---
+# handlers file for install_haproxy
+
+- name: Restart HAProxy
+  service: name=haproxy state=restarted
+
+- name: Restart Firewalld
+  service: name=firewalld state=restarted

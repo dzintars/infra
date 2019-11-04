@@ -1,0 +1,45 @@
+---
+# Create and start {{ cluster.name }} VMs
+
+- name: Copy kubernetes credentials to .kube/config
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    remote_src: yes
+  loop:
+    - {src: '/tmp/openshift-install/auth/kubeconfig', dest: '/home/dzintars/.kube/config'}
+
+# - name: Print nodes records
+#   debug:
+#     msg: "Node {{ node.key }} is {{ node.value.name }} ({{ node.value.host }})"
+#   loop: "{{ lookup('dict', cluster.nodes) }}"
+#   loop_control:
+#     loop_var: node
+
+- name: Create VMs
+  command: >
+    virt-install \
+      --connect qemu:///system \
+      --name {{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }} \
+      --description 'RedHat CoreOS {{ node.value.name }} node' \
+      --accelerate \
+      --vcpus {{ node.value.vcpu }} \
+      --cpu host \
+      --ram {{ node.value.memory }} \
+      --disk path=/home/dzintars/kvm/pools/{{ cluster.name }}/{{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }}.{{ node.value.disk.format }},size={{ node.value.disk.size }},format={{ node.value.disk.format }},bus=virtio  \
+      --pxe \
+      --network bridge={{ node.value.network.name }},model=virtio \
+      --prompt \
+      --mac {{ node.value.mac }} \
+      --os-type linux \
+      --os-variant virtio26 \
+      --console pty,target_type=serial \
+      --nographics \
+      --boot hd,network \
+      --debug
+  sudo: yes
+  loop: "{{ lookup('dict', cluster.nodes) }}"
+  loop_control:
+    loop_var: node
+
+#       --boot hd,network,menu=on,useserial=on \

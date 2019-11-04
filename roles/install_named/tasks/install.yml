@@ -1,0 +1,22 @@
+---
+# tasks file for install_named
+
+- name: Install dependencies
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - bind-chroot
+
+- name: Start named-chroot service
+  service:
+    name: named-chroot
+    state: started
+    enabled: yes
+
+- name: Add DNS service to firewall
+  firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
+  notify: Restart Firewalld

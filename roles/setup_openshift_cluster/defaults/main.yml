@@ -1,0 +1,4 @@
+---
+# defaults file for create_ocp_libvirt_cluster
+
+storage_pool_dir: '$HOME/kvm/pools/{{ cluster.name }}'

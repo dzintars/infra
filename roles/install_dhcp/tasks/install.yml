@@ -1,0 +1,23 @@
+---
+# tasks file for install_dhcp
+
+- name: Install DHCP
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    # - dhcp
+    - dhcp-server
+
+- name: Start DHCP service
+  service:
+    name: dhcpd
+    state: started
+    enabled: yes
+
+- name: Add DHCP service to firewall
+  firewalld:
+    service: dhcp
+    permanent: yes
+    state: enabled
+  notify: Restart Firewalld

@@ -1,0 +1,31 @@
+---
+# tasks file for ipxe
+
+- name: Install iPXE
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - ipxe-bootimgs
+
+# - name: Link the image
+#   file:
+#     src: /usr/share/ipxe/undionly.kpxe
+#     dest: /var/lib/tftpboot
+#     force: yes
+#     state: link
+
+- name: Copy undionly.kpxe chainboot
+  copy:
+    src: /usr/share/ipxe/undionly.kpxe
+    dest: /var/lib/tftpboot/undionly.kpxe
+    # owner: root
+    # group: root
+    mode: "0644"
+    remote_src: yes
+
+- name: Start TFTP service
+  service:
+    name: tftp-server
+    state: started
+    enabled: yes

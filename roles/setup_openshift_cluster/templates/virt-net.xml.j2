@@ -1,0 +1,20 @@
+<network>
+  <name>ocp</name>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <domain name='ocp'/>
+  <ip address='192.168.7.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+
+<!-- virsh net-define --file virt-net.xml -->
+<!-- virsh net-autostart openshift4 -->
+<!-- virsh net-start openshift4 -->
+
+<!-- https://github.com/wangzheng422/docker_env/blob/bd1d7a4a6d2af11df7b7dde13d5a6a1ed40a16d9/redhat/ocp4/4.2.disconnect.install.md -->
+
+

@@ -1,0 +1,40 @@
+---
+
+# Download Fedora ISO
+# Copy kickstart file to accessible local_action
+
+- name: copy kickstart file
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: qemu
+    group: qemu
+    mode: '0644'
+  loop:
+    - {src: 'kickstart.ks.j2', dest: '/var/lib/libvirt/kickstart.ks'}
+  become: yes
+
+
+# TODO: Change hardcoded home directory
+- name: Create VMs
+  command: >
+    virt-install \
+      --connect qemu:///system \
+      --name bastion.ocp.example.com \
+      --description 'DHCP, DNS, HAProxy, TFTP, Matchbox' \
+      --vcpus 1 \
+      --memory 2048 \
+      --location /home/dzintars/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
+      --disk path=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2,size=10,format=qcow2,bus=virtio  \
+      --os-type linux \
+      --os-variant Fedora30 \
+      --network bridge=virbr0,model=virtio \
+      --graphics none \
+      --console pty,target_type=serial \
+      --initrd-inject /var/lib/libvirt/kickstart.ks \
+      -x "ks=file:/var/lib/libvirt/kickstart.ks" \
+      -x 'console=ttyS0,115200n8 serial' \
+      --debug
+  sudo: yes
+
+# Delete kickstart file

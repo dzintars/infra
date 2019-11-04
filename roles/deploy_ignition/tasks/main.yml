@@ -1,0 +1,12 @@
+---
+# tasks file for deploy_ignition
+
+- name: Install openshift-install CLI
+  import_tasks: install.yml
+  tags:
+  - ignition:setup
+
+- name: Deploy ignition configs
+  import_tasks: deploy.yml
+  tags:
+  - ignition:config

@@ -1,0 +1,10 @@
+---
+
+- name: Create volumes
+  virt:
+    command: define
+    xml: '{{ lookup("template", "volume.xml.j2" ) }}'
+    uri: 'qemu:///system'
+  loop: '{{ nodes }}'
+  loop_control:
+    loop_var: node

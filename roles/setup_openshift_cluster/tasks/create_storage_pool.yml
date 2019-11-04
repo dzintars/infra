@@ -1,0 +1,31 @@
+---
+# Tasks to create Qemu Storage Pool
+
+- name: Create a {{ cluster.name }} storage pool directory if it does not exist
+  file:
+    path: '{{ cluster.libvirt.pool.dir }}/{{ cluster.name }}'
+    state: directory
+    mode: '0755'
+
+- name: Define a new {{ cluster.name }} storage pool
+  virt_pool:
+    name: '{{ cluster.name }}'
+    xml: '{{ lookup("template", "storage-pool.xml.j2") }}'
+    state: present
+
+- name: Build a {{ cluster.name }} storage pool if it does not exist
+  virt_pool:
+    command: build
+    mode: new
+    name: '{{ cluster.name }}'
+    state: present
+
+- name: Activate {{ cluster.name }} storage pool
+  virt_pool:
+    name: '{{ cluster.name }}'
+    state: active
+
+- name: Ensure that a {{ cluster.name }} pool will be started at boot
+  virt_pool:
+    autostart: yes
+    name: '{{ cluster.name }}'

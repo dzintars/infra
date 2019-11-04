@@ -1,0 +1,127 @@
+global
+    log 127.0.0.1 local2
+    chroot /var/lib/haproxy
+    pidfile /var/run/haproxy.pid
+    maxconn 4000
+    user haproxy
+    group haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats
+    ssl-default-bind-ciphers PROFILE=SYSTEM
+    ssl-default-server-ciphers PROFILE=SYSTEM
+    
+defaults
+    mode http
+    log global
+    option httplog
+    option dontlognull
+    option http-server-close
+    option forwardfor except 127.0.0.0/8
+    option redispatch
+    retries 3
+    timeout http-request 10s
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 1m
+    timeout server 1m
+    timeout http-keep-alive 10s
+    timeout check 10s
+    maxconn 3000
+
+listen stats # Define a listen section called "stats"
+    bind :9000 # Listen on localhost:9000
+    mode http
+    option forwardfor
+    option httpclose
+    stats enable  # Enable stats page
+    stats show-legends
+    stats refresh 5s
+    stats hide-version  # Hide HAProxy version
+    stats realm Haproxy\ Statistics  # Title text for popup window
+    stats uri /haproxy_stats  # Stats URI
+    stats auth admin:password  # Authentication credentials
+    monitor-uri /healthz
+
+  
+
+frontend {{ cluster.name }}-kubernetes-api-server
+    mode tcp
+    option tcplog
+    # option tcp-check
+    # option forwardfor
+    bind api.{{ cluster.name }}.{{ cluster.fqdn }}:6443
+    default_backend {{ cluster.name }}-kubernetes-api-server
+
+backend {{ cluster.name }}-kubernetes-api-server
+    balance source
+    mode tcp
+    # server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+    server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+    server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+    server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+
+
+
+frontend {{ cluster.name }}-machine-config-server
+    mode tcp
+    option tcplog
+    # option forwardfor
+    # timeout client 1m
+    bind api.{{ cluster.name }}.{{ cluster.fqdn }}:22623
+    default_backend {{ cluster.name }}-machine-config-server
+
+backend {{ cluster.name }}-machine-config-server
+    balance source
+    mode tcp
+    # log global
+    # timeout connect 10s
+    # timeout server 1m 
+    # server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+    server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+    server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+    server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+
+
+
+frontend {{ cluster.name }}-router-http
+    mode tcp
+    option tcplog
+    # option forwardfor
+    bind apps.{{ cluster.name }}.{{ cluster.fqdn }}:80
+    default_backend {{ cluster.name }}-router-http
+
+backend {{ cluster.name }}-router-http
+    balance source
+    mode tcp
+    server {{ cluster.nodes['infnod-0'].name }} {{ cluster.nodes['infnod-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:80 check
+    server {{ cluster.nodes['infnod-1'].name }} {{ cluster.nodes['infnod-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:80 check
+
+
+
+frontend {{ cluster.name }}-router-https
+    mode tcp
+    option tcplog
+    # option forwardfor
+    bind apps.{{ cluster.name }}.{{ cluster.fqdn }}:443
+    default_backend {{ cluster.name }}-router-https
+
+backend {{ cluster.name }}-router-https
+    balance source
+    mode tcp
+    server {{ cluster.nodes['infnod-0'].name }} {{ cluster.nodes['infnod-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:443 check
+    server {{ cluster.nodes['infnod-1'].name }} {{ cluster.nodes['infnod-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:443 check
+
+
+
+frontend my-oswee-https
+    mode tcp
+    option tcplog
+    # option forwardfor
+    bind my.oswee.com:80
+    bind my.oswee.com:443
+    default_backend my-oswee-https
+
+backend my-oswee-https
+    balance source
+    mode tcp
+    server workstation 192.168.1.2:8080 check

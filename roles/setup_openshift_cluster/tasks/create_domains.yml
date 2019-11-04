@@ -1,0 +1,13 @@
+---
+# tasks file for create_ocp_libvirt_cluster
+
+- name: Define domains
+  virt:
+    # name: '{{ node.name }}.{{ cluster.name }}.{{ cluster.fqdn }}' # Ignored if defined in XML
+    command: define
+    xml: '{{ lookup("template", "domain.xml.j2" ) }}'
+    uri: 'qemu:///system'
+    autostart: no
+  loop: '{{ nodes }}'
+  loop_control:
+    loop_var: node

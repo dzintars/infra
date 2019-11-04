@@ -1,0 +1,25 @@
+---
+# tasks file for install_haproxy
+
+- name: Install HAProxy
+  dnf:
+    name: haproxy.x86_64
+    state: latest
+
+- name: Turn On packet forwarding in order HAProxy to start
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+
+- name: Turn On Non-Local binding in order HAProxy to start
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: '1'
+    sysctl_set: yes
+
+- name: Start HAProxy service
+  service:
+    name: haproxy
+    state: started
+    enabled: yes

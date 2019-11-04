@@ -1,0 +1,170 @@
+---
+
+ansible_ssh_user           : 'ansible'
+ansible_python_interpreter : '/usr/bin/python3.7'
+
+# TODO: Restructure variables
+
+cluster:
+  fqdn         : 'example.com'
+  name         : 'ocp'
+  network      : '192.168.1'
+  libvirt :
+    pool:
+      # TODO: Replace hardcoded user home dir
+      dir      : '/home/dzintars/kvm/pools'
+
+  nodes: {
+    "bastion": {
+      name: 'bastion',
+      host: '254',
+      user: 'ansible',
+      uuid: '2e1ca267-8527-42a3-a81b-6010f8b1c060',
+      vcpu: '2',
+      memory: 2048,
+      disk: {
+        size: 10,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0',
+      }
+    },
+    "bootstrap-0": {
+      name   : 'bootstrap-0',
+      host   : '253',
+      mac    : '00:1a:4a:16:01:28',
+      uuid   : '0ae7c565-029a-43e4-a13a-84de3d67bb46',
+      vcpu   : '2',
+      memory : 2048,
+      disk: {
+        size : 20,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0',
+      }
+    },
+    "master-0": {
+      name: 'master-0',
+      host: '10',
+      mac: '00:1a:4a:16:01:29',
+      uuid: 'd6f7b408-0954-415f-993b-6308970f96e4',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 30,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "master-1": {
+      name: 'master-1',
+      host: '11',
+      mac: '00:1a:4a:16:01:2a',
+      uuid: '388f1b08-9b96-4cb5-a907-3e9c5b0de755',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 30,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "master-2": {
+      name: 'master-2',
+      host: '12',
+      mac: '00:1a:4a:16:01:2b',
+      uuid: '19de77a2-3314-4221-9b8a-b4586cc8ad23',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 30,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "infnod-0": {
+      name: 'infnod-0',
+      host: '20',
+      mac: '00:1a:4a:16:01:2c',
+      uuid: '4db0c020-89ad-4d5d-9a7d-f4fe3b17e41d',
+      vcpu: 6,
+      memory: 8192,
+      disk: {
+        size: 60,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "infnod-1": {
+      name: 'infnod-1',
+      host: '21',
+      mac: '00:1a:4a:16:01:2d',
+      uuid: '45d6bf3e-2daa-4176-a127-86a3c52a0571',
+      vcpu: 6,
+      memory: 8192,
+      disk: {
+        size: 60,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "cptnod-0": {
+      name: 'cptnod-0',
+      host: '30',
+      mac: 'd0:67:e5:a1:34:3e',
+      uuid: '4db7c020-89ad-4d5d-9a7d-f4fe3b17e41d',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 20,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "cptnod-1": {
+      name: 'cptnod-1',
+      host: '31',
+      mac: 'd0:67:e5:e4:87:1e',
+      uuid: '45d4bf3e-2daa-4176-a127-86a3c52a0571',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 20,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    },
+    "cptnod-2": {
+      name: 'cptnod-2',
+      host: '32',
+      mac: 'd0:67:e5:8a:b9:1c',
+      uuid: 'c045ed5c-f03e-4e5e-87ac-ef219821cc9c',
+      vcpu: 4,
+      memory: 6144,
+      disk: {
+        size: 20,
+        format: 'qcow2',
+      },
+      network: {
+        name: 'virbr0'
+      }
+    }
+  }
+  
+

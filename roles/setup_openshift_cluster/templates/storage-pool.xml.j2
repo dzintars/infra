@@ -1,0 +1,9 @@
+<pool type="dir">
+	<name>{{ cluster.name }}</name>
+	<target>
+        <path>{{ cluster.libvirt.pool.dir }}/{{ cluster.name }}/</path>
+		<permissions>
+      		<mode>0755</mode>
+    	</permissions>
+	</target>
+</pool>

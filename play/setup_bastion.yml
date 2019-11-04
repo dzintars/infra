@@ -1,0 +1,29 @@
+---
+- name: Install and configure OpenShift Bastion server
+  hosts: BASTIONS
+  gather_facts: no
+  become: yes
+
+  roles:
+    # - role: deploy_ignition
+    - role: setup_firewalld
+      tags: [firewalld]
+    - role: setup_selinux
+      tags: [selinux]
+    - role: install_named
+      tags: [named]
+    # - role: bertvv.tftp
+    #   tags: [tftp]
+    - role: install_ipxe
+      tags: [ipxe]
+    - role: install_dhcp
+      tags: [dhcpd]
+    - role: install_matchbox
+      tags: [matchbox]
+    - role: install_haproxy
+      tags: [haproxy]
+    - role: deploy_ignition
+      tags: [ignition]
+
+    # - role: provision_tls
+    # - role: install_tftp

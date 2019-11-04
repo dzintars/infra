@@ -1,0 +1,45 @@
+---
+# tasks file for install_tftp
+
+- name: Install TFTP
+  dnf:
+    name: tftp-server
+    state: latest
+
+- name: Install iPXE
+  dnf:
+    name: ipxe-bootimgs
+    state: latest
+
+- name: Remove symlink
+  file:
+    path: /var/lib/tftpboot
+    state: absent
+
+- name: Create tftpboot directory
+  file:
+    path: /var/lib/tftpboot
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: Link the image
+  file:
+    src: /usr/share/ipxe/undionly.kpxe
+    dest: /var/lib/tftpboot
+    force: yes
+    state: link
+
+- name: Start TFTP service
+  service:
+    name: tftp
+    state: started
+    enabled: yes
+
+- name: Add TFTP service to firewall
+  firewalld:
+    service: tftp
+    permanent: yes
+    state: enabled
+  notify: Restart Firewalld

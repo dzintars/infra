@@ -1,0 +1,14 @@
+---
+# tasks file for roles/debug
+
+- name: debug message
+  debug:
+    msg: System debug message - {{ cluster.fqdn }}
+
+- name: Copy tests files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0644'
+  loop:
+    - {src: 'test.txt.j2', dest: '/home/dzintars/debug-test.txt'}

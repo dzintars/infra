@@ -1,0 +1,8 @@
+---
+- name: configure workstation
+  hosts: WORKSTATION
+  become: yes
+
+  roles:
+    - role: install_haproxy
+      tags: [ install, config ]
