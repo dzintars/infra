@@ -11,8 +11,12 @@
     group: qemu
     mode: '0644'
   loop:
-    - {src: 'kickstart.ks.j2', dest: '/var/lib/libvirt/kickstart.ks'}
-  become: yes
+    - {src: 'kickstart.cfg.j2', dest: '/var/lib/libvirt/kickstart.cfg'}
+
+# - name: create the qemu disk images
+#   action: qemu-img dest=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2 size=10 format="qcow2" options="preallocation=metadata"
+#   with_items: disks
+#   # delegate_to: localhost
 
 
 # TODO: Change hardcoded home directory
@@ -25,16 +29,20 @@
       --vcpus 1 \
       --memory 2048 \
       --location /home/dzintars/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
-      --disk path=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2,size=10,format=qcow2,bus=virtio  \
+      --disk path=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
+      --hvm \
+      --accelerate \
       --os-type linux \
       --os-variant Fedora30 \
       --network bridge=virbr0,model=virtio \
-      --graphics none \
-      --console pty,target_type=serial \
-      --initrd-inject /var/lib/libvirt/kickstart.ks \
-      -x "ks=file:/var/lib/libvirt/kickstart.ks" \
-      -x 'console=ttyS0,115200n8 serial' \
+      --nographics \
+      --memballoon virtio \
+      --initrd-inject /var/lib/libvirt/kickstart.cfg \
+      -x "ks=file:/kickstart.cfg" \
+      -x 'console=ttyS0,115200 headless noshell nofirewire' \
       --debug
-  sudo: yes
 
+#       --noautoconsole \
+# --console pty,target_type=serial \
+# -x 'console=ttyS0,115200n8 serial' \
 # Delete kickstart file

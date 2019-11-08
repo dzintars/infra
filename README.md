@@ -13,7 +13,7 @@ I started to write K8s cluster Ansible project based on Fedora CoreOS, but stuck
 
 So i left that project till i will not find a solution.
 
-Anyway, i thing OpenShift is a good alternative to plain K8s. It has reasonable defaults and opinionated rules. 
+Anyway, i think OpenShift is a good alternative to plain K8s. It has reasonable defaults and opinionated rules. 
 
 
 ## Good to know

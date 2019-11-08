@@ -26,7 +26,7 @@
       --vcpus {{ node.value.vcpu }} \
       --cpu host \
       --ram {{ node.value.memory }} \
-      --disk path=/home/dzintars/kvm/pools/{{ cluster.name }}/{{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }}.{{ node.value.disk.format }},size={{ node.value.disk.size }},format={{ node.value.disk.format }},bus=virtio  \
+      --disk path=/home/dzintars/kvm/pools/{{ cluster.name }}/{{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }}.{{ node.value.disk.format }},size={{ node.value.disk.size }},cache=writeback,format={{ node.value.disk.format }},io=threads,bus=virtio  \
       --pxe \
       --network bridge={{ node.value.network.name }},model=virtio \
       --prompt \

@@ -4,8 +4,15 @@
   gather_facts: no
   become: yes
 
+  vars_prompt:
+  - name: cluster.fqdn
+    prompt: 'Cluster FQDN? e.g. "example.com"'
+    private: no
+
   roles:
     # - role: deploy_ignition
+    - role: debug
+      tags: [debug]
     - role: setup_firewalld
       tags: [firewalld]
     - role: setup_selinux

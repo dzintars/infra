@@ -1,0 +1,15 @@
+---
+
+# Delete all connection and devices
+
+- name: Add an Ethernet connection with static IP configuration
+  nmcli:
+    conn_name: eno1
+    ifname: eno1
+    type: ethernet
+    ip4: 192.168.1.2/24
+    gw4: 192.192.1.1
+    dns4:
+      - 9.9.9.9
+      - 1.1.1.1
+    state: present

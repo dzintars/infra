@@ -1,0 +1,7 @@
+---
+# tasks file for roles/setup_network
+
+- name: bridge network
+  include: bridge.yml
+  tags:
+    - network:bridge

@@ -1,0 +1,82 @@
+install
+cdrom
+# url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-30&arch=x86_64"
+
+cmdline
+skipx
+reboot 
+
+repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/30/Everything/x86_64/os/"
+repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/30/x86_64/"
+#repo --name=updates-testing --baseurl=https://dl.fedoraproject.org/pub/fedora/linux/updates/testing/26/x86_64/
+
+zerombr
+clearpart --all --initlabel
+ignoredisk --only-use=vda
+autopart --type=lvm
+bootloader --location=mbr --driveorder=vda
+
+# text
+keyboard --vckeymap=us --xlayouts='us'
+lang en_US.UTF-8
+timezone Europe/Riga --isUtc
+eula --agreed
+
+network --hostname=bastion.ocp.example.com
+network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.252 --netmask=255.255.255.0 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
+
+rootpw --iscrypted {{ bastion_root_pass }} --lock
+user --name=ansible --password {{ bastion_ansible_pass }} --iscrypted --groups=wheel --gecos="Ansible"
+sshkey --username=ansible "{{ ssh_key }}"
+
+selinux --enforcing
+
+# services --enabled="NetworkManager,sshd,chronyd"
+
+firewall --enabled --ssh
+
+
+%packages --ignoremissing
+    @core
+    @base
+    #vim
+    #tar
+    #python
+    #python-dnf
+    #libselinux-python
+    #libsemanage-python
+    #git
+%end
+
+# %addon
+# # com_redhat_kdump --enable --reserve-mb='auto'
+# %end
+
+# %anaconda
+# # pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# # pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+# # pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# %end
+
+# %post --interpreter=/bin/bash --log=/root/ks-post.log
+#     #dnf install epel-release -y
+#     #dnf install ansible git -y
+#     #dnf update -y
+
+#     #useradd -p '$6$HpkbIwlR0GAMPaDz$eNvnNozGR1K9kFff5sVng1cUN5G8LVj8LagVfM6d/6lYnVksfiR/XFtKMrPCd8VdpH3kdE4VnLx7IVjdyjaIu.' ansible
+#     echo "ansible ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ansible
+#     echo "Defaults:ansible !requiretty" | tee -a /etc/sudoers.d/ansible
+#     chmod 0440 /etc/sudoers.d/ansible
+
+
+#     # Setup sudo with wheel group 
+#     #cp /etc/sudoers /etc/sudoers.bak 
+#     #echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+#     # Allow Ansible to execute commands as root on the system
+#     #echo "# Ansible" >> /etc/sudoers 
+#     #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers 
+#     # Disable SeLinux 
+#     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
+# %end
+
+# 3) [!] Installation source (Error checking software source)

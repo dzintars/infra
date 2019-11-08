@@ -1,0 +1,17 @@
+---
+
+- name: Configure Workstation
+  hosts: WORKSTATION
+  connection: local
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: debug
+      tags: [debug]
+    - role: deploy_bastion
+      tags: [bastion]
+    - role: setup_network
+      tags: [network]
+    # - role: setup_openshift_cluster
+    #   tags: [cluster]

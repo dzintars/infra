@@ -1,0 +1,45 @@
+---
+
+# Task file to set up Libvirt bridge network
+
+- name: facts will be available as 'ansible_libvirt_networks'
+  virt_net:
+    command: facts
+
+- name: output libvirt networks
+  debug:
+    msg: "{{ item }}"
+  with_items: "{{ ansible_libvirt_networks }}"
+
+- name: stop a networks
+  virt_net:
+    command: destroy
+    name: "{{ item }}"
+  with_items: "{{ ansible_libvirt_networks }}"
+
+- name: undefine a networks
+  virt_net:
+    command: undefine
+    name: "{{ item }}"
+  with_items: "{{ ansible_libvirt_networks }}"
+
+- name: define bridge network
+  virt_net:
+    command: define
+    name: virbr0
+    xml: '{{ lookup("template", "bridge.xml.j2") }}'
+
+- name: start a network
+  virt_net:
+    command: create
+    name: virbr0
+    state: active
+    autostart: yes
+
+- name: Try nmcli add Ethernet - conn_name only & ip4 gw4
+  nmcli:
+    type: bridge
+    conn_name: virbr0
+    ip4: 192.168.1.2
+    gw4: 192.168.1.1
+    state: present
