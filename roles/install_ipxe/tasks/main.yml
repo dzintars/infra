@@ -26,6 +26,6 @@
 
 - name: Start TFTP service
   service:
-    name: tftp-server
+    name: tftp
     state: started
     enabled: yes

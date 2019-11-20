@@ -59,3 +59,31 @@ Read `roles/deploy_ignition/README.md` for more details.
 ## Errors
 
 I tried to collect errors and gotchas i seen as well provided seen solutions or pointers to solutions.
+
+## Library and app requirements for Workstation
+
+```sh
+sudo dnf install -y python3-netaddr
+```
+
+```sh
+virt-install \
+    --connect qemu:///system \
+    --name bootstrap.ocp.example.local \
+    --description 'RedHat CoreOS bootstrap node' \
+    --accelerate \
+    --vcpus 2 \
+    --cpu host \
+    --ram 2048 \
+    --disk path=/home/dzintars/kvm/pools/test/bootstrap.ocp.example.local,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
+    --pxe \
+    --network bridge=virbr0,model=virtio \
+    --prompt \
+    --mac 00:1a:4a:16:01:28 \
+    --os-type linux \
+    --os-variant virtio26 \
+    --console pty,target_type=serial \
+    --nographics \
+    --boot hd,network \
+    --debug
+```

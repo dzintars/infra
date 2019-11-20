@@ -1,8 +1,14 @@
 ---
 - name: configure workstation
   hosts: WORKSTATION
+  connection: local
+  gather_facts: yes
   become: yes
 
   roles:
-    - role: install_haproxy
-      tags: [ install, config ]
+    - role: deploy_bastion
+      tags: [ bastion ]
+    - role: setup_network
+      tags: [ network ]
+    - role: openshift
+      tags: [openshift]

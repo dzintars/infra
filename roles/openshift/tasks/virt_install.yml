@@ -37,7 +37,7 @@
       --nographics \
       --boot hd,network \
       --debug
-  sudo: yes
+  # become: true
   loop: "{{ lookup('dict', cluster.nodes) }}"
   loop_control:
     loop_var: node

@@ -54,4 +54,3 @@ fatal: [bastion.ocp.example.com]: FAILED! => {"changed": false, "msg": "Failed t
 ```sh
 usr/libexec/coreos-installer: line 622: warning: command substitution: ignored null byte in input
 ```
-

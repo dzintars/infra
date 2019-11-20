@@ -1,14 +1,15 @@
 install
-cdrom
-# url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-30&arch=x86_64"
+# cdrom
+url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-30&arch=x86_64"
 
 cmdline
 skipx
-reboot 
+reboot --eject
 
-repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/30/Everything/x86_64/os/"
-repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/30/x86_64/"
-#repo --name=updates-testing --baseurl=https://dl.fedoraproject.org/pub/fedora/linux/updates/testing/26/x86_64/
+# repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/30/Everything/x86_64/os/"
+# repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/30/x86_64/"
+# repo --name=updates-testing --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/testing/26/x86_64/"
+
 
 zerombr
 clearpart --all --initlabel
@@ -22,16 +23,17 @@ lang en_US.UTF-8
 timezone Europe/Riga --isUtc
 eula --agreed
 
-network --hostname=bastion.ocp.example.com
-network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.252 --netmask=255.255.255.0 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
+network --hostname={{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}
+# network --bootproto=dhcp
+network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.254 --netmask=255.255.255.0 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
 
-rootpw --iscrypted {{ bastion_root_pass }} --lock
-user --name=ansible --password {{ bastion_ansible_pass }} --iscrypted --groups=wheel --gecos="Ansible"
-sshkey --username=ansible "{{ ssh_key }}"
+rootpw --iscrypted {{ ansible_become_pass }} --lock
+user --name={{ ansible_ssh_user }} --password {{ ansible_ssh_user_pass }} --iscrypted --groups=wheel --gecos="Administrator"
+sshkey --username={{ ansible_ssh_user }} "{{ ssh_key }}"
 
 selinux --enforcing
 
-# services --enabled="NetworkManager,sshd,chronyd"
+services --enabled="NetworkManager,sshd,chronyd"
 
 firewall --enabled --ssh
 
@@ -74,9 +76,8 @@ firewall --enabled --ssh
 #     #echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 #     # Allow Ansible to execute commands as root on the system
 #     #echo "# Ansible" >> /etc/sudoers 
-#     #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers 
+#     #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers
+#
 #     # Disable SeLinux 
 #     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
 # %end
-
-# 3) [!] Installation source (Error checking software source)

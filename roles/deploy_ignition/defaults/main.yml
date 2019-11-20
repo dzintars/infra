@@ -1,7 +1,7 @@
 ---
 # defaults file for deploy_ignition
 
-openshift_installer         : "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-install-linux-4.2.0.tar.gz"
+openshift_installer         : "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-install-linux-4.2.4.tar.gz"
 
 nightly_openshift_installer : "https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-install-linux-4.3.0-0.nightly-2019-10-31-085222.tar.gz"
 nightly_openshift_client    : "https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-client-linux-4.3.0-0.nightly-2019-10-31-085222.tar.gz"

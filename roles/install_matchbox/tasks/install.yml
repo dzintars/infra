@@ -29,20 +29,6 @@
     remote_src: yes
     mode: 0644
 
-- name: Create Matchbox directories
-  file:
-    path: '{{ item }}'
-    state: directory
-    owner: matchbox
-    group: matchbox
-    mode: 0644
-  loop:
-    - /etc/matchbox
-    - /var/lib/matchbox/assets
-    - /var/lib/matchbox/groups
-    - /var/lib/matchbox/ignition
-    - /var/lib/matchbox/profiles
-
 - name: Create Matchbox system group
   group:
     name: matchbox
@@ -58,6 +44,20 @@
 - name: just force systemd to re-execute itself (2.8 and above)
   systemd:
     daemon_reexec: yes
+
+- name: Create Matchbox directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: matchbox
+    group: matchbox
+    mode: 0755
+  loop:
+    - /etc/matchbox
+    - /var/lib/matchbox/assets
+    - /var/lib/matchbox/groups
+    - /var/lib/matchbox/ignition
+    - /var/lib/matchbox/profiles
 
 - name: Allow the service to be accessed at the firewall level
   firewalld:

@@ -1,26 +1,26 @@
 ---
 - name: Install and configure OpenShift Bastion server
-  hosts: BASTIONS
-  gather_facts: no
+  hosts: BASTION
+  gather_facts: yes
   become: yes
 
-  vars_prompt:
-  - name: cluster.fqdn
-    prompt: 'Cluster FQDN? e.g. "example.com"'
-    private: no
+  # vars_prompt:
+  # - name: cluster.fqdn
+  #   prompt: 'Cluster FQDN? e.g. "example.com"'
+  #   private: no
 
   roles:
     # - role: deploy_ignition
-    - role: debug
-      tags: [debug]
+    # - role: debug
+    #   tags: [debug]
     - role: setup_firewalld
       tags: [firewalld]
     - role: setup_selinux
       tags: [selinux]
     - role: install_named
       tags: [named]
-    # - role: bertvv.tftp
-    #   tags: [tftp]
+    - role: bertvv.tftp
+      tags: [tftp]
     - role: install_ipxe
       tags: [ipxe]
     - role: install_dhcp

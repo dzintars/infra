@@ -7,3 +7,11 @@ This is a good article how to copy your ssh key into main clipboard
 ```sh
 xclip -sel clip < ~/.ssh/id_rsa.pub
 ```
+
+```sh
+ssh-keygen -t rsa -b 4096 -C "username@example.com"
+ssh-copy-id -i ~/.ssh/id_rsa user@host
+ssh-add ~/.ssh/id_rsa
+```
+
+Enter passphrase for key '/home/dzintars/.ssh/id_rsa':

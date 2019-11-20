@@ -1,5 +1,6 @@
 ---
 
-ssh_key              : '{{ vault_ssh_key }}'
-bastion_root_pass    : '{{ vault_bastion_root_pass }}'
-bastion_ansible_pass : '{{ vault_bastion_ansible_pass }}'
+ansible_ssh_user       : 'dzintars'
+ansible_become_pass    : '{{ vault_ansible_become_pass }}'
+ansible_ssh_user_pass  : '{{ vault_ansible_ssh_user_pass }}'
+ssh_key                : '{{ vault_ssh_key }}'

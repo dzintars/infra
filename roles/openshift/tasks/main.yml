@@ -4,17 +4,17 @@
 - name: Stop and remove existing domains by their name (All VMs)
   import_tasks: undefine_domains.yml
   tags:
-  - cluster:cleanup
+  - openshift:cleanup
 
 - name: Undefine Storage Pool
   import_tasks: undefine_storage_pool.yml
   tags:
-  - cleanup
+  - openshift:cleanup
 
 - name: Create and start Storage Pool
   import_tasks: create_storage_pool.yml
   tags:
-  - cluster:provision
+  - openshift:provision
 
 # - name: Create volumes
 #   import_tasks: create_volumes.yml
@@ -29,4 +29,4 @@
 - name: Create and start domains (All Guest VMs)
   import_tasks: virt_install.yml
   tags:
-  - cluster:provision
+  - openshift:provision

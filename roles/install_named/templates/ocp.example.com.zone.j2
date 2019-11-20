@@ -4,8 +4,8 @@ $TTL 900
             2019062002      ; serial
             3H              ; refresh (3 hours)
             30M             ; retry (30 minutes)
-            1W              ; expiry (2 weeks)
-            3H )            ; minimum (1 week)
+            1W              ; expiry (1 week)
+            3H )            ; minimum (3 hours)
 
             IN  NS  {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['bastion'].name }}     IN  A   {{ cluster.network }}.{{ cluster.nodes['bastion'].host }}

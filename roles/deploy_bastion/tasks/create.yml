@@ -18,31 +18,43 @@
 #   with_items: disks
 #   # delegate_to: localhost
 
-
 # TODO: Change hardcoded home directory
-- name: Create VMs
+- name: create Bastion VM
   command: >
     virt-install \
       --connect qemu:///system \
-      --name bastion.ocp.example.com \
+      --name {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }} \
       --description 'DHCP, DNS, HAProxy, TFTP, Matchbox' \
-      --vcpus 1 \
-      --memory 2048 \
-      --location /home/dzintars/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
-      --disk path=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
+      --vcpus {{ cluster.nodes['bastion'].vcpu }} \
+      --memory {{ cluster.nodes['bastion'].memory }} \
+      --location $HOME/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
+      --disk path=$HOME/kvm/pools/bastion/{{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }},size={{ cluster.nodes['bastion'].disk.size }},cache=writeback,format={{ cluster.nodes['bastion'].disk.format }},io=threads,bus=virtio  \
       --hvm \
       --accelerate \
       --os-type linux \
-      --os-variant Fedora30 \
-      --network bridge=virbr0,model=virtio \
+      --os-variant fedora30 \
+      --network bridge={{ cluster.nodes['bastion'].network.name }},model=virtio \
       --nographics \
       --memballoon virtio \
       --initrd-inject /var/lib/libvirt/kickstart.cfg \
       -x "ks=file:/kickstart.cfg" \
       -x 'console=ttyS0,115200 headless noshell nofirewire' \
       --debug
+  become: false
+# Delete kickstart file
 
-#       --noautoconsole \
+# --noautoconsole \
 # --console pty,target_type=serial \
 # -x 'console=ttyS0,115200n8 serial' \
-# Delete kickstart file
+# --mac {{ cluster.nodes["bastion"].mac }} \
+
+# 3) [!] Installation source (Error setting up software source)   !!! Check network settings. Don't use cdrom and repo tags in kickstart.
+# 4) [!] Software selection (Error checking software selection)
+
+
+
+# TODO: We need to wait while guest machine will boot up, because otherwise we will delete kickstart file too early.
+# - name: delete kickstart.cfg
+#   file:
+#     state: absent
+#     path: "/var/lib/libvirt/kickstart.cfg"

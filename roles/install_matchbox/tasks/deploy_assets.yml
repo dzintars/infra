@@ -2,15 +2,26 @@
 # tasks file for install_matchbox
 
 # I should use Ansible URI module there to avoid repetitive download ???
+
+# - name: Download NIGHTLY RHCOS Initramfs
+#   get_url:
+#     url: '{{ item }}'
+#     dest: /var/lib/matchbox/assets
+#     mode: '0644'
+#   loop:
+#     - "{{ nightly_rhcos_baseurl }}/{{ nightly_bios }}"
+#     - "{{ nightly_rhcos_baseurl }}/{{ nightly_kernel }}"
+#     - "{{ nightly_rhcos_baseurl }}/{{ nightly_initramfs }}"
+
 - name: Download RHCOS Initramfs
   get_url:
     url: '{{ item }}'
     dest: /var/lib/matchbox/assets
     mode: '0644'
   loop:
-    - "{{ nightly_rhcos_baseurl }}/{{ nightly_bios }}"
-    - "{{ nightly_rhcos_baseurl }}/{{ nightly_kernel }}"
-    - "{{ nightly_rhcos_baseurl }}/{{ nightly_initramfs }}"
+    - "{{ rhcos_baseurl }}/{{ bios }}"
+    - "{{ rhcos_baseurl }}/{{ kernel }}"
+    - "{{ rhcos_baseurl }}/{{ initramfs }}"
 
 - name: Copy Matchbox profiles
   template:

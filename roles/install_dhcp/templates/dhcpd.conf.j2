@@ -3,7 +3,7 @@ ddns-update-style   interim;
 default-lease-time  14400;
 max-lease-time      14400;
 
-    option              routers                 192.168.1.1;
+    option              routers                 {{ cluster.network }}.1;
     option              broadcast-address       {{ cluster.network }}.255;
     option              subnet-mask             255.255.255.0;
     option              domain-name-servers     {{ cluster.network }}.{{ cluster.nodes['bastion'].host }};
