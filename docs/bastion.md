@@ -54,3 +54,35 @@ fatal: [bastion.ocp.example.com]: FAILED! => {"changed": false, "msg": "Failed t
 ```sh
 usr/libexec/coreos-installer: line 622: warning: command substitution: ignored null byte in input
 ```
+
+## Commands
+
+Check status
+
+```sh
+systemctl status tftp
+systemctl status dhcpd
+systemctl status matchbox
+systemctl status haproxy
+systemctl status named-chroot
+```
+
+Start services
+
+```sh
+systemctl start tftp
+systemctl start dhcpd
+systemctl start matchbox
+systemctl start haproxy
+systemctl start named-chroot
+```
+
+Retart services
+
+```sh
+systemctl restart tftp
+systemctl restart dhcpd
+systemctl restart matchbox
+systemctl restart haproxy
+systemctl restart named-chroot
+```

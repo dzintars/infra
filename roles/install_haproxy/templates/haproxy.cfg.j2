@@ -55,7 +55,7 @@ frontend {{ cluster.name }}-kubernetes-api-server
 backend {{ cluster.name }}-kubernetes-api-server
     balance source
     mode tcp
-    # server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+    server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
     server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
     server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
     server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
@@ -76,7 +76,7 @@ backend {{ cluster.name }}-machine-config-server
     # log global
     # timeout connect 10s
     # timeout server 1m 
-    # server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+    server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
     server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
     server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
     server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check

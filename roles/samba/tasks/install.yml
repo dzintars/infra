@@ -1,0 +1,26 @@
+---
+
+- name: install Samba
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - samba
+
+- name: enable samba services and ensure they are not masked
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    masked: no
+  loop:
+    - smb
+    - nmb
+
+- name: allowing firewall rules for samba
+  firewalld:
+    service: '{{ item }}'
+    permanent: yes
+    state: enabled
+  notify: restart firewalld
+  with_items:
+    - samba

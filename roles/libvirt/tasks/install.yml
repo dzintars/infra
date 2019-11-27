@@ -1,0 +1,47 @@
+---
+# installation tasks file for roles/libvirt
+
+- name: install libvirt dependencies
+  become: true
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - libvirt
+    - virt-install
+    - virt-manager
+    - bridge-utils
+    - qemu-kvm
+    - virt-top
+    - libguestfs-tools
+    - libvirt-devel
+    - libvirt-daemon-kvm
+
+# Create libvirt group and add current user to it to allow to run libvirt without root
+
+- name: create libvirt system group
+  become: true
+  group:
+    name: libvirt
+    state: present
+    system: yes
+
+- name: add {{ become_user }} to libvirt group
+  become: true
+  user: 
+    name: "{{ become_user }}"
+    system: yes
+    group: libvirt
+
+- name: just force systemd to re-execute itself (2.8 and above)
+  become: true
+  systemd:
+    daemon_reexec: yes
+
+# Start and enable libvirtd
+
+- name: start libvirtd service
+  service: 
+    name: libvirtd
+    state: started
+    enabled: yes

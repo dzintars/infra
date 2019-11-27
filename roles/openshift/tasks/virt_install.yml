@@ -23,8 +23,8 @@
       --name {{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }} \
       --description 'RedHat CoreOS {{ node.value.name }} node' \
       --accelerate \
-      --vcpus {{ node.value.vcpu }} \
       --cpu host \
+      --vcpus {{ node.value.vcpu }} \
       --ram {{ node.value.memory }} \
       --disk path=/home/dzintars/kvm/pools/{{ cluster.name }}/{{ node.value.name }}.{{ cluster.name }}.{{ cluster.fqdn }}.{{ node.value.disk.format }},size={{ node.value.disk.size }},cache=writeback,format={{ node.value.disk.format }},io=threads,bus=virtio  \
       --pxe \

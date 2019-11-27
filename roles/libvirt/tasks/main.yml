@@ -1,0 +1,12 @@
+---
+# tasks file for roles/libvirt
+
+- name: Install libvirt
+  import_tasks: install.yml
+  tags:
+  - libvirt:install
+
+- name: configure libvirt
+  import_tasks: configure.yml
+  tags:
+  - libvirt:config

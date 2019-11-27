@@ -1,0 +1,7 @@
+---
+# tasks file for roles/samba
+
+- name: debug
+  include: install.yml
+  tags:
+    - firewalld:install

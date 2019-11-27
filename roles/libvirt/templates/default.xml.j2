@@ -1,0 +1,11 @@
+<network>
+    <name>default</name>
+    <forward mode='nat'>
+        <nat>
+            <port start='1024' end='65535'/>
+        </nat>
+    </forward>
+    <bridge name='default' stp='on' delay='0'/>
+    <mac address='52:54:00:d1:56:2e'/>
+    <ip address='192.168.1.2' netmask='255.255.255.0'></ip>
+</network>

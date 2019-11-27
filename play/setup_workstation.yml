@@ -3,7 +3,9 @@
   hosts: WORKSTATION
   connection: local
   gather_facts: yes
-  become: yes
+  # become: yes
+  # become_user: dzintars
+  # become_method: sudo
 
   roles:
     - role: deploy_bastion
@@ -12,3 +14,6 @@
       tags: [ network ]
     - role: openshift
       tags: [openshift]
+    - role: libvirt
+      tags: [libvirt]
+      # become: true

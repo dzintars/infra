@@ -7,7 +7,22 @@ Before starting, update `hosts` and `group_vars` according to your needs. For ex
 ## Ansible commands
 
 ```sh
-ansible-playbook define-ocp-vms.yml --ask-become-pass
+# Create Bastion VM
+ansible-playbook play/setup_workstation.yml --tags bastion:create --ask-vault-pass
+ansible-playbook play/setup_bastion.yml --ask-vault-pass
+
+# Disable Bastion and Cptnod variables
+
+
+```
+
+```sh
+ansible-playbook play/setup_bastion.yml --tags --ask-vault-pass
+ansible-playbook play/setup_bastion.yml --tags ignition:config --ask-vault-pass
+
+ansible-playbook play/setup_workstation.yml --tags openshift:provision --ask-vault-pass
+ansible-playbook play/setup_workstation.yml --tags openshift --ask-vault-pass
+ansible-playbook play/setup_workstation.yml --tags openshift:cleanup --ask-vault-pass
 ```
 
 ## Ansible Vault

@@ -1,0 +1,28 @@
+---
+# configuration tasks file for roles/libvirt
+
+- name: uncomment line from /etc/libvirt/libvirtd.conf
+  become: true
+  lineinfile:
+    dest: /etc/libvirt/libvirtd.conf
+    insertafter: "{{ item.pattern }}"
+    line: "{{ item.value }}"
+    state: present
+  loop:
+    - {pattern: '^#?unix_sock_group = "libvirt"', value: 'unix_sock_group = "libvirt"'}
+    - {pattern: '^#?unix_sock_rw_perms = "0770"', value: 'unix_sock_rw_perms = "0770"'}
+  notify: restart libvirtd
+
+# In order to grant quemu access to my users directories i modified /etc/libvirt/qemu.conf file.
+# [Link to GitHub](https://github.com/jedi4ever/veewee/issues/996#issuecomment-536519623)
+- name: set qemu user in /etc/libvirt/qemu.conf
+  become: true
+  lineinfile:
+    dest: /etc/libvirt/qemu.conf
+    insertafter: "{{ item.pattern }}"
+    line: "{{ item.value }}"
+    state: present
+  loop:
+    - {pattern: '^#?user = (?!{{ become_user }})', value: 'user = "{{ become_user }}"'}
+    - {pattern: '^#?group = (?!{{ become_user }})', value: 'group = "{{ become_user }}"'}
+  notify: restart libvirtd

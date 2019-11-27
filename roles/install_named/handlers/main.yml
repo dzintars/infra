@@ -11,7 +11,7 @@
     name: firewalld
     state: restarted
 
-- name: Reload NetworkManager
+- name: Restart NetworkManager
   service:
     name: NetworkManager
     state: restarted

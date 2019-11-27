@@ -8,7 +8,7 @@
     owner: named
     group: named
     setype: named_conf_t
-    mode: '0644'
+    mode: 0644
   loop:
     - {src: 'named.conf.j2', dest: '/etc/named.conf'}
     - {src: 'ocp.example.com.zone.j2', dest: '/var/named/{{ cluster.name }}.{{ cluster.fqdn }}.zone'}
@@ -24,4 +24,4 @@
     mode: 0644
     backup: yes
   notify:
-    - Reload NetworkManager
+    - Restart NetworkManager

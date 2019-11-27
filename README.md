@@ -13,8 +13,7 @@ I started to write K8s cluster Ansible project based on Fedora CoreOS, but stuck
 
 So i left that project till i will not find a solution.
 
-Anyway, i think OpenShift is a good alternative to plain K8s. It has reasonable defaults and opinionated rules. 
-
+Anyway, i think OpenShift is a good alternative to plain K8s. It has reasonable defaults and opinionated rules.
 
 ## Good to know
 
@@ -26,6 +25,7 @@ Be ready to deal with incomplete or outdated documentation.
 
 Before using this project, you should create a set of ansible-vault secrets for your own use.
 For example:
+
 - Root password for guest machines
 - Ansible user password for Bastion server
 
@@ -87,3 +87,5 @@ virt-install \
     --boot hd,network \
     --debug
 ```
+
+curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux-4.2.7.tar.gz | tar -xzf - -C /usr/local/bin/ oc

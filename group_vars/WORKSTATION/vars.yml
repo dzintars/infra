@@ -1,5 +1,6 @@
 ---
 
+become_user            : 'dzintars'
 ansible_ssh_user       : 'dzintars'
 ansible_become_pass    : '{{ vault_ansible_become_pass }}'
 ansible_ssh_user_pass  : '{{ vault_ansible_ssh_user_pass }}'

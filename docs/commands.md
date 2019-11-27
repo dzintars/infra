@@ -11,7 +11,7 @@ openshift-install --dir=cluster wait-for bootstrap-complete --log-level=debug
 
 oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
 
-openshift-install --dir=cluster wait-for install-complete --log-level=debug
+openshift-install --dir=ocp wait-for install-complete --log-level=debug
 ```
 
 ## OC CLI

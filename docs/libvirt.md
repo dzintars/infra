@@ -31,12 +31,11 @@ In order to grant quemu access to my users directories i modified /etc/libvirt/q
 
 [Link to GitHub](https://github.com/jedi4ever/veewee/issues/996#issuecomment-536519623)
 
-
+```xml
 <ip address='10.50.1.1' netmask='255.255.255.0'>
-    <dhcp>
-      <range start='10.50.1.10' end='10.50.1.254' />
-
-      <host mac="52:54:00:20:00:00" ip="10.50.2.10"  name="vm-0.local" />
-
-    </dhcp>
-  </ip>
+  <dhcp>
+    <range start='10.50.1.10' end='10.50.1.254' />
+    <host mac="52:54:00:20:00:00" ip="10.50.2.10"  name="vm-0.local" />
+  </dhcp>
+</ip>
+```

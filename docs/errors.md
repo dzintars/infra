@@ -1,5 +1,15 @@
 # Error handling
 
+## INFO Waiting up to 30m0s for the Kubernetes API at https://api.ocp.oswee.local:6443...
+
+Ssh into bootstrap `ssh core@bootstrap-0.ocp.example.local` and check error there
+
+## Error in non-bootstrap machine
+
+```sh
+[*     ] A start job is running for Ignition (disks) (10min 17s / no limit)[  619.297494] ignition[636]: GET https://api-int.ocp.oswee.local:22623/config/worker: attempt #128
+```
+
 ## Console (Web UI) not working
 
 Execute `oc get co` and you probably will see that `authentication` operator failed and so `console` is stuck as well.
@@ -98,8 +108,8 @@ This lead me to some activity in master nodes. Haproxy semanage port section.
 Ececute this commands on your Bastion
 
 ```sh
-semanage port  -a 22623 -t http_port_t -p tcp
-semanage port  -a 6443 -t http_port_t -p tcp
+sudo semanage port -a -t http_port_t -p tcp 22623
+sudo semanage port -a -t http_port_t -p tcp 6443
 ```
 
 > CHECK does HAProxy was started properly. Sometimes it does not grab latest config. Not sure why.
@@ -108,6 +118,10 @@ Resolution for me was:
 1) Check `/etc/resolv.conf` in Bastion
 2) Check firewalld open ports
 3) Check semanage ports (!!!)
+
+`sudo nmap -n -PN -sT -sU -p- localhost`
+`sudo ss -lntu`
+`sudo lsof -i`
 
 ## Some guest VMs does not reboot
 
@@ -213,3 +227,22 @@ How to check DHCP
 ```sh
 dhcdrop -t -i virbr0 00:1a:4a:16:01:28
 ```
+
+## Git
+
+```
+ssh_askpass: exec(/usr/libexec/openssh/ssh-askpass): No such file or directory
+Host key verification failed.
+```
+
+SOLUTION: [SO - Git error: “Host Key Verification Failed”](https://stackoverflow.com/questions/13363553/git-error-host-key-verification-failed-when-connecting-to-remote-repository)
+
+Check ~/.ssh/known_hosts file
+
+## Master nodes does not boot up because they can't get its configs
+
+```sh
+[**    ] A start job is running for Ignition (disks) (5min 2s / no limit)[  304.127891] ignition[651]: GET https://api-int.ocp.example.local:22623/config/master: attempt #65
+```
+
+SOLUTION: I had disabled bootstrap-0 backend record in HAProxy config. By enabling it everything worked.
