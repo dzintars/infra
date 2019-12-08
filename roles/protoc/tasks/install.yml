@@ -1,0 +1,35 @@
+---
+# install tasks file for roles/protoc
+
+- name: ensure protoc directory exists
+  file:
+    path: /tmp/protoc3
+    state: directory
+
+- name: download Protoc
+  unarchive:
+    # Make sure you grab the latest version !!!
+    src: https://github.com/protocolbuffers/protobuf/releases/download/v3.11.1/protoc-3.11.1-linux-x86_64.zip
+    dest: /tmp/protoc3
+    # creates: /tmp/proto3/bin
+    remote_src: yes
+
+- name: copy Protoc binary
+  copy:
+    src: /tmp/protoc3/bin/protoc
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+
+- name: copy Protoc includes
+  copy:
+    src: /tmp/protoc3/include/
+    dest: /usr/local/include
+    remote_src: yes
+
+# Optional: change owner (Solution to "protoc-gen-go: program not found or is not executable" )
+# sudo chown $USER /usr/local/bin/protoc
+# sudo chown -R $USER /usr/local/include/google
+# protoc --version
+
+# !!! If any errors occur check permissions on those directories in /usr/bin !!!

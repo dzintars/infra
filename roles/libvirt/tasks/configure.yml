@@ -26,3 +26,20 @@
     - {pattern: '^#?user = (?!{{ become_user }})', value: 'user = "{{ become_user }}"'}
     - {pattern: '^#?group = (?!{{ become_user }})', value: 'group = "{{ become_user }}"'}
   notify: restart libvirtd
+
+ 
+- name: define a new network
+  virt_net:
+    command: define
+    name: virbr0
+    xml: '{{ lookup("template", "network/bridge.xml.j2") }}'
+
+- name: start a network
+  virt_net:
+    command: create
+    name: virbr0
+
+- name: autostart a network
+  virt_net:
+    autostart: yes
+    name: virbr0

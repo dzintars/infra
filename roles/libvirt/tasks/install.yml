@@ -38,9 +38,12 @@
   systemd:
     daemon_reexec: yes
 
+# id $(whoami)
+
 # Start and enable libvirtd
 
 - name: start libvirtd service
+  become: true
   service: 
     name: libvirtd
     state: started

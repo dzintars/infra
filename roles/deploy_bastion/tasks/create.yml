@@ -4,6 +4,7 @@
 # Copy kickstart file to accessible local_action
 
 - name: copy kickstart file
+  become: true
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'

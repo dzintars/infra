@@ -13,9 +13,9 @@
     - {src: 'named.conf.j2', dest: '/etc/named.conf'}
     - {src: 'ocp.example.com.zone.j2', dest: '/var/named/{{ cluster.name }}.{{ cluster.fqdn }}.zone'}
     - {src: '1.168.192.in-addr.arpa.zone.j2', dest: "/var/named/{{ cluster.network | ipaddr('revdns') | regex_replace('^[0-9]+\\.', '') }}zone"}
-  notify: Restart Bind
+  notify: reload named
 
-- name: Deploy resolv.conf template
+- name: deploy resolv.conf template
   template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
@@ -24,4 +24,4 @@
     mode: 0644
     backup: yes
   notify:
-    - Restart NetworkManager
+    - reload NetworkManager

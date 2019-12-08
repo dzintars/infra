@@ -2,12 +2,14 @@
 # tasks file for roles/setup_selinux
 
 - name: Enable an SELinux boolean to allow HAProxy to bind to non standard ports (allow haproxy outgoing connections in SELinux)
+  become: true
   seboolean:
     name: haproxy_connect_any 
     state: yes
     persistent: yes
 
 - name: Allow haproxy to bind to custom ports with SELinux
+  become: true
   seport:
     ports: '{{ item }}'
     proto: tcp
@@ -20,6 +22,7 @@
 
 # https://github.com/aizuddin85/openshift4/blob/master/ansible_libvirt_upi_bm/00-setup_helper_node/roles/configure_selinux/vars/main.yml
 - name: Allow OTHER??? to bind to custom ports with SELinux
+  become: true
   seport:
     ports: '{{ item }}'
     proto: tcp
@@ -30,7 +33,6 @@
     - 5002
     - 5003
     - 5004
-
     - 53
     - 67
     - 69

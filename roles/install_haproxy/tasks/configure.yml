@@ -2,6 +2,7 @@
 # tasks file for install_haproxy
 
 - name: copy haproxy.cfg and reload HAProxy
+  become: true
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'

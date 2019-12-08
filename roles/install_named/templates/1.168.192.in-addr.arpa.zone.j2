@@ -8,6 +8,11 @@ $TTL 900
         3h )        ; minimum (1 week)
 
     IN  NS  {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
+{{ cluster.nodes['bastion'].host }} IN  PTR {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
+{{ cluster.nodes['bastion'].host }} IN  PTR api.{{ cluster.name }}.{{ cluster.fqdn }}.
+{{ cluster.nodes['bastion'].host }} IN  PTR api-int.{{ cluster.name }}.{{ cluster.fqdn }}.
+{{ cluster.nodes['bastion'].host }} IN  PTR apps.{{ cluster.name }}.{{ cluster.fqdn }}.
+{{ cluster.nodes['bootstrap-0'].host }} IN  PTR {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['master-0'].host }}  IN  PTR {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['master-1'].host }}  IN  PTR {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['master-2'].host }}  IN  PTR {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
@@ -16,9 +21,4 @@ $TTL 900
 {{ cluster.nodes['cptnod-0'].host }}  IN  PTR {{ cluster.nodes['cptnod-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['cptnod-1'].host }}  IN  PTR {{ cluster.nodes['cptnod-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
 {{ cluster.nodes['cptnod-2'].host }}  IN  PTR {{ cluster.nodes['cptnod-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
-{{ cluster.nodes['bootstrap-0'].host }} IN  PTR {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
-{{ cluster.nodes['bastion'].host }} IN  PTR {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}.
-{{ cluster.nodes['bastion'].host }} IN  PTR api.{{ cluster.name }}.{{ cluster.fqdn }}.
-{{ cluster.nodes['bastion'].host }} IN  PTR api-int.{{ cluster.name }}.{{ cluster.fqdn }}.
-{{ cluster.nodes['bastion'].host }} IN  PTR apps.{{ cluster.name }}.{{ cluster.fqdn }}.
 ;EOF

@@ -2,9 +2,9 @@
 - name: Install and configure OpenShift Bastion server
   hosts: BASTION
   gather_facts: yes
-  become: yes
-  become_user: dzintars
-  become_method: sudo
+  # become: true
+  # become_user: dzintars
+  # become_method: sudo
 
   # vars_prompt:
   # - name: cluster.fqdn
@@ -12,27 +12,31 @@
   #   private: no
 
   roles:
-    # - role: deploy_ignition
     # - role: debug
     #   tags: [debug]
+    - role: install_named
+      tags: [named]
+      become: true
     - role: setup_firewalld
       tags: [firewalld]
     - role: setup_selinux
       tags: [selinux]
-    - role: install_named
-      tags: [named]
     - role: install_dhcp
       tags: [dhcpd]
     - role: install_haproxy
       tags: [haproxy]
     - role: bertvv.tftp
       tags: [tftp]
+      become: true
     - role: install_ipxe
       tags: [ipxe]
+      become: true
     - role: install_matchbox
       tags: [matchbox]
+      become: true
     - role: deploy_ignition
       tags: [ignition]
+      become: true
 
     # - role: provision_tls
     # - role: install_tftp

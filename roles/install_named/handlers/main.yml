@@ -1,19 +1,26 @@
 ---
 # handlers file for install_named
 
-- name: Restart Bind
-  service:
+- name: enable and start named-chroot
+  systemd:
     name: named-chroot
-    state: restarted
+    enabled: yes
+    state: started
 
-- name: Restart Firewalld
-  service:
+- name: reload named
+  systemd:
+    state: reloaded
+    daemon_reload: yes
+    name: named-chroot
+
+- name: reload firewalld
+  systemd:
+    state: reloaded
+    daemon_reload: yes
     name: firewalld
-    state: restarted
 
-- name: Restart NetworkManager
-  service:
+- name: reload NetworkManager
+  systemd:
+    state: reloaded
+    daemon_reload: yes
     name: NetworkManager
-    state: restarted
-    # TODO: I should prefer reload if possible
-    # state: reloaded

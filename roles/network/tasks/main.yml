@@ -1,0 +1,12 @@
+---
+# tasks file for roles/network
+
+- name: install NetworkManager dependencies
+  include: install.yml
+  tags:
+    - network:install
+
+- name: bridge network
+  include: bridge.yml
+  tags:
+    - network:bridge

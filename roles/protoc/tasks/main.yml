@@ -1,0 +1,7 @@
+---
+# tasks file for roles/protoc
+
+- name: install protoc
+  include: install.yml
+  tags:
+    - protoc:install

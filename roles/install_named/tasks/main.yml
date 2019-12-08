@@ -10,3 +10,8 @@
   import_tasks: configure.yml
   tags:
   - named:config
+
+- name: remove named
+  import_tasks: remove.yml
+  tags:
+  - named:remove

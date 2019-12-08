@@ -13,5 +13,3 @@ https://cloud.redhat.com/openshift/install/metal/user-provisioned
 [Medium: Generate Wildcard SSL certificate using Let’s Encrypt/Certbot](https://medium.com/@saurabh6790/generate-wildcard-ssl-certificate-using-lets-encrypt-certbot-273e432794d7)
 
 [YoutTube: Hey Tate: Create valid wildcard TLS/SSL certificate for your domain for free with certbot!](https://www.youtube.com/watch?v=3D4-MWG1Bew)
-
-

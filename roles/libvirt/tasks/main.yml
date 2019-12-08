@@ -10,3 +10,8 @@
   import_tasks: configure.yml
   tags:
   - libvirt:config
+
+# - name: remove libvirt
+#   import_tasks: remove.yml
+#   tags:
+#   - libvirt:remove

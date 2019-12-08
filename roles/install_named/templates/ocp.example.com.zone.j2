@@ -18,7 +18,6 @@ $TTL 900
 {{ cluster.nodes['cptnod-0'].name }}    IN  A   {{ cluster.network }}.{{ cluster.nodes['cptnod-0'].host }}
 {{ cluster.nodes['cptnod-1'].name }}    IN  A   {{ cluster.network }}.{{ cluster.nodes['cptnod-1'].host }}
 {{ cluster.nodes['cptnod-2'].name }}    IN  A   {{ cluster.network }}.{{ cluster.nodes['cptnod-2'].host }}
-my          IN  A   {{ cluster.network }}.{{ cluster.nodes['bastion'].host }}   ; Test
 api         IN  A   {{ cluster.network }}.{{ cluster.nodes['bastion'].host }}
 api-int     IN  A   {{ cluster.network }}.{{ cluster.nodes['bastion'].host }}
 apps        IN  A   {{ cluster.network }}.{{ cluster.nodes['bastion'].host }}

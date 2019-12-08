@@ -55,6 +55,3 @@ systemctl status matchbox.service
 systemctl status tftp.service
 systemctl status haproxy.service
 ```
-
-
-
