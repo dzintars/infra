@@ -30,23 +30,24 @@
       --memory {{ cluster.nodes['bastion'].memory }} \
       --location $HOME/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
       --disk path=$HOME/kvm/pools/bastion/{{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }},size={{ cluster.nodes['bastion'].disk.size }},cache=writeback,format={{ cluster.nodes['bastion'].disk.format }},io=threads,bus=virtio  \
-      --hvm \
       --accelerate \
       --os-type linux \
       --os-variant fedora30 \
       --network bridge={{ cluster.nodes['bastion'].network.name }},model=virtio \
-      --nographics \
-      --memballoon virtio \
       --initrd-inject /var/lib/libvirt/kickstart.cfg \
       -x "ks=file:/kickstart.cfg" \
-      -x 'console=ttyS0,115200 headless noshell nofirewire' \
+      -x 'console=ttyS0,115200n8 serial' \
       --debug
-  become: false
+      
 # Delete kickstart file
-
+      
+# -x 'console=ttyS0,115200 headless noshell nofirewire' \
+# -x 'console=ttyS0,115200' \
+# --memballoon virtio \
+# --hvm \
+# --nographics \
 # --noautoconsole \
 # --console pty,target_type=serial \
-# -x 'console=ttyS0,115200n8 serial' \
 # --mac {{ cluster.nodes["bastion"].mac }} \
 
 # 3) [!] Installation source (Error setting up software source)   !!! Check network settings. Don't use cdrom and repo tags in kickstart.

@@ -1,12 +1,12 @@
 ---
 # handlers file for install_dhcp
 
-- name: Restart DHCP
-  service:
-    name: dhcpd
+- name: restart dhcpd service
+  systemd:
     state: restarted
+    name: dhcpd
 
-- name: Restart Firewalld
+- name: restart firewalld
   service:
     name: firewalld
     state: restarted

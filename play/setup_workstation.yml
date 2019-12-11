@@ -10,6 +10,7 @@
   roles:
     - role: deploy_bastion
       tags: [ bastion ]
+      become: false
     - role: network
       tags: [ network ]
     - role: openshift

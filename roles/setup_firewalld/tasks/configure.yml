@@ -19,7 +19,7 @@
     - 53/udp      # DNS
     # - 443/tcp
     # - 80/tcp
-    - 69/udp      # TFTP
+    # - 69/udp      # TFTP
     - 111/tcp     # ONC RPC ????
     - 2049/tcp    
     - 20048/tcp   

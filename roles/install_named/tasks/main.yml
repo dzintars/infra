@@ -1,17 +1,22 @@
 ---
 # tasks file for install_named
 
-- name: Install named
+- name: install named
   import_tasks: install.yml
   tags:
   - named:install
 
-- name: Update configuration
+- name: update named configuration
   import_tasks: configure.yml
   tags:
   - named:config
 
-- name: remove named
-  import_tasks: remove.yml
+- name: start named
+  import_tasks: start.yml
   tags:
-  - named:remove
+  - named:start
+
+# - name: remove named
+#   import_tasks: remove.yml
+#   tags:
+#   - named:remove

@@ -1,0 +1,58 @@
+---
+- hosts: BASTION
+    # gather_facts: yes
+    # become: yes
+
+  tasks:
+  - name: get service facts
+    service_facts:
+        
+#   - name: check named-chroot status
+#     fail:
+#       msg: Bind (named-chroot) is not installed, why? It should have been there!
+#     when: ansible_facts.services["named-chroot.service"] is not defined
+
+#   - name: check firewalld status
+#     fail:
+#       msg: Firewalld is not installed, why? It should have been there!
+#     when: ansible_facts.services["firewalld.service"] is not defined
+
+#   - name: check DHCPD status
+#     fail:
+#       msg: DHCPD is not installed, why? It should have been there!
+#     when: ansible_facts.services["dhcpd.service"] is not defined
+
+#   - name: check HAProxy status
+#     fail:
+#       msg: HAProxy is not installed, why? It should have been there!
+#     when: ansible_facts.services["haproxy.service"] is not defined
+
+#   - name: check Matchbox
+#     fail:
+#       msg: Matchbox is not installed, why? It should have been there!
+#     when: ansible_facts.services["matchbox.service"] is not defined
+
+#   - name: check state of services
+#     debug:
+#       var: ansible_facts.services["dhcpd.service"]
+
+  - name: check state of services
+    debug:
+      var: ansible_facts.services["{{ item }}"]
+    loop:
+      - named-chroot.service
+      - dhcpd.service
+      - firewalld.service
+      - matchbox.service
+      - tftp.service
+      - haproxy.service
+
+#   - name: check TFTP status
+#     fail:
+#       msg: TFTP is not installed, why? It should have been there!
+#     when: ansible_facts.services["tftp.service"] is not defined
+
+#   - name: find interface facts
+#     debug:
+#       msg: "{{ hostvars[inventory_hostname]['ansible_%s' | format(item)] }}"
+#     with_items: "{{ ansible_interfaces }}"

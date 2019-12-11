@@ -1,7 +1,7 @@
 ---
 # handlers file for install_named
 
-- name: enable and start named-chroot
+- name: enable and start named
   systemd:
     name: named-chroot
     enabled: yes

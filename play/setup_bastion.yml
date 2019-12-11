@@ -23,6 +23,7 @@
       tags: [selinux]
     - role: install_dhcp
       tags: [dhcpd]
+      become: true
     - role: install_haproxy
       tags: [haproxy]
     - role: bertvv.tftp

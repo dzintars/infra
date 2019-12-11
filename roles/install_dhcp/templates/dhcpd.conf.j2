@@ -16,7 +16,7 @@ max-lease-time      14400;
 subnet {{ cluster.network }}.0 netmask 255.255.255.0 {
     interface enp1s0;
     pool {
-        range {{ cluster.network }}.200 {{ cluster.network }}.250;
+        range {{ cluster.network }}.201 {{ cluster.network }}.250;
 
         host {{ cluster.nodes['bootstrap-0'].name }} {
             hardware ethernet {{ cluster.nodes['bootstrap-0'].mac }};

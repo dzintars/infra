@@ -2,7 +2,6 @@
 # tasks file for install_dhcp
 
 - name: install DHCP
-  become: true
   dnf:
     name: '{{ item }}'
     state: latest
@@ -10,16 +9,15 @@
     - dhcp
     # - dhcp-server
 
-# - name: start DHCP service
-#   service:
-#     name: dhcpd
-#     state: started
-#     enabled: yes
+- name: start DHCP service
+  systemd:
+    name: dhcpd
+    state: started
+    enabled: yes
 
 - name: add DHCP service to firewall
-  become: true
   firewalld:
     service: dhcp
     permanent: yes
     state: enabled
-  notify: Restart Firewalld
+  notify: restart firewalld

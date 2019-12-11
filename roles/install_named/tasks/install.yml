@@ -17,4 +17,4 @@
     state: enabled
   notify:
     - restart firewalld
-    - start named-chroot
+    - enable and start named

@@ -1,8 +1,7 @@
 ---
 # tasks file for install_dhcp
 
-- name: Deploy dhcpd.conf template
-  become: true
+- name: deploy dhcpd.conf template
   template:
     src: dhcpd.conf.j2
     dest: /etc/dhcp/dhcpd.conf
@@ -11,4 +10,4 @@
     mode: 0644
     backup: yes
   notify:
-    - Restart DHCP
+    - restart dhcpd
