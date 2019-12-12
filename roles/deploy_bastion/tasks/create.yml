@@ -1,5 +1,7 @@
 ---
 
+# TODO: Download assets
+
 - name: copy kickstart file
   become: true
   template:
