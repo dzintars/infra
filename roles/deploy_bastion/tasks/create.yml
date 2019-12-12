@@ -1,8 +1,5 @@
 ---
 
-# Download Fedora ISO
-# Copy kickstart file to accessible local_action
-
 - name: copy kickstart file
   become: true
   template:
@@ -14,12 +11,6 @@
   loop:
     - {src: 'kickstart.cfg.j2', dest: '/var/lib/libvirt/kickstart.cfg'}
 
-# - name: create the qemu disk images
-#   action: qemu-img dest=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2 size=10 format="qcow2" options="preallocation=metadata"
-#   with_items: disks
-#   # delegate_to: localhost
-
-# TODO: Change hardcoded home directory
 - name: create Bastion VM
   command: >
     virt-install \
@@ -27,6 +18,7 @@
       --name {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }} \
       --description 'DHCP, DNS, HAProxy, TFTP, Matchbox' \
       --vcpus {{ cluster.nodes['bastion'].vcpu }} \
+      --hvm \
       --memory {{ cluster.nodes['bastion'].memory }} \
       --location $HOME/kvm/iso/Fedora-Server-dvd-x86_64-30-1.2.iso \
       --disk path=$HOME/kvm/pools/bastion/{{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }},size={{ cluster.nodes['bastion'].disk.size }},cache=writeback,format={{ cluster.nodes['bastion'].disk.format }},io=threads,bus=virtio  \
@@ -36,24 +28,9 @@
       --network bridge={{ cluster.nodes['bastion'].network.name }},model=virtio \
       --initrd-inject /var/lib/libvirt/kickstart.cfg \
       -x "ks=file:/kickstart.cfg" \
-      -x 'console=ttyS0,115200n8 serial' \
-      --debug
+      --console pty,target_type=serial
       
-# Delete kickstart file
       
-# -x 'console=ttyS0,115200 headless noshell nofirewire' \
-# -x 'console=ttyS0,115200' \
-# --memballoon virtio \
-# --hvm \
-# --nographics \
-# --noautoconsole \
-# --console pty,target_type=serial \
-# --mac {{ cluster.nodes["bastion"].mac }} \
-
-# 3) [!] Installation source (Error setting up software source)   !!! Check network settings. Don't use cdrom and repo tags in kickstart.
-# 4) [!] Software selection (Error checking software selection)
-
-
 
 # TODO: We need to wait while guest machine will boot up, because otherwise we will delete kickstart file too early.
 # - name: delete kickstart.cfg

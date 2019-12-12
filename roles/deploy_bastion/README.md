@@ -27,6 +27,12 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: username.rolename, x: 42 }
 
+Common Errors
+----------------
+
+3) [!] Installation source (Error setting up software source)   !!! Check network settings. Don't use cdrom and repo tags in kickstart.
+4) [!] Software selection (Error checking software selection)
+
 License
 -------
 
@@ -36,3 +42,24 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+# - name: create the qemu disk images
+#   action: qemu-img dest=/home/dzintars/kvm/pools/bastion/bastion.ocp.example.com.qcow2 size=10 format="qcow2" options="preallocation=metadata"
+#   with_items: disks
+#   # delegate_to: localhost
+
+# TODO: Change hardcoded home directory
+
+# Delete kickstart file
+
+-x 'console=ttyS0,115200 headless noshell nofirewire'
+-x 'console=ttyS0,115200n8 serial'
+-x 'console=ttyS0,115200'
+--memballoon virtio \
+--nographics \
+--noautoconsole \
+--wait \
+--console pty,target_type=serial \
+--mac {{ cluster.nodes["bastion"].mac }} \
+--debug
