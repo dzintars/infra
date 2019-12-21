@@ -2,6 +2,7 @@
 # handlers file for roles/setup_firewalld
 
 - name: restart firewalld
-  service:
+  systemd:
     name: firewalld
     state: restarted
+    daemon_reload: yes

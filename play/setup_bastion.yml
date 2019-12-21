@@ -17,8 +17,11 @@
     - role: named
       tags: [named]
       become: true
-    # - role: setup_firewalld
-    #   tags: [firewalld]
+    - role: bertvv.tftp
+      tags: [tftp]
+      become: true
+    - role: setup_firewalld
+      tags: [firewalld]
     # - role: setup_selinux
     #   tags: [selinux]
     # - role: install_dhcp
@@ -26,9 +29,6 @@
     #   become: true
     # - role: install_haproxy
     #   tags: [haproxy]
-    # - role: bertvv.tftp
-    #   tags: [tftp]
-    #   become: true
     # - role: install_ipxe
     #   tags: [ipxe]
     #   become: true

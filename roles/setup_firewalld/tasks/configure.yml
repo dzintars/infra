@@ -1,30 +1,30 @@
 ---
 
-- name: allowing firewall rules for ports
-  become: true
-  firewalld:
-    port: '{{ item }}'
-    permanent: yes
-    state: enabled
-  notify: restart firewalld
-  loop:
-    - 6443/tcp    # HAProxy
-    - 6443/udp
-    - 9000/tcp    # HAProxy stats
-    - 22623/tcp   # HAProxy
-    - 22623/udp
-    - 8080/tcp    # Matchbox
-    - 67/udp      # bootp & DHCP
-    - 53/tcp      # DNS (for zone transfer)
-    - 53/udp      # DNS
-    # - 443/tcp
-    # - 80/tcp
-    # - 69/udp      # TFTP
-    - 111/tcp     # ONC RPC ????
-    - 2049/tcp    
-    - 20048/tcp   
-    - 50825/tcp   
-    - 53248/tcp   
+# - name: allowing firewall rules for ports
+#   become: true
+#   firewalld:
+#     port: '{{ item }}'
+#     permanent: yes
+#     state: enabled
+#   notify: restart firewalld
+#   loop:
+#     - 6443/tcp    # HAProxy
+#     - 6443/udp
+#     - 9000/tcp    # HAProxy stats
+#     - 22623/tcp   # HAProxy
+#     - 22623/udp
+#     - 8080/tcp    # Matchbox
+#     - 67/udp      # bootp & DHCP
+#     - 53/tcp      # DNS (for zone transfer)
+#     - 53/udp      # DNS
+#     # - 443/tcp
+#     # - 80/tcp
+#     # - 69/udp      # TFTP
+#     - 111/tcp     # ONC RPC ????
+#     - 2049/tcp    
+#     - 20048/tcp   
+#     - 50825/tcp   
+#     - 53248/tcp   
 
 - name: allowing firewall rules for services
   become: true
@@ -32,11 +32,12 @@
     service: '{{ item }}'
     permanent: yes
     state: enabled
-  notify: restart firewalld
+  notify:
+    - restart firewalld
   with_items:
-    - http
-    - https
-    - dhcp
+    # - http
+    # - https
+    # - dhcp
     - tftp
-    - tftp-client
+    # - tftp-client
     # - dns

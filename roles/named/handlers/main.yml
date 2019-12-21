@@ -7,20 +7,20 @@
     enabled: yes
     state: started
 
-- name: reload named
+- name: restart named
   systemd:
-    state: reloaded
+    state: restarted
     daemon_reload: yes
     name: named-chroot
 
-- name: reload firewalld
+- name: restart firewalld
   systemd:
-    state: reloaded
+    state: restarted
     daemon_reload: yes
     name: firewalld
 
-- name: reload NetworkManager
+- name: restart NetworkManager
   systemd:
-    state: reloaded
+    state: restarted
     daemon_reload: yes
     name: NetworkManager

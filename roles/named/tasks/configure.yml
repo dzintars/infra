@@ -13,15 +13,36 @@
     - {src: 'named.conf.j2', dest: '/etc/named.conf'}
     - {src: 'ocp.example.com.zone.j2', dest: '/var/named/{{ cluster.name }}.{{ cluster.fqdn }}.zone'}
     - {src: '1.168.192.in-addr.arpa.zone.j2', dest: "/var/named/{{ cluster.network | ipaddr('revdns') | regex_replace('^[0-9]+\\.', '') }}zone"}
-  notify: reload named
+  notify: restart named
 
-- name: deploy resolv.conf template
-  template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
+# - name: deploy resolv.conf template
+#   template:
+#     src: resolv.conf.j2
+#     dest: /etc/resolv.conf
+#     owner: root
+#     group: root
+#     mode: 0644
+#     backup: yes
+#   notify:
+#     - restart NetworkManager
+
+# - name: Add an Ethernet connection with static IP configuration
+#   nmcli:
+#     conn_name: enp1s0
+#     type: ethernet
+#     dns4: 192.168.1.254
+#     dns4_search: ocp.oswee.com
+#     state: present
+#   notify:
+#     - restart NetworkManager
+
+- name: set qemu user in /etc/sysconfig/network-scripts/ifcfg-enp1s0
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-enp1s0
+    regexp: "{{ item.pattern }}"
+    line: "{{ item.value }}"
+    state: present
+  loop:
+    - {pattern: '^DNS1=', value: 'DNS1="192.168.1.254"'}
   notify:
-    - reload NetworkManager
+    - restart NetworkManager

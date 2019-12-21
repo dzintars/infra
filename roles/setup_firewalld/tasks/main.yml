@@ -1,10 +1,10 @@
 ---
 # tasks file for roles/setup_firewalld
 
-- name: debug
-  include: install.yml
-  tags:
-    - firewalld:install
+# - name: debug
+#   include: install.yml
+#   tags:
+#     - firewalld:install
 
 - name: update configuration
   include: configure.yml
