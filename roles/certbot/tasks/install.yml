@@ -1,0 +1,8 @@
+---
+# tasks file for certbot
+
+- name: Install Certbot
+  become: true
+  dnf:
+    name: certbot
+    state: latest

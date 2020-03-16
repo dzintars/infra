@@ -2,9 +2,9 @@
 
 Creating LVM volumes
 
- - Create physical volume
- - Define volume groups
- - Create logical volumes
+- Create physical volume
+- Define volume groups
+- Create logical volumes
 
 Clear a Disk's Partition Table because you can't assign whole physical volume to LVM.
 ATENTION! You will loose data by using `dd` utility.

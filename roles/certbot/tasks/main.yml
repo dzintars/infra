@@ -1,0 +1,12 @@
+---
+# tasks file for certbot
+
+- name: Install Certbot
+  import_tasks: install.yml
+  tags:
+    - certbot:install
+
+- name: Update configuration
+  import_tasks: configure.yml
+  tags:
+    - certbot:config

@@ -2,7 +2,7 @@
 
 ## Usage
 
-Before starting, update `hosts` and `group_vars` according to your needs. For example you probably want to upade all IP addresses, node names, domain, cluster name, etc.
+Before starting, update `hosts` and `group_vars` according to your needs. For example you probably want to update all IP addresses, node names, domain, cluster name, etc.
 
 ## Ansible commands
 
@@ -49,3 +49,10 @@ echo -n "MySecretPassword123" | ansible-vault encrypt_string
 ansible-vault encrypt_string --vault-id roles/deploy_ignition/files/pull_secret --stdin-name 'pull_secret'
 ```
 
+## Ansible Galaxy
+
+Bootstrap new empty role
+
+```sh
+ansible-galaxy role init roles/<role-name>
+```

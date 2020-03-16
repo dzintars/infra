@@ -27,7 +27,7 @@
     # - role: install_dhcp
     #   tags: [dhcpd]
     #   become: true
-    # - role: install_haproxy
+    # - role: haproxy
     #   tags: [haproxy]
     # - role: install_ipxe
     #   tags: [ipxe]
@@ -38,6 +38,5 @@
     # - role: deploy_ignition
     #   tags: [ignition]
     #   become: true
-
     # - role: provision_tls
     # - role: install_tftp
