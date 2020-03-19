@@ -1,0 +1,168 @@
+global
+    log 127.0.0.1 local2
+    chroot /var/lib/haproxy
+    pidfile /var/run/haproxy.pid
+    maxconn 4096
+    user haproxy
+    group haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats
+    # intermediate configuration, tweak to your needs
+    ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+    ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+    ssl-default-bind-options no-sslv3 no-tlsv10 no-tlsv11 no-tls-tickets
+
+    ssl-default-server-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+    ssl-default-server-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+    ssl-default-server-options no-sslv3 no-tlsv10 no-tlsv11 no-tls-tickets
+
+    # curl https://ssl-config.mozilla.org/ffdhe2048.txt > /path/to/dhparam.pem
+    ssl-dh-param-file /home/dzintars/.tls/oswee.com/dhparam.pem
+    # tune.ssl.default-dh-param 4096
+    
+defaults
+    mode http
+    log global
+    option httplog
+    option dontlognull
+    option http-server-close
+    option http-pretend-keepalive
+    option forwardfor except 127.0.0.0/8
+    option originalto
+    option redispatch
+    retries 3
+    timeout http-request 10s
+    timeout queue 1m
+    timeout connect 10s
+    timeout client 1m
+    timeout server 1m
+    timeout http-keep-alive 10s
+    timeout check 10s
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
+
+listen stats # Define a listen section called "stats"
+    bind :19000 # Listen on localhost:9000
+    mode http
+    option forwardfor
+    option httpclose
+    stats enable  # Enable stats page
+    stats show-legends
+    stats refresh 5s
+    stats hide-version  # Hide HAProxy version
+    stats realm Haproxy\ Statistics  # Title text for popup window
+    stats uri /stats  # Stats URI
+    stats auth admin:password  # Authentication credentials
+    monitor-uri /healthz
+
+#===========================================================
+
+frontend http-in
+    bind *:80
+    # maxconn 50
+
+    # Limiting Request Rates
+    stick-table type ip size 100k expire 30s store http_req_rate(10s)
+    http-request track-sc0 src table per_ip_rates
+    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 100 }
+
+    # Deny illegal user agents
+    http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
+    http-request deny unless { req.hdr(user-agent) -m found }
+
+    # Define Let's Encrypt path
+    acl uri_letsencrypt path_beg /.well-known/acme-challenge/
+
+    # Redirect all traffic except Let's Encrypt path
+    redirect scheme https if !{ ssl_fc } !uri_letsencrypt
+
+    # Add security headers
+    http-response add-header Content-Security-Policy upgrade-insecure-requests
+    http-response set-header X-Frame-Options DENY
+    http-response set-header X-Content-Type-Options nosniff
+    http-response set-header X-XSS-Protection "1; mode=block"
+    http-response set-header Referrer-Policy no-referrer-when-downgrade
+
+    # Define backends
+    use_backend be_default if uri_letsencrypt
+    default_backend be_default
+
+frontend https-in
+    # Certificates and Private key should be appended in single file. Order matters.
+    # If HAProxy does not start, try `sudo setenforce 0`
+    # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
+    bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/{{ cluster.fqdn }}/{{ cluster.fqdn }}.pem ecdhe secp384r1
+    http-response replace-header Location ^http://(.*)$	https://\1
+    # maxconn 50
+
+	http-request set-header X-Forwarded-Proto https
+	http-request set-header X-Forwarded-Port 443
+	capture request header X-Forwarded-For len 15
+
+
+    # HSTS (63072000 seconds)
+    http-response set-header Strict-Transport-Security "max-age=60; includeSubdomains; preload;"
+
+    # Limiting Request Rates
+    http-request track-sc0 src table per_ip_rates
+    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 100 }
+
+    # Deny illegal user agents
+    http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
+    http-request deny unless { req.hdr(user-agent) -m found }
+
+    # Add security headers
+    http-response add-header Content-Security-Policy upgrade-insecure-requests
+    # http-response set-header X-Frame-Options DENY
+    http-response set-header X-Content-Type-Options nosniff
+    http-response set-header X-XSS-Protection "1; mode=block"
+    http-response set-header Referrer-Policy no-referrer-when-downgrade
+
+    # http-response set-header X-XSS-Protection 1;mode=block
+	# http-response set-header X-Content-Type-Options nosniff
+	# http-response set-header Referrer-Policy no-referrer-when-downgrade
+	http-response set-header X-Frame-Options SAMEORIGIN
+	http-response del-header X-Powered-By
+	http-response del-header Server
+	http-response del-header X-Apache-Server-ID
+	# http-response set-header Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'self'; media-src 'self'; child-src 'self'; sandbox 'self'; report-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+	http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
+
+    # https://serverfault.com/a/677060/440073
+    acl host_dev hdr(host) -i dev.{{ cluster.fqdn }}
+    acl host_my hdr(host) -i my.{{ cluster.fqdn }}
+    use_backend my_server if host_dev
+    use_backend my_oswee if host_my
+    default_backend be_default
+
+backend my_server
+    balance roundrobin
+    # http-request add-header X-Forwarded-Proto https
+    # option httpchk GET / h2,HTTP/1.1
+    option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.oswee.com
+    server workstation 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
+    # server workstation 127.0.0.1:3000 check
+
+backend my_oswee
+    balance roundrobin
+    # http-request add-header X-Forwarded-Proto https
+    # https://serverfault.com/a/887396/440073
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.oswee.com
+    server workstation 192.168.1.2:8443 ssl verify none alpn h2,HTTP/1.1 check
+    # server workstation 192.168.1.2:8443 ssl verify none check
+
+backend be_default
+    server workstation 127.0.0.1:8888 maxconn 50 check
+    http-request set-header Host Default
+
+    # Set custom response headers
+    http-response set-header X-Powered-By "Snert and brown beans"
+    http-response set-header server "Microwave 2.4.001.2.5567.GA"
+
+backend per_ip_rates
+    stick-table type ip size 1m expire 10m store http_req_rate(10s)

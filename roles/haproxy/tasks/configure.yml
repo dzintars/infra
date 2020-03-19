@@ -18,12 +18,12 @@
     # setype: named_conf_t
     mode: 0644
   loop:
-    - { src: "haproxy.local.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
-    - { src: "errors/400.http.j2", dest: "/etc/haproxy/errors/400.http" }
-    - { src: "errors/403.http.j2", dest: "/etc/haproxy/errors/403.http" }
-    - { src: "errors/408.http.j2", dest: "/etc/haproxy/errors/408.http" }
-    - { src: "errors/500.http.j2", dest: "/etc/haproxy/errors/500.http" }
-    - { src: "errors/502.http.j2", dest: "/etc/haproxy/errors/502.http" }
-    - { src: "errors/503.http.j2", dest: "/etc/haproxy/errors/503.http" }
-    - { src: "errors/504.http.j2", dest: "/etc/haproxy/errors/504.http" }
+    - { src: "haproxy.worstation.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
+    # - { src: "errors/400.http.j2", dest: "/etc/haproxy/errors/400.http" }
+    # - { src: "errors/403.http.j2", dest: "/etc/haproxy/errors/403.http" }
+    # - { src: "errors/408.http.j2", dest: "/etc/haproxy/errors/408.http" }
+    # - { src: "errors/500.http.j2", dest: "/etc/haproxy/errors/500.http" }
+    # - { src: "errors/502.http.j2", dest: "/etc/haproxy/errors/502.http" }
+    # - { src: "errors/503.http.j2", dest: "/etc/haproxy/errors/503.http" }
+    # - { src: "errors/504.http.j2", dest: "/etc/haproxy/errors/504.http" }
   notify: Restart HAProxy
