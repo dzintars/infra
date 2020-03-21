@@ -39,7 +39,7 @@ A good starting point is Docs directory.
 First head into `group_vars` directory and tweak all variables you would like to tweak. Like network IP, host IP last octets, domain name, cluster name etc.
 You can adjust cluster nodes resource limits as well, like vCPU, RAM, Volume etc.
 
-I tried to avoid any "magic" variables as much as possible, but feel free to look into `roles` and to see what eash role is doing.
+I tried to avoid any "magic" variables as much as possible, but feel free to look into `roles` and to see what each role is doing.
 
 1. Replace content of `pull_secret` and `ssh_key` files in `roles/deploy_ignition/files/` with your own ansible-vault artifacts.
    Alternatively you can edit `roles/deploy_ignition/templates/install-config.yaml.j2` template and to place your secrets as plain text there.
