@@ -17,8 +17,9 @@ global
     ssl-default-server-options no-sslv3 no-tlsv10 no-tlsv11 no-tls-tickets
 
     # curl https://ssl-config.mozilla.org/ffdhe2048.txt > /path/to/dhparam.pem
-    ssl-dh-param-file /home/dzintars/.tls/oswee.com/dhparam.pem
-    # tune.ssl.default-dh-param 4096
+    # Be carefull about SELinux. If you get error there.. for debuging use `sudo setenforce 0`
+    # ssl-dh-param-file /home/dzintars/.tls/oswee.com/dhparam.pem
+    tune.ssl.default-dh-param 4096
     
 defaults
     mode http
@@ -47,13 +48,13 @@ defaults
     errorfile 504 /etc/haproxy/errors/504.http
 
 listen stats # Define a listen section called "stats"
-    bind :19000 # Listen on localhost:9000
+    bind :9001 # Listen on localhost:9000
     mode http
     option forwardfor
     option httpclose
     stats enable  # Enable stats page
     stats show-legends
-    stats refresh 5s
+    stats refresh 10s
     stats hide-version  # Hide HAProxy version
     stats realm Haproxy\ Statistics  # Title text for popup window
     stats uri /stats  # Stats URI
@@ -84,13 +85,14 @@ frontend http-in
     # Add security headers
     http-response add-header Content-Security-Policy upgrade-insecure-requests
     http-response set-header X-Frame-Options DENY
-    http-response set-header X-Content-Type-Options nosniff
+    # http-response set-header X-Content-Type-Options nosniff
     http-response set-header X-XSS-Protection "1; mode=block"
     http-response set-header Referrer-Policy no-referrer-when-downgrade
 
     # Define backends
     use_backend be_default if uri_letsencrypt
     default_backend be_default
+
 
 frontend https-in
     # Certificates and Private key should be appended in single file. Order matters.
@@ -105,12 +107,12 @@ frontend https-in
 	capture request header X-Forwarded-For len 15
 
 
-    # HSTS (63072000 seconds)
-    http-response set-header Strict-Transport-Security "max-age=60; includeSubdomains; preload;"
+    # HSTS (63072000 or 31536000 seconds)
+    http-response set-header Strict-Transport-Security "max-age=0; includeSubdomains; preload;"
 
     # Limiting Request Rates
     http-request track-sc0 src table per_ip_rates
-    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 100 }
+    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 1000 }
 
     # Deny illegal user agents
     http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
@@ -118,20 +120,17 @@ frontend https-in
 
     # Add security headers
     http-response add-header Content-Security-Policy upgrade-insecure-requests
-    # http-response set-header X-Frame-Options DENY
     http-response set-header X-Content-Type-Options nosniff
     http-response set-header X-XSS-Protection "1; mode=block"
     http-response set-header Referrer-Policy no-referrer-when-downgrade
 
-    # http-response set-header X-XSS-Protection 1;mode=block
-	# http-response set-header X-Content-Type-Options nosniff
-	# http-response set-header Referrer-Policy no-referrer-when-downgrade
+    # http-response set-header X-Frame-Options DENY
 	http-response set-header X-Frame-Options SAMEORIGIN
 	http-response del-header X-Powered-By
 	http-response del-header Server
 	http-response del-header X-Apache-Server-ID
-	# http-response set-header Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'self'; media-src 'self'; child-src 'self'; sandbox 'self'; report-uri 'self'; form-action 'self'; frame-ancestors 'self'"
-	http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
+	# # http-response set-header Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'self'; media-src 'self'; child-src 'self'; sandbox 'self'; report-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+	# http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
 
     # https://serverfault.com/a/677060/440073
     acl host_dev hdr(host) -i dev.{{ cluster.fqdn }}
@@ -150,19 +149,19 @@ backend my_server
 
 backend my_oswee
     balance roundrobin
-    # http-request add-header X-Forwarded-Proto https
+    http-request add-header X-Forwarded-Proto https
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.oswee.com
-    server workstation 192.168.1.2:8443 ssl verify none alpn h2,HTTP/1.1 check
-    # server workstation 192.168.1.2:8443 ssl verify none check
+    server workstation 192.168.1.2:8081 check
 
 backend be_default
-    server workstation 127.0.0.1:8888 maxconn 50 check
-    http-request set-header Host Default
+    # server workstation 127.0.0.1:8888 maxconn 50 check
+    server workstation 192.168.1.2:8082 check
+    # http-request set-header Host Default
 
     # Set custom response headers
-    http-response set-header X-Powered-By "Snert and brown beans"
-    http-response set-header server "Microwave 2.4.001.2.5567.GA"
+    # http-response set-header X-Powered-By "Snert and brown beans"
+    # http-response set-header server "Microwave 2.4.001.2.5567.GA"
 
 backend per_ip_rates
     stick-table type ip size 1m expire 10m store http_req_rate(10s)
