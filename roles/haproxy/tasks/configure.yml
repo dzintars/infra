@@ -18,6 +18,8 @@
     # setype: named_conf_t
     mode: 0644
   loop:
+    # To set up the cluster please use `haproxy.bastion.cfg.j2` template
+    # - { src: "haproxy.bastion.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
     - { src: "haproxy.workstation.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
     # - { src: "errors/400.http.j2", dest: "/etc/haproxy/errors/400.http" }
     # - { src: "errors/403.http.j2", dest: "/etc/haproxy/errors/403.http" }

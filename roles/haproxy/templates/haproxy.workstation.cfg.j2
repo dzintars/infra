@@ -1,3 +1,6 @@
+# This configuration is for my personal local dev-test needs only.
+# Please use `haproxy.bastion.cf.j2` to set up the OpenShift cluster.
+
 global
     log 127.0.0.1 local2
     chroot /var/lib/haproxy
@@ -18,7 +21,7 @@ global
 
     # curl https://ssl-config.mozilla.org/ffdhe2048.txt > /path/to/dhparam.pem
     # Be carefull about SELinux. If you get error there.. for debuging use `sudo setenforce 0`
-    # ssl-dh-param-file /home/dzintars/.tls/oswee.com/dhparam.pem
+    # ssl-dh-param-file /home/{{ cluster.nodes['workstation'].user }}/.tls/{{ cluster.fqdn }}/dhparam.pem
     tune.ssl.default-dh-param 4096
     
 defaults
@@ -108,7 +111,7 @@ frontend https-in
 
 
     # HSTS (63072000 or 31536000 seconds)
-    http-response set-header Strict-Transport-Security "max-age=0; includeSubdomains; preload;"
+    http-response set-header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload;"
 
     # Limiting Request Rates
     http-request track-sc0 src table per_ip_rates
@@ -141,27 +144,26 @@ frontend https-in
 
 backend my_server
     balance roundrobin
-    # http-request add-header X-Forwarded-Proto https
+    http-request add-header X-Forwarded-Proto https
     # option httpchk GET / h2,HTTP/1.1
-    option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.oswee.com
-    server workstation 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
-    # server workstation 127.0.0.1:3000 check
+    option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
+    # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
+    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
 backend my_oswee
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
     # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.oswee.com
-    server workstation 192.168.1.2:8081 check
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
 
 backend be_default
-    # server workstation 127.0.0.1:8888 maxconn 50 check
-    server workstation 192.168.1.2:8082 check
-    # http-request set-header Host Default
+    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
+    http-request set-header Host Default
 
     # Set custom response headers
-    # http-response set-header X-Powered-By "Snert and brown beans"
-    # http-response set-header server "Microwave 2.4.001.2.5567.GA"
+    http-response set-header X-Powered-By "Snert and brown beans"
+    http-response set-header server "Microwave 2.4.001.2.5567.GA"
 
 backend per_ip_rates
     stick-table type ip size 1m expire 10m store http_req_rate(10s)
