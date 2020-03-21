@@ -1,0 +1,12 @@
+---
+# tasks file for roles/nvim
+
+- name: Install NeoVim
+  import_tasks: install.yml
+  tags:
+    - nvim:install
+
+- name: Update configuration
+  import_tasks: configure.yml
+  tags:
+    - nvim:config

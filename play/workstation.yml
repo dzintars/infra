@@ -27,3 +27,6 @@
     - role: certbot
       tags: [certbot]
       # become: true
+    - role: nvim
+      tags: [nvim]
+      # become: true

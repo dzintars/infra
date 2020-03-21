@@ -1,0 +1,11 @@
+---
+# tasks file for nvim
+
+- name: Install NeoVim
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - neovim
+    - python3-neovim
