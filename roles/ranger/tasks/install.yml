@@ -1,0 +1,10 @@
+---
+  # tasks file for roles/ranger
+
+- name: Install Ranger
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - ranger

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/i3wm
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - i3wm:setup
+    - i3wm:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - i3wm:setup
+    - i3wm:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - i3wm:remove

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/ranger
+
+- name: Install Ranger
+  import_tasks: install.yml
+  tags:
+    - ranger:setup
+    - ranger:setup:install
+
+# - name: Update configuration
+#   import_tasks: configure.yml
+#   tags:
+#     - ranger:setup
+#     - ranger:setup:config
+
+# - name: Remove Ranger
+#   import_tasks: remove.yml
+#   tags:
+#     - ranger:remove

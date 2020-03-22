@@ -1,0 +1,19 @@
+---
+  # tasks file for roles/nodejs
+
+# TODO: https://stackoverflow.com/a/49844531/6651080
+- name: install a modularity appstream with defined stream
+  become: true
+  shell: curl -sL https://rpm.nodesource.com/setup_13.x | sudo bash -
+  args:
+    warn: no
+
+- name: Install NodeJS dependencies
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - gcc-c++
+    - make
+    - nodejs

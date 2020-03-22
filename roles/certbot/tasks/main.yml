@@ -6,7 +6,7 @@
   tags:
     - certbot:install
 
-- name: Update configuration
-  import_tasks: configure.yml
-  tags:
-    - certbot:config
+# - name: Update configuration
+#   import_tasks: configure.yml
+#   tags:
+#     - certbot:config

@@ -1,5 +1,5 @@
 ---
-- name: configure workstation
+- name: Bootstrap workstation
   hosts: WORKSTATION
   connection: local
   gather_facts: yes
@@ -29,4 +29,11 @@
       # become: true
     - role: nvim
       tags: [nvim]
-      # become: true
+    - role: nodejs
+      tags: [nodejs]
+    - role: ranger
+      tags: [ranger]
+    - role: alacritty
+      tags: [alacritty]
+    - role: i3wm
+      tags: [i3wm]

@@ -4,9 +4,16 @@
 - name: Install NeoVim
   import_tasks: install.yml
   tags:
-    - nvim:install
+    - nvim:setup
+    - nvim:setup:install
 
 - name: Update configuration
   import_tasks: configure.yml
   tags:
-    - nvim:config
+    - nvim:setup
+    - nvim:setup:config
+
+- name: Remove Neovim
+  import_tasks: remove.yml
+  tags:
+    - nvim:remove

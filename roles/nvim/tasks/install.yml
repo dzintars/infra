@@ -1,7 +1,7 @@
 ---
 # tasks file for nvim
 
-- name: Install NeoVim
+- name: Install Neovim
   become: true
   dnf:
     name: "{{ item }}"
@@ -9,3 +9,27 @@
   loop:
     - neovim
     - python3-neovim
+
+# - name: Determine if vim plug is installed for neovim
+#   stat:
+#     path: "$HOME/.local/share/nvim/site/autoload/plug.vim"
+#   register: vim_plug
+#   ignore_errors: true
+
+- name: Create vim plug directory
+  # when: not vim_plug.stat.exists
+  # become: yes
+  file:
+    path: "$HOME/.local/share/nvim/site/autoload"
+    state: directory
+    # owner: "{{ become_user }}"
+
+- name: Install vim plug
+  # when: not vim_plug.stat.exists
+  # become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: "$HOME/.local/share/nvim/site/autoload/"
+    # owner: "{{ become_user }}"
+    force: yes
+

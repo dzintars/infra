@@ -1,0 +1,10 @@
+---
+  # tasks file for roles/ranger
+
+- name: remove
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - ranger

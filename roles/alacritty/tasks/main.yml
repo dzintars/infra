@@ -1,0 +1,19 @@
+---
+# tasks file for roles/alacritty
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - alacritty:setup
+    - alacritty:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - alacritty:setup
+    - alacritty:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - alacritty:remove

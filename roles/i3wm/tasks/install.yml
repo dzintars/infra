@@ -1,0 +1,18 @@
+---
+  # tasks file for roles/i3wm
+
+# TODO: https://github.com/devnullcake/ansible-role-copr-repository/blob/master/tasks/fedora/install-dnf.yml
+- name: install fedora copr repository (dnf)
+  become: true
+  command: "dnf -y copr enable pschyska/alacritty"
+  args:
+    # creates: "{{ copr_repository_repofile }}"
+    warn: no
+
+- name: Install Alacritty
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - alacritty

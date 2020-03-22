@@ -1,2 +1,19 @@
 ---
 # handlers file for roles/nvim
+
+# - name: Install plugins
+#   command: >
+#     nvim "+PlugInstall --sync" +qa
+
+# - name: Install plugins
+#   # become: yes
+#   ignore_errors: true
+#   raw: nvim "+PlugInstall --sync" +qa &>/dev/null
+#   changed_when: no
+
+- name: Install plugins
+  shell: "nvim +{{ item }} +qall"
+  loop:
+    - PlugUpdate
+    - PlugUpgrade
+  become: false

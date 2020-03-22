@@ -1,5 +1,9 @@
 # Ansible
 
+## reads
+
+Good repository of Ansible organization [Fedora Copr](https://github.com/devnullcake/ansible-role-copr-repository)
+
 ## Usage
 
 Before starting, update `hosts` and `group_vars` according to your needs. For example you probably want to update all IP addresses, node names, domain, cluster name, etc.

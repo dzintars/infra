@@ -1,0 +1,36 @@
+---
+  # tasks file for nvim
+
+- name: Create nvim directory.
+  # when: not vim_plug.stat.exists
+  # become: yes
+  file:
+    path: "$HOME/.config/nvim"
+    state: directory
+    # owner: "{{ become_user }}"
+
+- name: Create Neovim plugins directory.
+  # when: not vim_plug.stat.exists
+  # become: yes
+  file:
+    path: "$HOME/.local/share/nvim/site/plugged"
+    state: directory
+    # mode: 0755
+    # owner: "{{ become_user }}"
+
+- name: Copy init.vim
+  # become: false
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    # mode: 0644
+  loop:
+    - { src: "init.vim.j2", dest: "$HOME/.config/nvim/init.vim" }
+  notify: Install plugins
+
+# # Update remote plugins (e.g., deoplete).
+# - name: Update remote plugins
+#   # become: yes
+#   ignore_errors: true
+#   raw: nvim "+UpdateRemotePlugins --sync" +qa &>/dev/null
+#   changed_when: no
