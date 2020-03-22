@@ -1,7 +1,7 @@
 ---
   # tasks file for roles/git
 
-- name: copy
+- name: copy template/s
   # become: false
   template:
     src: "{{ item.src }}"

@@ -35,6 +35,8 @@
       tags: [ranger]
     - role: alacritty
       tags: [alacritty]
+    - role: lightdm
+      tags: [lightdm]
     - role: i3wm
       tags: [i3wm]
     - role: git
