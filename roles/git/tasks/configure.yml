@@ -1,0 +1,11 @@
+---
+  # tasks file for roles/git
+
+- name: copy
+  # become: false
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    # mode: 0644
+  loop:
+    - { src: "gitconfig.j2", dest: "$HOME/.gitconfig" }

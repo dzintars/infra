@@ -1,0 +1,11 @@
+---
+# tasks file for roles/git
+
+- name: install
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - git
+

@@ -37,3 +37,5 @@
       tags: [alacritty]
     - role: i3wm
       tags: [i3wm]
+    - role: git
+      tags: [git]

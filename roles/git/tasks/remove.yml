@@ -1,0 +1,17 @@
+---
+  # tasks file for roles/git
+
+- name: remove
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - git
+
+- name: remove files and directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - $HOME/.gitconfig
