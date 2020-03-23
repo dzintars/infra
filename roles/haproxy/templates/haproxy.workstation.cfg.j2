@@ -137,17 +137,31 @@ frontend https-in
 
     # https://serverfault.com/a/677060/440073
     acl host_dev hdr(host) -i dev.{{ cluster.fqdn }}
-    acl host_my hdr(host) -i my.{{ cluster.fqdn }}
     use_backend my_server if host_dev
+
+    acl host_dzintars hdr(host) -i dzintars.dev
+    use_backend my_server if host_dzintars
+
+    acl host_my hdr(host) -i my.{{ cluster.fqdn }}
     use_backend my_oswee if host_my
+
+    acl host_piegade hdr(host) -i piegade.{{ cluster.fqdn }}
+    use_backend piegade if host_piegade
+
     default_backend be_default
 
 backend my_server
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
-    # option httpchk GET / h2,HTTP/1.1
+    # option httpchk HEAD / h2,HTTP/1.1
     option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
     # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
+    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
+
+backend dzintars_dev
+    balance roundrobin
+    http-request add-header X-Forwarded-Proto https
+    option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
     server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
 backend my_oswee
@@ -156,6 +170,13 @@ backend my_oswee
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
+
+backend piegade
+    balance roundrobin
+    http-request add-header X-Forwarded-Proto https
+    # https://serverfault.com/a/887396/440073
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check
 
 backend be_default
     server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
