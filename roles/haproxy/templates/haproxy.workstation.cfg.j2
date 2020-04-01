@@ -35,13 +35,17 @@ defaults
     option originalto
     option redispatch
     retries 3
-    timeout http-request 10s
-    timeout queue 1m
-    timeout connect 10s
-    timeout client 1m
-    timeout server 1m
-    timeout http-keep-alive 10s
+    backlog 10000
+    timeout http-request 15s
+    timeout queue 30s
+    timeout client 25s
+    timeout connect 5s
+    timeout server 25m
+    timeout tunnel 3600s
+    timeout http-keep-alive 1s
     timeout check 10s
+    timeout tarpit 60s
+    default-server inter 3s rise 2 fall 3
     errorfile 400 /etc/haproxy/errors/400.http
     errorfile 403 /etc/haproxy/errors/403.http
     errorfile 408 /etc/haproxy/errors/408.http
@@ -103,7 +107,7 @@ frontend https-in
     # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
     bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/{{ cluster.fqdn }}/{{ cluster.fqdn }}.pem ecdhe secp384r1
     http-response replace-header Location ^http://(.*)$	https://\1
-    # maxconn 50
+    maxconn 60000
 
 	http-request set-header X-Forwarded-Proto https
 	http-request set-header X-Forwarded-Port 443
@@ -142,11 +146,18 @@ frontend https-in
     acl host_dzintars hdr(host) -i dzintars.dev
     use_backend my_server if host_dzintars
 
-    acl host_my hdr(host) -i my.{{ cluster.fqdn }}
+    acl host_my hdr(Host) -i my.{{ cluster.fqdn }}
     use_backend my_oswee if host_my
 
-    acl host_piegade hdr(host) -i piegade.{{ cluster.fqdn }}
-    use_backend piegade if host_piegade
+    # acl host_api hdr(Host) -i api.{{ cluster.fqdn }}
+    # use_backend bk_ws if host_api
+
+    acl hdr_connection_upgrade hdr(Connection)  -i upgrade
+    acl hdr_upgrade_websocket  hdr(Upgrade)     -i websocket
+    use_backend bk_ws if hdr_connection_upgrade hdr_upgrade_websocket
+
+    acl host_shop hdr(host) -i shop.{{ cluster.fqdn }}
+    use_backend shop if host_shop
 
     default_backend be_default
 
@@ -164,6 +175,31 @@ backend dzintars_dev
     option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
     server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
+backend api
+    balance roundrobin
+    # http-request add-header X-Forwarded-Proto https
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ api.oswee.com
+    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 check
+
+backend bk_ws                                                    
+  balance roundrobin
+  ## websocket protocol validation
+  acl hdr_connection_upgrade hdr(Connection)                 -i upgrade
+  acl hdr_upgrade_websocket  hdr(Upgrade)                    -i websocket
+  acl hdr_websocket_key      hdr_cnt(Sec-WebSocket-Key)      eq 1
+  acl hdr_websocket_version  hdr_cnt(Sec-WebSocket-Version)  eq 1
+  http-request deny if ! hdr_connection_upgrade || ! hdr_upgrade_websocket || ! hdr_websocket_key || ! hdr_websocket_version
+  ## ensure our application protocol name is valid 
+  ## (don't forget to update the list each time you publish new applications)
+  ## !!!! Note also that HTTP/2 explicitly disallows the use of this mechanism; it is specific to HTTP/1.1.
+#   acl ws_valid_protocol hdr(Sec-WebSocket-Protocol) echo-protocol
+#   http-request deny if ! ws_valid_protocol
+  ## websocket health checking
+  option httpchk GET / HTTP/1.1\r\nHost:\ api.oswee.com\r\nConnection:\ Upgrade\r\nUpgrade:\ websocket\r\nSec-WebSocket-Key:\ haproxy\r\nSec-WebSocket-Version:\ 13\r\nSec-WebSocket-Protocol:\ echo-protocol
+  http-check expect status 101
+  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 maxconn 30000 weight 10 cookie {{ cluster.nodes['workstation'].name }} check
+  #server websrv2 192.168.10.12:8080 maxconn 30000 weight 10 cookie websrv2 check
+
 backend my_oswee
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
@@ -171,7 +207,7 @@ backend my_oswee
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
 
-backend piegade
+backend shop
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
     # https://serverfault.com/a/887396/440073
