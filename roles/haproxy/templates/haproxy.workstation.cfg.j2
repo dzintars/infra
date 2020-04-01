@@ -146,6 +146,9 @@ frontend https-in
     acl host_dzintars hdr(host) -i dzintars.dev
     use_backend my_server if host_dzintars
 
+    acl host_jenkins hdr(Host) -i jenkins.{{ cluster.fqdn }}
+    use_backend jenkins if host_jenkins
+
     acl host_my hdr(Host) -i my.{{ cluster.fqdn }}
     use_backend my_oswee if host_my
 
@@ -206,6 +209,13 @@ backend my_oswee
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
+
+backend jenkins
+    balance roundrobin
+    http-request add-header X-Forwarded-Proto https
+    # https://serverfault.com/a/887396/440073
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9093 check
 
 backend shop
     balance roundrobin
