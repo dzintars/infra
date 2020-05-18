@@ -1,0 +1,17 @@
+---
+# tasks file for roles/mariadb
+
+- name: install mariadb
+  import_tasks: install.yml
+  tags:
+    - mariadb:install
+
+- name: configure mariadb
+  import_tasks: configure.yml
+  tags:
+    - mariadb:config
+
+- name: remove mariadb
+  import_tasks: remove.yml
+  tags:
+    - mariadb:remove

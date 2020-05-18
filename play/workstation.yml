@@ -41,3 +41,7 @@
       tags: [i3wm]
     - role: git
       tags: [git]
+    - role: vault
+      tags: [vault]
+    - role: mariadb
+      tags: [mariadb]

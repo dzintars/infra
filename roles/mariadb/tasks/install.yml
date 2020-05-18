@@ -1,0 +1,28 @@
+---
+# tasks file for roles/mariadb
+
+- name: mariadb | install rpm dependencies
+  become: true
+  dnf:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - pkgs_mariadb_dependencies
+
+- name: mariadb | install rpm mariadb
+  dnf:
+    name: '{{ item }}'
+    state: latest
+    update_cache: true
+  loop:
+    - pkgs_mariadb
+
+- name: mariadb | create mariadb configuration
+  template:
+    src: my.cnf.j2
+    dest: '{{ path_mariadb_conf }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - mariadb-restart

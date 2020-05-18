@@ -102,10 +102,11 @@ frontend http-in
 
 
 frontend https-in
-    # Certificates and Private key should be appended in single file. Order matters.
+    # Certificate and Private key should be appended in single file. Order matters.
     # If HAProxy does not start, try `sudo setenforce 0`
     # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
-    bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/{{ cluster.fqdn }}/{{ cluster.fqdn }}.pem ecdhe secp384r1
+    # TODO: Organize into separate frontends
+    bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem crt /etc/letsencrypt/live/dzintars.dev/haproxy.pem crt /etc/letsencrypt/live/merumore.com/haproxy.pem ecdhe secp384r1
     http-response replace-header Location ^http://(.*)$	https://\1
     maxconn 60000
 
@@ -114,7 +115,7 @@ frontend https-in
 	capture request header X-Forwarded-For len 15
 
 
-    # HSTS (63072000 or 31536000 seconds)
+    # HSTS (63072000 or 31536000 seconds). Be carefull!!! Read about it!!!
     http-response set-header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload;"
 
     # Limiting Request Rates
@@ -140,11 +141,14 @@ frontend https-in
 	# http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
 
     # https://serverfault.com/a/677060/440073
-    acl host_dev hdr(host) -i dev.{{ cluster.fqdn }}
-    use_backend my_server if host_dev
+    acl dev.oswee.com.host hdr(host) -i dev.{{ cluster.fqdn }}
+    use_backend my_server if dev.oswee.com.host
 
-    acl host_dzintars hdr(host) -i dzintars.dev
-    use_backend my_server if host_dzintars
+    acl dzintars.dev.host hdr(host) -i dzintars.dev
+    use_backend dzintars_dev if dzintars.dev.host
+
+    acl merumore.com.host hdr(host) -i merumore.com
+    use_backend merumore.com.backend if merumore.com.host
 
     acl host_jenkins hdr(Host) -i jenkins.{{ cluster.fqdn }}
     use_backend jenkins if host_jenkins
@@ -159,9 +163,6 @@ frontend https-in
     acl hdr_upgrade_websocket  hdr(Upgrade)     -i websocket
     use_backend bk_ws if hdr_connection_upgrade hdr_upgrade_websocket
 
-    acl host_shop hdr(host) -i shop.{{ cluster.fqdn }}
-    use_backend shop if host_shop
-
     default_backend be_default
 
 backend my_server
@@ -175,8 +176,10 @@ backend my_server
 backend dzintars_dev
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
-    option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
-    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
+    compression algo gzip
+    compression type text/html text/plain text/css
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8084 check
 
 backend api
     balance roundrobin
@@ -206,6 +209,8 @@ backend bk_ws
 backend my_oswee
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
+    compression algo gzip
+    compression type text/html text/plain text/css
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
@@ -213,13 +218,17 @@ backend my_oswee
 backend jenkins
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
+    compression algo gzip
+    compression type text/html text/plain text/css
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9093 check
 
-backend shop
+backend merumore.com.backend
     balance roundrobin
     http-request add-header X-Forwarded-Proto https
+    compression algo gzip
+    compression type text/html text/plain text/css
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check

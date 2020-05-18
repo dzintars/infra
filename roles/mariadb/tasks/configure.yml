@@ -1,0 +1,12 @@
+---
+# tasks file for roles/mariadb
+
+- name: mariadb | create mariadb configuration
+  template:
+    src: my.cnf.j2
+    dest: '{{ path_mariadb_conf }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - mariadb-restart

@@ -1,0 +1,12 @@
+---
+# vars file for roles/mariadb
+
+pkgs_mariadb_dependencies:
+  - python3-mysqldb
+
+pkgs_mariadb:
+  - mariadb-server
+
+service_mariadb: mysql
+
+path_mariadb_conf: /etc/mysql/my.cnf

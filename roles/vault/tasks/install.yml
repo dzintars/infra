@@ -1,0 +1,23 @@
+---
+# tasks file for roles/vault
+
+- name: install prerequisites
+  package:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items: "{{ vault_install_prerequisites }}"
+  become: yes
+
+- name: download Hashicorp Vault
+  unarchive:
+    src: https://releases.hashicorp.com/vault/1.4.1/vault_1.4.1_linux_amd64.zip
+    dest: /tmp
+    remote_src: yes
+
+- name: copy Vault binary
+  copy:
+    src: /tmp/vault
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+  become: yes

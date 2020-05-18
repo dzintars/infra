@@ -1,0 +1,12 @@
+---
+# tasks file for roles/vault
+
+- name: install Hashicorp Vault
+  import_tasks: install.yml
+  tags:
+    - vault:install
+
+- name: configure vault
+  import_tasks: configure.yml
+  tags:
+    - vault:config
