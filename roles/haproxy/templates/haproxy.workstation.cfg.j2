@@ -144,6 +144,12 @@ frontend https-in
     acl dev.oswee.com.host hdr(host) -i dev.{{ cluster.fqdn }}
     use_backend my_server if dev.oswee.com.host
 
+    acl cloud.oswee.com.host hdr(host) -i cloud.{{ cluster.fqdn }}
+    use_backend cloud.oswee.com.backend if cloud.oswee.com.host
+
+    acl office.oswee.com.host hdr(host) -i office.{{ cluster.fqdn }}
+    use_backend office.oswee.com.backend if office.oswee.com.host
+
     acl dzintars.dev.host hdr(host) -i dzintars.dev
     use_backend dzintars_dev if dzintars.dev.host
 
@@ -232,6 +238,24 @@ backend merumore.com.backend
     # https://serverfault.com/a/887396/440073
     # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
     server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check
+
+backend cloud.oswee.com.backend
+    balance roundrobin
+    http-request add-header X-Forwarded-Proto https
+    compression algo gzip
+    compression type text/html text/plain text/css
+    # https://serverfault.com/a/887396/440073
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8085 check
+
+backend office.oswee.com.backend
+    balance roundrobin
+    http-request add-header X-Forwarded-Proto https
+    compression algo gzip
+    compression type text/html text/plain text/css
+    # https://serverfault.com/a/887396/440073
+    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9980 check
 
 backend be_default
     server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
