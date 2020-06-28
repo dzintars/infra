@@ -1,0 +1,13 @@
+---
+# vars file for roles/containers
+
+packages:
+  - rsync
+
+volume_dirs:
+  - '$HOME/containers/confluence/volumes/data'
+  - '$HOME/containers/jenkins/volumes/jenkins_home'
+  - '$HOME/containers/mariadb/volumes/data'
+  - '$HOME/containers/mariadb/volumes/conf.d'
+  - '$HOME/containers/postgres/volumes/data'
+  - '$HOME/containers/blog/volumes/data'

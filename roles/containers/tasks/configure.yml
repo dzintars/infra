@@ -1,0 +1,61 @@
+---
+  # tasks file for roles/containers
+
+- name: clone Podman repository
+  git:
+    repo: git@github.com:dzintars/podman.git
+    dest: $HOME/code/github.com/dzintars/podman
+    version: master
+    accept_hostkey: true
+  become: false
+
+- name: create containers volumes directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+  loop: "{{ volume_dirs }}"
+
+- name: Copy my.cnf file
+  copy:
+    src: $HOME/code/github.com/dzintars/podman/mariadb/my.cnf
+    dest: $HOME/containers/mariadb/volumes/conf.d
+    remote_src: yes
+    mode: '0644'
+
+- name: mount and bind a backups volume
+  become: true
+  mount:
+    path: /mnt/backups
+    src: /dev/sdb
+    opts: bind
+    state: mounted
+    fstype: btrfs
+
+# Copy all container volumes to continers/* directories
+- name: Synchronization of src on the control machine to dest on the remote hosts
+  become: true
+  synchronize:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: no
+    group: no
+  delegate_to: '192.168.1.2'
+  loop:
+    - { src: "/mnt/backups/workstation/home/dzintars/containers/mariadb/volumes/data/", dest: "/home/dzintars/containers/mariadb/volumes/data" }
+    # TODO: Change src to /mnt/backups/workstation/home/dzintars/containers/*
+    - { src: "/mnt/backups/workstation/home/dzintars/Podman/jenkins/volumes/jenkins_home/", dest: "/home/dzintars/containers/jenkins/volumes/jenkins_home" }
+    - { src: "/mnt/backups/workstation/home/dzintars/Podman/confluence/volumes/data/", dest: "/home/dzintars/containers/confluence/volumes/data" }
+    - { src: "/mnt/backups/workstation/home/dzintars/Podman/postgres/volumes/postgres/data/", dest: "/home/dzintars/containers/postgres/volumes/data" }
+    - { src: "/mnt/backups/workstation/home/dzintars/Podman/wp-blog/volumes/", dest: "/home/dzintars/containers/blog/volumes/data" }
+
+- name: Recursively change ownership of a directory
+  become: true
+  file:
+    path: /home/dzintars/containers
+    state: directory
+    recurse: yes
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"

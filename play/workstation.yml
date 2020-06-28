@@ -57,3 +57,5 @@
       tags: [zsh]
     - role: dzintars.podman
       tags: [podman]
+    - role: containers
+      tags: [containers]

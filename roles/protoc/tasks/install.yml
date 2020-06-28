@@ -9,7 +9,7 @@
 - name: download Protoc
   unarchive:
     # Make sure you grab the latest version !!!
-    src: https://github.com/protocolbuffers/protobuf/releases/download/v3.11.1/protoc-3.11.1-linux-x86_64.zip
+    src: https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip
     dest: /tmp/protoc3
     # creates: /tmp/proto3/bin
     remote_src: yes
