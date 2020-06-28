@@ -1,2 +1,13 @@
 ---
 # tasks file for roles/certbot
+
+- name: Synchronize existing certificates
+  become: true
+  synchronize:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: no
+    group: no
+  delegate_to: '192.168.1.2'
+  loop:
+    - { src: "/mnt/backups/workstation/etc/letsencrypt/", dest: "/etc/letsencrypt" }

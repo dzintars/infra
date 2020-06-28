@@ -18,7 +18,6 @@
 
 - name: Create vim plug directory
   # when: not vim_plug.stat.exists
-  # become: yes
   file:
     path: "$HOME/.local/share/nvim/site/autoload"
     state: directory

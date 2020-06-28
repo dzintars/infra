@@ -4,8 +4,9 @@
 - name: Install HAProxy
   become: true
   dnf:
-    name: haproxy.x86_64
+    name: "{{ item }}"
     state: latest
+  loop: "{{ packages }}"
 
 - name: Turn On packet forwarding in order HAProxy to start
   become: true
@@ -20,6 +21,16 @@
     name: net.ipv4.ip_nonlocal_bind
     value: "1"
     sysctl_set: yes
+
+- name: allowing firewall rules for services
+  become: true
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop:
+    - http
+    - https
 
 - name: allowing firewall rules for ports
   become: true
@@ -52,6 +63,7 @@
   loop:
     - 6443
     - 19000
+
 # - name: Start HAProxy service
 #   become: true
 #   service:

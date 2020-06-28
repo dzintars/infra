@@ -1,2 +1,7 @@
 ---
 # vars file for haproxy
+
+packages:
+  - libsemanage-python3
+  - policycoreutils-python3
+  - haproxy.x86_64
