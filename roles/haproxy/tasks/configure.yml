@@ -6,7 +6,7 @@
   file:
     path: /etc/haproxy/errors
     state: directory
-    mode: 0755
+    mode: '0755'
 
 - name: Copy haproxy.cfg and reload HAProxy
   become: true
@@ -16,7 +16,7 @@
     owner: root
     group: root
     # setype: named_conf_t
-    mode: 0644
+    mode: '0644'
   loop:
     # To set up the cluster please use `haproxy.bastion.cfg.j2` template
     # - { src: "haproxy.bastion.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }

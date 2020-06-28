@@ -1,0 +1,9 @@
+---
+# tasks file for roles/nvidia
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages }}"

@@ -17,7 +17,7 @@
     dest: $HOME/{{ cluster.name }}/install-config.yaml
     # owner: root
     # group: root
-    mode: 0644
+    mode: '0644'
     backup: no
 
 - name: Create ignition configs

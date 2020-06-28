@@ -1,0 +1,21 @@
+---
+# tasks file for roles/nvidia
+
+- name: remove nouveau driver
+  become: true
+  dnf:
+    name: xorg-x11-drv-nouveau
+    state: absent
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: download Nvidia driver
+  get_url:
+    url: "{{nvidia_driver}}"
+    dest: /tmp
+    mode: '1777'

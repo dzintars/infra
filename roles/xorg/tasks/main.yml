@@ -1,0 +1,12 @@
+---
+# tasks file for roles/xorg
+
+- name: install Xorg
+  import_tasks: install.yml
+  tags:
+    - xorg:install
+
+- name: configure Xorg
+  import_tasks: configure.yml
+  tags:
+    - xorg:config

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/polybar
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - polybar:setup
+    - polybar:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - polybar:setup
+    - polybar:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - polybar:remove

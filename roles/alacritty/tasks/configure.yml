@@ -1,2 +1,22 @@
 ---
   # tasks file for roles/alacritty
+
+- name: create config directory
+  # become: true
+  file:
+    path: $HOME/.config/alacritty
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+
+- name: copy config
+  # become: true
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0644'
+  loop:
+    - { src: "alacritty.yml.j2", dest: "$HOME/.config/alacritty/alacritty.yml" }

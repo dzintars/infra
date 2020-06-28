@@ -1,0 +1,19 @@
+---
+# tasks file for roles/zsh
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - zsh:setup
+    - zsh:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - zsh:setup
+    - zsh:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - zsh:remove

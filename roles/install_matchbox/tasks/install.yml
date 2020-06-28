@@ -27,7 +27,7 @@
     src: $HOME/matchbox-v0.8.0-linux-amd64/contrib/systemd/matchbox-local.service
     dest: /etc/systemd/system/matchbox.service
     remote_src: yes
-    mode: 0644
+    mode: '0644'
 
 - name: Create Matchbox system group
   group:
@@ -47,11 +47,11 @@
 
 - name: Create Matchbox directories
   file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: directory
     owner: matchbox
     group: matchbox
-    mode: 0755
+    mode: '0755'
   loop:
     - /etc/matchbox
     - /var/lib/matchbox/assets

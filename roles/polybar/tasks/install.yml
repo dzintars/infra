@@ -1,0 +1,15 @@
+---
+# tasks file for roles/polybar
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: clone polybar repository into /tmp.
+  git:
+    repo: https://github.com/polybar/polybar
+    version: master
+    dest: /tmp/polybar

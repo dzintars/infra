@@ -1,0 +1,9 @@
+---
+# tasks file for roles/certbot
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages }}"

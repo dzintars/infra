@@ -1,2 +1,13 @@
 ---
 # vars file for roles/i3wm
+
+packages:
+  - i3
+  - dmenu
+  - i3lock
+  - sddm
+
+mountpoints:
+  - /mnt/external
+  - /mnt/backups
+  - /mnt/nextcloud

@@ -1,2 +1,40 @@
 ---
   # tasks file for roles/i3wm
+
+- name: create mounting directories
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+  loop: "{{ mountpoints }}"
+
+- name: copy config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0644'
+  loop:
+    - { src: "config.j2", dest: "$HOME/.config/i3/config" }
+    - { src: "compton.conf.j2", dest: "$HOME/.config/compton.conf" }
+    - { src: ".profile.j2", dest: "$HOME/.profile" }
+
+# - name: create fonts directory
+#   file:
+#     path: "$HOME/.fonts"
+#     state: directory
+#     owner: "{{ become_user }}"
+#     group: "{{ become_user }}"
+#     mode: '0755'
+
+- name: copy fonts
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "fonts/", dest: "$HOME/.fonts/", mode: '0755' }

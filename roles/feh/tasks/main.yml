@@ -1,0 +1,19 @@
+---
+# tasks file for roles/feh
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - feh:setup
+    - feh:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - feh:setup
+    - feh:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - feh:remove

@@ -58,3 +58,5 @@ Host username2.github.com
     IdentitiesOnly yes
 EOT
 ```
+
+https://www.jeffgeerling.com/blog/2018/cloning-private-github-repositories-ansible-on-remote-server-through-ssh

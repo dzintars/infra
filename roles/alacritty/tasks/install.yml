@@ -9,10 +9,10 @@
     # creates: "{{ copr_repository_repofile }}"
     warn: no
 
-- name: Install Alacritty
+- name: install packages
   become: true
   dnf:
     name: "{{ item }}"
     state: latest
   loop:
-    - alacritty
+    - "{{ packages }}"

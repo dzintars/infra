@@ -1,2 +1,19 @@
 ---
 # tasks file for roles/nvidia
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - nvidia:setup
+    - nvidia:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - nvidia:setup
+    - nvidia:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - nvidia:remove

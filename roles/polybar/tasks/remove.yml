@@ -1,0 +1,11 @@
+---
+# tasks file for roles/polybar
+
+- name: remove packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages }}"
+
+  # TODO: Remove cloned repository from /tmp

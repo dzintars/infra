@@ -1,12 +1,19 @@
 ---
-# tasks file for certbot
+# tasks file for roles/certbot
 
-- name: Install Certbot
+- name: install
   import_tasks: install.yml
   tags:
-    - certbot:install
+    - certbot:setup
+    - certbot:setup:install
 
-# - name: Update configuration
-#   import_tasks: configure.yml
-#   tags:
-#     - certbot:config
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - certbot:setup
+    - certbot:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - certbot:remove

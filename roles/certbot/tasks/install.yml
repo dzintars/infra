@@ -1,8 +1,9 @@
 ---
-# tasks file for certbot
+# tasks file for roles/certbot
 
-- name: Install Certbot
+- name: install packages
   become: true
   dnf:
-    name: certbot
+    name: "{{ item }}"
     state: latest
+  loop: "{{ packages }}"

@@ -1,0 +1,27 @@
+---
+  # tasks file for roles/zsh
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: clone oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: $HOME/.oh-my-zsh
+    version: master
+
+- name: clone powerlevel10k theme
+  git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+    version: master
+
+- name: clone zsh-autosuggestions plugin
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    version: master

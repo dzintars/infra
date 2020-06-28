@@ -1,0 +1,32 @@
+---
+  # tasks file for roles/feh
+
+- name: create wallpapers directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+  loop:
+    - "$HOME/Pictures/Wallpapers"
+
+- name: copy config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0644'
+  loop:
+    - { src: ".fehbg.j2", dest: "$HOME" }
+
+- name: copy files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0644'
+  loop:
+    - { src: "tharsus.jpg", dest: "$HOME/Pictures/Wallpapers" }

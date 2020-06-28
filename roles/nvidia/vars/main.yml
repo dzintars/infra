@@ -1,2 +1,16 @@
 ---
 # vars file for roles/nvidia
+
+packages:
+  - kernel-devel
+  - kernel-headers
+  - gcc
+  - make
+  - dkms
+  - acpid
+  - libglvnd-glx
+  - libglvnd-opengl
+  - libglvnd-devel
+  - pkgconfig
+
+nvidia_driver: http://us.download.nvidia.com/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run

@@ -1,0 +1,42 @@
+---
+  # tasks file for roles/zsh
+
+# - name: create mounting directories
+#   become: true
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ become_user }}"
+#     group: "{{ become_user }}"
+#     mode: '0755'
+#   loop: "{{ mountpoints }}"
+
+# - name: copy config
+#   template:
+#     src: "{{ item.src }}"
+#     dest: "{{ item.dest }}"
+#     owner: "{{ become_user }}"
+#     group: "{{ become_user }}"
+#     mode: '0644'
+#   loop:
+#     - { src: "config.j2", dest: "$HOME/.config/i3/config" }
+#     - { src: "compton.conf.j2", dest: "$HOME/.config/compton.conf" }
+#     - { src: ".profile.j2", dest: "$HOME/.profile" }
+
+- name: Write .zshrc config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user_group }}"
+    mode: "{{ item.mode }}"
+    backup: yes
+  loop:
+  - { src: "zprofile.j2", dest: "$HOME/.zprofile", mode: '0644' }
+  - { src: "zshrc.j2", dest: "$HOME/.zshrc", mode: '0644' }
+
+- name: Set zsh as default shell
+  become: true
+  user:
+    name: "{{ become_user }}"
+    shell: /bin/zsh

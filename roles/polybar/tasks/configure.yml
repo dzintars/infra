@@ -1,0 +1,21 @@
+---
+# tasks file for roles/polybar
+
+- name: create scripts directory
+  file:
+    path: "$HOME/.config/polybar/scripts/"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+
+- name: copy scripts and make executable
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "config", dest: "$HOME/.config/polybar/", mode: '0644' }
+    - { src: "launch.sh", dest: "$HOME/.config/polybar/", mode: 'a+x' }
+    - { src: "scripts/network-traffic.sh", dest: "$HOME/.config/polybar/scripts/", mode: 'a+x' }
+    - { src: "scripts/openvpn-status.sh", dest: "$HOME/.config/polybar/scripts/", mode: 'a+x' }
