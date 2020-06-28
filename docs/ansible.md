@@ -60,3 +60,9 @@ Bootstrap new empty role
 ```sh
 ansible-galaxy role init roles/<role-name>
 ```
+
+Install all requirements
+
+```sh
+ansible-galaxy install -r requirements.yml
+```

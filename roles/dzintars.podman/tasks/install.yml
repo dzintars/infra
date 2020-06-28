@@ -1,0 +1,10 @@
+---
+# tasks file for podman
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    enablerepo: updates-testing
+    state: latest
+  loop: "{{ packages }}"

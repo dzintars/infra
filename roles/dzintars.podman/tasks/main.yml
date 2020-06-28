@@ -1,0 +1,19 @@
+---
+# tasks file for podman
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - podman:setup
+    - podman:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - podman:setup
+    - podman:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - podman:remove
