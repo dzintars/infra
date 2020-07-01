@@ -1,0 +1,25 @@
+" Inspired by https://www.youtube.com/watch?v=9IcXJvoPHCY
+
+Plug 'mhinz/vim-startify'
+
+let g:startify_session_dir = '~/.config/nvim/sessions'          " Specify the location to save and load sessions from
+let g:startify_session_delete_buffers = 1                       " Let Startify take care of buffers
+let g:startify_change_to_vcs_root = 1                           " Similar to vim-rooter
+let g:startify_fortune_use_unicode = 1                          " If you want Unicode
+let g:startify_session_persistance = 1                          " Automatically Update Sessions
+let g:startify_enable_special = 0                               " Get rid of empty buffer on quit
+
+let g:startify_lists = [
+  \ { 'type': 'files',     'header': ['   Files']            },
+  \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
+  \ { 'type': 'sessions',  'header': ['   Sessions']       },
+  \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+  \ ]
+
+let g:startify_bookmarks = [
+  \ { 'a': '~/.config/alacritty/alacritty.yml' },
+  \ { 'c': '~/.config/i3/config' },
+  \ { 'i': '~/.config/nvim/init.vim' },
+  \ { 'z': '~/.zshrc' },
+  \ '~/Code/github.com/dzintars',
+  \ ]

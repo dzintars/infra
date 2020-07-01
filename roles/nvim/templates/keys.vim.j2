@@ -1,0 +1,32 @@
+" ===== NERDTree =====
+map <C-n> :NERDTreeToggle<CR>
+nnoremap <Leader>pt :NERDTreeToggle<CR>
+nnoremap <silent> <expr> <Leader>n g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
+
+" ===== FZF =====
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-g> :GFiles<CR>
+nnoremap <silent> <C-o> :Buffers<CR>
+" nnoremap <Leader>g :Rg<CR>
+" nnoremap <Leader>t :Tags<CR>
+" nnoremap <Leader>m :Marks<CR>
+
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit',
+  \ }
+
+xnoremap <C-h> <C-w>h
+xnoremap <C-j> <C-w>j
+xnoremap <C-k> <C-w>k
+xnoremap <C-l> <C-w>l
+
+" ===== Move lines vertically =====
+xnoremap K :m '<-2<CR>gv=gv
+xnoremap J :m '<+1<CR>gv=gv
+
+" Move VISUAL LINE selection within buffer. https://youtu.be/X5IAdaN6IwM
+" xnoremap <silent> K :call wincent#mappings#visual#move_up()<CR>
+" xnoremap <silent> J :call wincent#mappings#visual#move_down()<CR>
