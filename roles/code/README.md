@@ -1,7 +1,9 @@
-Libvirt
+Code
 =========
 
-A brief description of the role goes here.
+Installation steps are taken from https://github.com/gantsign/ansible-role-visual-studio-code
+
+Extensions are installed as per project requirements in .vscode/extensions.json
 
 Requirements
 ------------

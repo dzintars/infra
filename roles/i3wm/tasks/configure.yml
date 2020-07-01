@@ -17,11 +17,12 @@
     dest: "{{ item.dest }}"
     owner: "{{ become_user }}"
     group: "{{ become_user }}"
-    mode: '0644'
+    mode: "{{ item.mode }}"
   loop:
-    - { src: "config.j2", dest: "$HOME/.config/i3/config" }
-    - { src: "compton.conf.j2", dest: "$HOME/.config/compton.conf" }
-    - { src: ".profile.j2", dest: "$HOME/.profile" }
+    - { src: "config.j2", dest: "$HOME/.config/i3/config", mode: '0644' }
+    - { src: "compton.conf.j2", dest: "$HOME/.config/compton.conf", mode: '0644' }
+    - { src: ".profile.j2", dest: "$HOME/.profile", mode: '0644' }
+    - { src: "lock_and_blur.sh.j2", dest: "$HOME/.config/lock_and_blur.sh", mode: '0755' }
 
 # - name: create fonts directory
 #   file:

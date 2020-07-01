@@ -59,3 +59,7 @@
       tags: [podman]
     - role: containers
       tags: [containers]
+    - role: code
+      tags: [code]
+    - role: common
+      tags: [common]

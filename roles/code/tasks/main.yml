@@ -1,19 +1,19 @@
 ---
-# tasks file for roles/libvirt
+# tasks file for roles/code
 
 - name: install
   import_tasks: install.yml
   tags:
-    - libvirt:setup
-    - libvirt:setup:install
+    - code:setup
+    - code:setup:install
 
 - name: config
   import_tasks: configure.yml
   tags:
-    - libvirt:setup
-    - libvirt:setup:config
+    - code:setup
+    - code:setup:config
 
 - name: remove
   import_tasks: remove.yml
   tags:
-    - libvirt:remove
+    - code:remove

@@ -7,11 +7,11 @@
     - ranger:setup
     - ranger:setup:install
 
-# - name: Update configuration
-#   import_tasks: configure.yml
-#   tags:
-#     - ranger:setup
-#     - ranger:setup:config
+- name: Update configuration
+  import_tasks: configure.yml
+  tags:
+    - ranger:setup
+    - ranger:setup:config
 
 # - name: Remove Ranger
 #   import_tasks: remove.yml

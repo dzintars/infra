@@ -42,7 +42,7 @@
   fetch:
     src: $HOME/{{ cluster.name }}/auth/{{ item }}
     dest: /tmp/openshift-install/auth/
-    mode: 0774
+    mode: '0774'
     flat: yes
   loop:
     - kubeconfig

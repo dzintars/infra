@@ -53,7 +53,7 @@ bindsym $mod+Menu exec pcmanfm
 bindsym $mod+Shift+Menu exec alacritty -e nvim
 # Lock the screen
 #bindsym Control+$mod+l exec i3lock -d
-bindsym Control+$mod+l exec /usr/local/bin/lock_and_blur.sh
+bindsym Control+$mod+l exec $HOME/.config/lock_and_blur.sh
 
 # change focus
 bindsym $mod+h focus left
@@ -209,6 +209,6 @@ bindsym $mod+Shift+Return exec alacritty -e ranger
 exec --no-startup-id "compton -b"
 
 # Lock the screen after timeout
-exec xautolock -detectsleep -time 15 -locker "/usr/local/bin/lock_and_blur.sh" \
+exec xautolock -detectsleep -time 15 -locker "$HOME/.config/lock_and_blur.sh" \
   -notify 30 \
   -notifier "notify-send -u critical -t 10000 -- 'locking screen in 30 seconds'"

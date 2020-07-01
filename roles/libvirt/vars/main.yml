@@ -1,2 +1,14 @@
 ---
 # vars file for roles/libvirt
+
+packages:
+  - libvirt
+  - virt-install
+  - virt-manager
+  - bridge-utils
+  - qemu-kvm
+  - virt-top
+  - libguestfs-tools
+  - libvirt-devel
+  - libvirt-daemon-kvm
+  - python3-lxml
