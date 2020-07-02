@@ -1,0 +1,8 @@
+---
+  # tasks file for roles/yarn
+
+- name: Install yarn package globally
+  become: yes
+  npm:
+    name: yarn
+    global: yes

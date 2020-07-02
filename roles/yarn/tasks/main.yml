@@ -1,0 +1,19 @@
+---
+# tasks file for roles/yarn
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - yarn:setup
+    - yarn:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - yarn:setup
+    - yarn:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - yarn:remove

@@ -18,30 +18,49 @@
 - [ ] Nvidia
 - [ ] Audio
 - [ ] OBS Studio
-- [ ] Pcmanfm
-- [ ] Nvim
+- [X] Pcmanfm
+- [X] Nvim
 - [X] Code
-- [ ] Chrome/Chromium
+- [X] Chrome/Chromium
 - [ ] Firefox
-- [ ] Ranger
-- [ ] Tmux
-- [ ] Powerline
-- [ ] NodeJS
+- [X] Ranger
+- [X] Tmux + Powerline
+- [X] NodeJS
 - [ ] Yarn
 - [ ] TypeScript
 - [ ] Go
 - [ ] gRPC
+- [ ] ProtoC
 - [ ] Postman
 - [ ] OpenVPN
-- [ ] Rsync
+- [X] Rsync
 - [ ] Slack
 - [ ] Figma fonts
-- [ ] Git
+- [X] Git
+- [ ] Blender
+- [ ] Slack
+- [ ] Skype
+- [ ] Dunst
+- [ ] KeePassXC
+- [ ] Gimp
+- [ ] LibreOffice
+- [ ] qBittorrent
+- [ ] Remmina
+- [ ] TeamViewer
+- [ ] Figma Fonts
+- [ ] NextCloud
+- [ ] Ansible
+- [ ] Pulse
+- [ ] Droidcam
+- [ ] 
+- [ ] 
 - [ ] Provide remove & cleanup tasks for every installed module/app.
 
 - [ ] Remove i3status
 
+- [ ] Enable same Nvim configurations for the Root user
 
-systemctl status named-chroot dhcpd tftp haproxy matchbox firewalld
 
-ps cax | grep -E "named-chroot|dhcpd|tftp" > /dev/null
+`systemctl status named-chroot dhcpd tftp haproxy matchbox firewalld`
+
+`ps cax | grep -E "named-chroot|dhcpd|tftp" > /dev/null`

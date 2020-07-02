@@ -1,6 +1,5 @@
 ---
 
-
 - name: delete all connections
   command: >
     for i in `nmcli c | \

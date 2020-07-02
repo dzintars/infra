@@ -1,0 +1,19 @@
+---
+# tasks file for roles/tmux
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - tmux:setup
+    - tmux:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - tmux:setup
+    - tmux:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - tmux:remove

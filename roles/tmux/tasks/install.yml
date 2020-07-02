@@ -1,0 +1,15 @@
+---
+  # tasks file for roles/tmux
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: clone Tmux Plugin Manager
+  git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: $HOME/.tmux/plugins/tpm
+    version: master
