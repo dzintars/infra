@@ -14,3 +14,9 @@
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
+
+- name: Install Yarn package globally
+  become: yes
+  npm:
+    name: yarn
+    global: yes
