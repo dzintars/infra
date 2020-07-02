@@ -26,7 +26,7 @@
 - [X] Ranger
 - [X] Tmux + Powerline
 - [X] NodeJS
-- [ ] Yarn
+- [X] Yarn
 - [ ] TypeScript
 - [ ] Go
 - [ ] gRPC

@@ -20,3 +20,8 @@
   npm:
     name: yarn
     global: yes
+
+# - name: Install TypeScript package globally.
+#   yarn:
+#     name: typescript
+#     global: yes
