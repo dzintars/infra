@@ -51,8 +51,6 @@
       tags: [xorg]
     - role: polybar
       tags: [polybar]
-    - role: feh
-      tags: [feh]
     - role: zsh
       tags: [zsh]
     - role: dzintars.podman
