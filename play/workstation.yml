@@ -63,7 +63,5 @@
       tags: [code]
     - role: common
       tags: [common]
-    - role: yarn
-      tags: [yarn]
     - role: tmux
       tags: [tmux]
