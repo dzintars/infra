@@ -1,2 +1,12 @@
 ---
   # tasks file for roles/common
+
+- name: copy configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "keybindings.json.j2", dest: "$HOME/.config/Code/User/keybindings.json", mode: '0644' }

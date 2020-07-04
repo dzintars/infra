@@ -1,0 +1,9 @@
+---
+# vars file for roles/pulseaudio
+
+packages:
+  - pulseaudio
+  - pavucontrol
+  - alsa-firmware
+  - alsamixergui
+  - alsa-plugins-pulseaudio

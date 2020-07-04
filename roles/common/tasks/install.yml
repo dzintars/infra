@@ -1,8 +1,21 @@
 ---
   # tasks file for roles/common
 
+- name: install the rpmfusion repo
+  become: yes
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_current }}.noarch.rpm
+    - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_current }}.noarch.rpm
+
+#https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
+#https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+
 - name: install packages
-  become: true
+  become: yes
   dnf:
     name: "{{ item }}"
     state: latest

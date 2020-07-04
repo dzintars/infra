@@ -35,7 +35,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec gnome-terminal -e tmux
-# bindsym $mod+Return exec alacritty -e tmux
+#bindsym $mod+Return exec alacritty -e tmux
 bindsym $mod+Return exec alacritty
 
 # kill focused window
@@ -212,3 +212,12 @@ exec --no-startup-id "compton -b"
 exec xautolock -detectsleep -time 15 -locker "$HOME/.config/lock_and_blur.sh" \
   -notify 30 \
   -notifier "notify-send -u critical -t 10000 -- 'locking screen in 30 seconds'"
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec amixer sset Master 5%+
+bindsym XF86AudioLowerVolume exec amixer sset Master 5%-
+bindsym XF86AudioMute exec amixer sset Master toggle
+
+# Language switch
+exec "setxkbmap -layout us,lv"
+exec "setxkbmap -option 'grp:alt_shift_toggle'"

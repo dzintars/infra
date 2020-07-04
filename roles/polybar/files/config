@@ -83,6 +83,7 @@ modules-left = i3
 ;modules-left = menu i3 xwindow
 
 ; modules-center = ewmh
+
 ; modules-right = fsroot fshome  xkeyboard memory cpu xbacklight volume wlan eth battery temperature date powermenu
 modules-right = xkeyboard memory cpu volume date time vpn-openvpn-status powermenu
 

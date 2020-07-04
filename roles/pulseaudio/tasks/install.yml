@@ -1,0 +1,9 @@
+---
+  # tasks file for roles/pulseaudio
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"

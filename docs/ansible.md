@@ -12,8 +12,8 @@ Before starting, update `hosts` and `group_vars` according to your needs. For ex
 
 ```sh
 # Create Bastion VM
-ansible-playbook play/setup_workstation.yml --tags bastion:create --ask-vault-pass
-ansible-playbook play/setup_bastion.yml --ask-vault-pass
+ansible-playbook play/workstation.yml --tags bastion:create --ask-vault-pass
+ansible-playbook play/bastion.yml --ask-vault-pass
 
 # Disable Bastion and Cptnod variables
 

@@ -1,6 +1,18 @@
 ---
 # vars file for roles/common
 
+fedora_current: 32
+
 packages:
   - 'https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm'
   - pcmanfm
+  - xclip
+  - 'https://github.com/Figma-Linux/figma-linux/releases/download/v0.6.2/figma-linux-0.6.2.x86_64.rpm'
+  - blender
+  - remmina
+  - ffmpeg
+  - xorg-x11-drv-nvidia-cuda
+  - obs-studio
+  - keepassxc
+  - breeze-icon-theme
+  - libreoffice

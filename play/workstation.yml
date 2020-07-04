@@ -1,7 +1,7 @@
 ---
 - name: Bootstrap workstation
   hosts: WORKSTATION
-  # connection: local
+  connection: local
   gather_facts: yes
   # become: yes
   # become_user: dzintars
@@ -63,3 +63,5 @@
       tags: [common]
     - role: tmux
       tags: [tmux]
+    - role: pulseaudio
+      tags: [pulseaudio]
