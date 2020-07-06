@@ -66,7 +66,8 @@
 - [ ] Enable same Nvim configurations for the Root user
 - [ ] Add `fs.inotify.max_user_watches=524288` to `/etc/sysctl.conf`. https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
 - [ ] Fonts are not loaded from ~/.fonts directory (Figma)
-- [ ] Displays are not loaded correctly at i3 startup
+- [ ] Displays are not loaded correctly at i3 startup (how to set up primary screen)
+- [ ] Keyboard switch does not work
 
 `systemctl status named-chroot dhcpd tftp haproxy matchbox firewalld`
 

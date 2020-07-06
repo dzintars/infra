@@ -41,7 +41,7 @@
   loop:
     - { src: "fonts/", dest: "$HOME/.fonts/", mode: '0755' }
 
-- name: create wallpapers directory
+- name: create Pictures directories
   file:
     path: "{{ item }}"
     state: directory
@@ -50,6 +50,7 @@
     mode: '0755'
   loop:
     - "$HOME/Pictures/Wallpapers"
+    - "$HOME/Pictures/Printscreens"
 
 - name: copy background images
   copy:

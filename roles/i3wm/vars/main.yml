@@ -12,6 +12,7 @@ packages:
   - ImageMagick.x86_64  # Provides `convert` package to blur the screenshot
   - lxappearance
   - feh
+  - xautolock
 
 mountpoints:
   - /mnt/external

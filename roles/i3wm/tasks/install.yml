@@ -7,3 +7,11 @@
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
+
+- name: remove i3status
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - i3status

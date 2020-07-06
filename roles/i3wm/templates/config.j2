@@ -33,12 +33,11 @@ font pango:SFNS Display 9
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-#bindsym $mod+Return exec gnome-terminal -e tmux
+# Start a terminal
 #bindsym $mod+Return exec alacritty -e tmux
 bindsym $mod+Return exec alacritty
 
-# kill focused window
+# Kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
@@ -51,6 +50,7 @@ bindsym $mod+d exec dmenu_run
 bindsym Menu exec dmenu_run
 bindsym $mod+Menu exec pcmanfm
 bindsym $mod+Shift+Menu exec alacritty -e nvim
+
 # Lock the screen
 #bindsym Control+$mod+l exec i3lock -d
 bindsym Control+$mod+l exec $HOME/.config/lock_and_blur.sh
@@ -150,6 +150,8 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+bindsym $mod+r mode "resize"
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -158,9 +160,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
         bindsym semicolon resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
@@ -175,12 +178,13 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# Resizing windows by 10 in i3 using keyboard only
+bindsym $mod+Ctrl+Left resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+Down resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+Up resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+Right resize grow width 10 px or 10 ppt
 
 hide_edge_borders both
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
@@ -191,16 +195,11 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Moving workspaces between screens
 bindsym $mod+p move workspace to output right
-#interactive screenshot by pressing printscreen
-bindsym Print exec gnome-screenshot -i 
-#crop-area screenshot by pressing Mod + printscreen
-bindsym $mod+Print exec gnome-screenshot -a
 
-# Resizing windows by 10 in i3 using keyboard only
-bindsym $mod+Ctrl+Right resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+Up resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+Down resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+Left resize grow width 10 px or 10 ppt
+# Interactive screenshot by pressing printscreen
+bindsym Print exec flameshot full -c -p ~/Pictures/Printscreens
+#crop-area screenshot by pressing Mod + printscreen
+bindsym $mod+Print exec flameshot gui
 
 # Open Ranger file manager
 bindsym $mod+Shift+Return exec alacritty -e ranger
