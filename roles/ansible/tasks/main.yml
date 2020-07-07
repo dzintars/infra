@@ -1,0 +1,19 @@
+---
+# tasks file for roles/ansible
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - ansible:setup
+    - ansible:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - ansible:setup
+    - ansible:setup:config
+
+- name: remove
+  import_tasks: remove.yml
+  tags:
+    - ansible:remove

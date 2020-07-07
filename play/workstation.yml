@@ -65,3 +65,5 @@
       tags: [tmux]
     - role: pulseaudio
       tags: [pulseaudio]
+    - role: ansible
+      tags: [ansible]

@@ -31,21 +31,19 @@
 - [ ] Go
 - [ ] gRPC
 - [ ] ProtoC
-- [ ] Postman
+- [ ] Postman (https://dl.pstmn.io/download/latest/linux64)
 - [ ] OpenVPN
 - [X] Rsync
-- [ ] Slack
-- [ ] Figma fonts
 - [X] Git
-- [ ] Blender
-- [ ] Slack
+- [X] Blender
+- [X] Slack
 - [ ] Skype
 - [ ] Dunst
-- [ ] KeePassXC
+- [X] KeePassXC
 - [ ] Gimp
-- [ ] LibreOffice
+- [X] LibreOffice
 - [ ] qBittorrent
-- [ ] Remmina
+- [X] Remmina
 - [ ] TeamViewer
 - [ ] Figma Fonts
 - [ ] NextCloud
