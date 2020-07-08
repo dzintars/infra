@@ -10,23 +10,20 @@
   roles:
     - role: deploy_bastion
       tags: [bastion]
-      become: false
     - role: network
       tags: [network]
     - role: openshift
       tags: [openshift]
     - role: libvirt
       tags: [libvirt]
-      # become: true
+    - role: go
+      tags: [go]
     - role: protoc
       tags: [protoc]
-      become: true
     - role: haproxy
       tags: [haproxy]
-      # become: true
     - role: certbot
       tags: [certbot]
-      # become: true
     - role: nvim
       tags: [nvim]
     - role: nvidia
