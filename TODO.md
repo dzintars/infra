@@ -12,6 +12,7 @@
 - [X] Alacritty
 - [X] ZSH + Oh My ZSH + Powerlevel10k
 - [X] Certbot
+- [ ] SSH
 - [X] HAproxy
 - [X] Podman
 - [X] Libvirt
@@ -56,9 +57,11 @@
 - [ ] Breeze light cursor
 - [ ] fzf
 - [ ] hplip
-- [ ] 
+- [ ] Calibre
 - [ ] Provide remove & cleanup tasks for every installed module/app.
-
+- [ ] Unicode fonts
+- [ ] Geany
+- [ ] Freetype-freeworld (Do I really need this???)
 - [ ] Remove i3status
 
 - [ ] Enable same Nvim configurations for the Root user

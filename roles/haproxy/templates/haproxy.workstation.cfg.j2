@@ -23,7 +23,7 @@ global
     # Be carefull about SELinux. If you get error there.. for debuging use `sudo setenforce 0`
     # ssl-dh-param-file /home/{{ cluster.nodes['workstation'].user }}/.tls/{{ cluster.fqdn }}/dhparam.pem
     tune.ssl.default-dh-param 4096
-    
+
 defaults
     mode http
     log global
@@ -31,7 +31,7 @@ defaults
     option dontlognull
     option http-server-close
     option http-pretend-keepalive
-    option forwardfor except 127.0.0.0/8
+    option forwardfor except 127.0.0.1/8
     option originalto
     option redispatch
     retries 3
@@ -71,68 +71,67 @@ listen stats # Define a listen section called "stats"
 #===========================================================
 
 frontend http-in
-    bind *:80
-    # maxconn 50
+  bind *:80
+  # maxconn 50
 
-    # Limiting Request Rates
-    stick-table type ip size 100k expire 30s store http_req_rate(10s)
-    http-request track-sc0 src table per_ip_rates
-    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 100 }
+  # Limiting Request Rates
+  stick-table type ip size 100k expire 30s store http_req_rate(10s)
+  http-request track-sc0 src table per_ip_rates
+  http-request deny deny_status 429 if { sc_http_req_rate(0) gt 100 }
 
-    # Deny illegal user agents
-    http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
-    http-request deny unless { req.hdr(user-agent) -m found }
+  # Deny illegal user agents
+  http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
+  http-request deny unless { req.hdr(user-agent) -m found }
 
-    # Define Let's Encrypt path
-    acl uri_letsencrypt path_beg /.well-known/acme-challenge/
+  # Define Let's Encrypt path
+  acl uri_letsencrypt path_beg /.well-known/acme-challenge/
 
-    # Redirect all traffic except Let's Encrypt path
-    redirect scheme https if !{ ssl_fc } !uri_letsencrypt
+  # Redirect all traffic except Let's Encrypt path
+  redirect scheme https if !{ ssl_fc } !uri_letsencrypt
 
-    # Add security headers
-    http-response add-header Content-Security-Policy upgrade-insecure-requests
-    http-response set-header X-Frame-Options DENY
-    # http-response set-header X-Content-Type-Options nosniff
-    http-response set-header X-XSS-Protection "1; mode=block"
-    http-response set-header Referrer-Policy no-referrer-when-downgrade
+  # Add security headers
+  http-response add-header Content-Security-Policy upgrade-insecure-requests
+  http-response set-header X-Frame-Options DENY
+  # http-response set-header X-Content-Type-Options nosniff
+  http-response set-header X-XSS-Protection "1; mode=block"
+  http-response set-header Referrer-Policy no-referrer-when-downgrade
 
-    # Define backends
-    use_backend be_default if uri_letsencrypt
-    default_backend be_default
+  # Define backends
+  use_backend be_default if uri_letsencrypt
+  default_backend be_default
 
 
 frontend https-in
-    # Certificate and Private key should be appended in single file. Order matters.
-    # If HAProxy does not start, try `sudo setenforce 0`
-    # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
-    # TODO: Organize into separate frontends
-    bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem crt /etc/letsencrypt/live/dzintars.dev/haproxy.pem crt /etc/letsencrypt/live/merumore.com/haproxy.pem ecdhe secp384r1
-    http-response replace-header Location ^http://(.*)$	https://\1
-    maxconn 60000
+  # Certificate and Private key should be appended in single file. Order matters.
+  # If HAProxy does not start, try `sudo setenforce 0`
+  # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
+  # TODO: Organize into separate frontends
+  bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem crt /etc/letsencrypt/live/dzintars.dev/haproxy.pem crt /etc/letsencrypt/live/merumore.com/haproxy.pem ecdhe secp384r1
+  http-response replace-header Location ^http://(.*)$	https://\1
+  maxconn 60000
 
-	http-request set-header X-Forwarded-Proto https
-	http-request set-header X-Forwarded-Port 443
-	capture request header X-Forwarded-For len 15
+  http-request set-header X-Forwarded-Proto https
+  http-request set-header X-Forwarded-Port 443
+  capture request header X-Forwarded-For len 15
 
+  # HSTS (63072000 or 31536000 seconds). Be carefull!!! Read about it!!!
+  http-response set-header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload;"
 
-    # HSTS (63072000 or 31536000 seconds). Be carefull!!! Read about it!!!
-    http-response set-header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload;"
+  # Limiting Request Rates
+  http-request track-sc0 src table per_ip_rates
+  http-request deny deny_status 429 if { sc_http_req_rate(0) gt 1000 }
 
-    # Limiting Request Rates
-    http-request track-sc0 src table per_ip_rates
-    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 1000 }
+  # Deny illegal user agents
+  http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
+  http-request deny unless { req.hdr(user-agent) -m found }
 
-    # Deny illegal user agents
-    http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
-    http-request deny unless { req.hdr(user-agent) -m found }
+  # Add security headers
+  http-response add-header Content-Security-Policy upgrade-insecure-requests
+  http-response set-header X-Content-Type-Options nosniff
+  http-response set-header X-XSS-Protection "1; mode=block"
+  http-response set-header Referrer-Policy no-referrer-when-downgrade
 
-    # Add security headers
-    http-response add-header Content-Security-Policy upgrade-insecure-requests
-    http-response set-header X-Content-Type-Options nosniff
-    http-response set-header X-XSS-Protection "1; mode=block"
-    http-response set-header Referrer-Policy no-referrer-when-downgrade
-
-    # http-response set-header X-Frame-Options DENY
+  # http-response set-header X-Frame-Options DENY
 	http-response set-header X-Frame-Options SAMEORIGIN
 	http-response del-header X-Powered-By
 	http-response del-header Server
@@ -140,60 +139,60 @@ frontend https-in
 	# # http-response set-header Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'self'; media-src 'self'; child-src 'self'; sandbox 'self'; report-uri 'self'; form-action 'self'; frame-ancestors 'self'"
 	# http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
 
-    # https://serverfault.com/a/677060/440073
-    acl dev.oswee.com.host hdr(host) -i dev.{{ cluster.fqdn }}
-    use_backend my_server if dev.oswee.com.host
+  # https://serverfault.com/a/677060/440073
+  acl dev.oswee.com.host hdr(host) -i dev.{{ cluster.fqdn }}
+  use_backend my_server if dev.oswee.com.host
 
-    acl cloud.oswee.com.host hdr(host) -i cloud.{{ cluster.fqdn }}
-    use_backend cloud.oswee.com.backend if cloud.oswee.com.host
+  acl cloud.oswee.com.host hdr(host) -i cloud.{{ cluster.fqdn }}
+  use_backend cloud.oswee.com.backend if cloud.oswee.com.host
 
-    acl office.oswee.com.host hdr(host) -i office.{{ cluster.fqdn }}
-    use_backend office.oswee.com.backend if office.oswee.com.host
+  acl office.oswee.com.host hdr(host) -i office.{{ cluster.fqdn }}
+  use_backend office.oswee.com.backend if office.oswee.com.host
 
-    acl dzintars.dev.host hdr(host) -i dzintars.dev
-    use_backend dzintars_dev if dzintars.dev.host
+  acl dzintars.dev.host hdr(host) -i dzintars.dev
+  use_backend dzintars_dev if dzintars.dev.host
 
-    acl merumore.com.host hdr(host) -i merumore.com
-    use_backend merumore.com.backend if merumore.com.host
+  acl merumore.com.host hdr(host) -i merumore.com
+  use_backend merumore.com.backend if merumore.com.host
 
-    acl host_jenkins hdr(Host) -i jenkins.{{ cluster.fqdn }}
-    use_backend jenkins if host_jenkins
+  acl host_jenkins hdr(Host) -i jenkins.{{ cluster.fqdn }}
+  use_backend jenkins if host_jenkins
 
-    acl host_my hdr(Host) -i my.{{ cluster.fqdn }}
-    use_backend my_oswee if host_my
+  acl host_my hdr(Host) -i my.{{ cluster.fqdn }}
+  use_backend my_oswee if host_my
 
-    # acl host_api hdr(Host) -i api.{{ cluster.fqdn }}
-    # use_backend bk_ws if host_api
+  # acl host_api hdr(Host) -i api.{{ cluster.fqdn }}
+  # use_backend bk_ws if host_api
 
-    acl hdr_connection_upgrade hdr(Connection)  -i upgrade
-    acl hdr_upgrade_websocket  hdr(Upgrade)     -i websocket
-    use_backend bk_ws if hdr_connection_upgrade hdr_upgrade_websocket
+  acl hdr_connection_upgrade hdr(Connection)  -i upgrade
+  acl hdr_upgrade_websocket  hdr(Upgrade)     -i websocket
+  use_backend bk_ws if hdr_connection_upgrade hdr_upgrade_websocket
 
-    default_backend be_default
+  default_backend be_default
 
 backend my_server
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    # option httpchk HEAD / h2,HTTP/1.1
-    option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
-    # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  # option httpchk HEAD / h2,HTTP/1.1
+  option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
+  # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
     server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
 backend dzintars_dev
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8084 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8084 check
 
 backend api
-    balance roundrobin
-    # http-request add-header X-Forwarded-Proto https
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ api.oswee.com
-    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ api.oswee.com
+  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 check
 
-backend bk_ws                                                    
+backend bk_ws
   balance roundrobin
   ## websocket protocol validation
   acl hdr_connection_upgrade hdr(Connection)                 -i upgrade
@@ -201,7 +200,7 @@ backend bk_ws
   acl hdr_websocket_key      hdr_cnt(Sec-WebSocket-Key)      eq 1
   acl hdr_websocket_version  hdr_cnt(Sec-WebSocket-Version)  eq 1
   http-request deny if ! hdr_connection_upgrade || ! hdr_upgrade_websocket || ! hdr_websocket_key || ! hdr_websocket_version
-  ## ensure our application protocol name is valid 
+  ## ensure our application protocol name is valid
   ## (don't forget to update the list each time you publish new applications)
   ## !!!! Note also that HTTP/2 explicitly disallows the use of this mechanism; it is specific to HTTP/1.1.
 #   acl ws_valid_protocol hdr(Sec-WebSocket-Protocol) echo-protocol
@@ -213,57 +212,57 @@ backend bk_ws
   #server websrv2 192.168.10.12:8080 maxconn 30000 weight 10 cookie websrv2 check
 
 backend my_oswee
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
 
 backend jenkins
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9093 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9093 check
 
 backend merumore.com.backend
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check
 
 backend cloud.oswee.com.backend
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8085 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8085 check
 
 backend office.oswee.com.backend
-    balance roundrobin
-    http-request add-header X-Forwarded-Proto https
-    compression algo gzip
-    compression type text/html text/plain text/css
-    # https://serverfault.com/a/887396/440073
-    # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-    server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9980 check
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9980 check
 
 backend be_default
-    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
-    http-request set-header Host Default
+  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
+  http-request set-header Host Default
 
-    # Set custom response headers
-    http-response set-header X-Powered-By "Snert and brown beans"
-    http-response set-header server "Microwave 2.4.001.2.5567.GA"
+  # Set custom response headers
+  http-response set-header X-Powered-By "Snert and brown beans"
+  http-response set-header server "Microwave 2.4.001.2.5567.GA"
 
 backend per_ip_rates
-    stick-table type ip size 1m expire 10m store http_req_rate(10s)
+  stick-table type ip size 1m expire 10m store http_req_rate(10s)

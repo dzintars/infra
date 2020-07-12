@@ -15,6 +15,7 @@
     remote_src: yes
 
 - name: copy Protoc binary
+  become: yes
   copy:
     src: /tmp/protoc3/bin/protoc
     dest: /usr/local/bin
@@ -22,6 +23,7 @@
     remote_src: yes
 
 - name: copy Protoc includes
+  become: yes
   copy:
     src: /tmp/protoc3/include/
     dest: /usr/local/include
