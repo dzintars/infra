@@ -10,3 +10,4 @@
     mode: "{{ item.mode }}"
   loop:
     - { src: "keybindings.json.j2", dest: "$HOME/.config/Code/User/keybindings.json", mode: '0644' }
+    - { src: "settings.json.j2", dest: "$HOME/.config/Code/User/settings.json", mode: '0644' }
