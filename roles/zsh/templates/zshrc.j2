@@ -126,13 +126,9 @@ export FZF_DEFAULT_OPS="--extended --height 40% --layout=reverse --border"
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
-export PROTOC=/usr/local/include
-export PATH=$PATH:$GOROOT:$GOPATH:$GOBIN:$PROTOC
+export PATH=$PATH:$GOROOT:$GOPATH:$GOBIN
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-#export PATH="$PATH:/opt/yarn-v1.23.0-20200205.1242/bin"
-#export PATH="$PATH:`yarn global bin`"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
