@@ -31,6 +31,12 @@
 
 # Potentially `PATH=$PATH:~/usr/local/include` should be added to the path in order for protoc to pick up google annotations like `google.protobuf.Timestamp status_time = 2;`
 
+# - name: Add annotations to system-wide $PATH.
+#   copy:
+#     dest: /etc/profile.d/protoc-path.sh
+#     content: 'PATH=$PATH:/usr/local/include'
+
+
 # Optional: change owner (Solution to "protoc-gen-go: program not found or is not executable" )
 # sudo chown $USER /usr/local/bin/protoc
 # sudo chown -R $USER /usr/local/include/google
