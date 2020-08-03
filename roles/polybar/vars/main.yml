@@ -15,7 +15,7 @@ packages:
   - xcb-util-image-devel
   - alsa-lib-devel
   - pulseaudio-libs-devel
-  - i3-ipc
+  # - i3-ipc
   - i3-devel
   - jsoncpp-devel
   - libmpdclient-devel
