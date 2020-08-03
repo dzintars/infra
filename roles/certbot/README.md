@@ -1,4 +1,4 @@
-Role Name
+Certbot
 =========
 
 A brief description of the role goes here.
@@ -6,7 +6,7 @@ A brief description of the role goes here.
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Probably need to execute `sudo chmod 750 /etc/letsencrypt/haproxy.sh` to get HAproxy running.
 
 Role Variables
 --------------
