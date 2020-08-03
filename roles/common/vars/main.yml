@@ -20,3 +20,4 @@ packages:
   - 'https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm'
   - 'https://downloads.slack-edge.com/linux_releases/slack-4.4.3-0.1.fc21.x86_64.rpm'
   - geany
+  - flameshot
