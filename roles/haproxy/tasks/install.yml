@@ -1,13 +1,24 @@
 ---
 # tasks file for install_haproxy
 
-# TODO: Enable HAproxy service
 - name: Install HAProxy
+  become: true
+  dnf:
+    name: haproxy.x86_64
+    state: latest
+
+- name: Install packages
   become: true
   dnf:
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
+
+- name: Make sure a HAProxy.service is enabled and running
+  systemd:
+    name: haproxy
+    enabled: yes
+    state: started
 
 - name: Turn On packet forwarding in order HAProxy to start
   become: true
