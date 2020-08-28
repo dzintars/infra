@@ -23,10 +23,12 @@ xnoremap <C-j> <C-w>j
 xnoremap <C-k> <C-w>k
 xnoremap <C-l> <C-w>l
 
-" ===== Move lines vertically =====
-xnoremap K :m '<-2<CR>gv=gv
-xnoremap J :m '<+1<CR>gv=gv
+" ===== Move lines vertically in visual and select mode =====
+"xnoremap <A-j> :m '<+1<CR>gv=gv
+"xnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Move VISUAL LINE selection within buffer. https://youtu.be/X5IAdaN6IwM
-" xnoremap <silent> K :call wincent#mappings#visual#move_up()<CR>
-" xnoremap <silent> J :call wincent#mappings#visual#move_down()<CR>
+xnoremap <silent> J :call move_down()<CR>
+xnoremap <silent> K :call move_up()<CR>
+
+"xnoremap <C-/> 'gc' " Comment in/out selection

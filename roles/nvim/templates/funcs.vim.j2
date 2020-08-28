@@ -10,7 +10,7 @@
 "   call feedkeys('gv', 'n')
 " endfunction
 
-" function! wincent#mappings#visual#move_up() abort range
+" function! move_up() abort range
 "   let l:count=v:count ? -v:count : -1
 "   let l:max=(a:firstline - 1) * -1
 "   let l:movement=max([l:count, l:max])
@@ -19,7 +19,7 @@
 "   call s:Move(l:address, l:should_move)
 " endfunction
 
-" function! wincent#mappings#visual#move_down() abort range
+" function! move_down() abort range
 "   let l:count=v:count ? v:count : 1
 "   let l:max=line('$') - a:lastline
 "   let l:movement=min([l:count, l:max])
