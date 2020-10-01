@@ -1,7 +1,11 @@
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
-let g:coc_global_extensions = [ 'coc-tsserver' ]
+let g:coc_global_extensions = [
+  \  'coc-tsserver',
+  \  'coc-eslint'
+  \ ]
+
 "let g:LanguageClient_serverCommands = {
 "  \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
 "  \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
