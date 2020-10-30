@@ -7,13 +7,13 @@
     - ansible:setup
     - ansible:setup:install
 
-- name: config
-  import_tasks: configure.yml
-  tags:
-    - ansible:setup
-    - ansible:setup:config
+# - name: config
+#   import_tasks: configure.yml
+#   tags:
+#     - ansible:setup
+#     - ansible:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - ansible:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - ansible:remove

@@ -6,7 +6,7 @@
   tags:
     - xorg:install
 
-- name: configure Xorg
-  import_tasks: configure.yml
-  tags:
-    - xorg:config
+# - name: configure Xorg
+#   import_tasks: configure.yml
+#   tags:
+#     - xorg:config

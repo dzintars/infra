@@ -13,7 +13,7 @@
     - go:setup
     - go:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - go:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - go:remove

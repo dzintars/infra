@@ -13,7 +13,7 @@
     - alacritty:setup
     - alacritty:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - alacritty:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - alacritty:remove

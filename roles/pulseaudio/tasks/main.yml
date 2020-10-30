@@ -7,13 +7,13 @@
     - pulseaudio:setup
     - pulseaudio:setup:install
 
-- name: config
-  import_tasks: configure.yml
-  tags:
-    - pulseaudio:setup
-    - pulseaudio:setup:config
+# - name: config
+#   import_tasks: configure.yml
+#   tags:
+#     - pulseaudio:setup
+#     - pulseaudio:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - pulseaudio:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - pulseaudio:remove

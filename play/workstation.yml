@@ -44,6 +44,9 @@
       tags: [vault]
     - role: mariadb
       tags: [mariadb]
+    # - role: geerlingguy.mysql
+    #   become: yes
+    #   tags: [mariadb]
     - role: xorg
       tags: [xorg]
     - role: polybar

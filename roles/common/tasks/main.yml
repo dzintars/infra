@@ -7,13 +7,13 @@
     - common:setup
     - common:setup:install
 
-- name: config
-  import_tasks: configure.yml
-  tags:
-    - common:setup
-    - common:setup:config
+# - name: config
+#   import_tasks: configure.yml
+#   tags:
+#     - common:setup
+#     - common:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - common:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - common:remove

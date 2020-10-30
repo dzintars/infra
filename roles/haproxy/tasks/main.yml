@@ -13,7 +13,7 @@
     - haproxy:setup
     - haproxy:setup:config
 
-- name: remove
-  import_tasks: remove.yml
-  tags:
-    - haproxy:remove
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - haproxy:remove

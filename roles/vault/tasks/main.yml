@@ -6,7 +6,7 @@
   tags:
     - vault:install
 
-- name: configure vault
-  import_tasks: configure.yml
-  tags:
-    - vault:config
+# - name: configure vault
+#   import_tasks: configure.yml
+#   tags:
+#     - vault:config

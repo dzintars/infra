@@ -1,6 +1,6 @@
 # MariaDB
 
-A brief description of the role goes here.
+This role manages MariaDB installation on RedHat distributions (Fedora)
 
 ## Requirements
 
@@ -28,4 +28,5 @@ BSD
 
 ## Author Information
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Primarily inspired by [https://github.com/geerlingguy/ansible-role-mysql]
+Dzintars Klavins dzintars.dev@gmail.com
