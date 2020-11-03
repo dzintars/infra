@@ -23,3 +23,18 @@
   dnf:
     name: "{{ visual_studio_code_package }}{{ (visual_studio_code_version | length > 0) | ternary('-' + visual_studio_code_version, '') }}"
     state: present
+
+
+# - name: Microsoft signing key.
+#   rpm_key:
+#     state: present
+#     key: https://packages.microsoft.com/keys/microsoft.asc
+
+# - name: Add Visual Studio Code Repository
+#   yum_repository:
+#     name: code
+#     file: vscode
+#     description: Visual Studio Code
+#     baseurl: https://packages.microsoft.com/yumrepos/vscode
+#     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+#     gpgcheck: yes

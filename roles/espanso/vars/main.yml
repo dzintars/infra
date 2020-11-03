@@ -1,0 +1,7 @@
+---
+# vars file for roles/espanso
+packages:
+  - libXtst.x86_64
+  - libxdo.x86_64
+  - xclip
+  - libnotify.x86_64

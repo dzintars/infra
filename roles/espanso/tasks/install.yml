@@ -1,0 +1,27 @@
+---
+# tasks file for roles/espanso
+
+
+- name: install packages
+  become: yes
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+
+- name: download binary
+  unarchive:
+    src: https://github.com/federico-terzi/espanso/releases/latest/download/espanso-linux.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: copy binary
+  become: yes
+  copy:
+    src: /tmp/espanso
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+
+# espanso must be registered to systemd (user level) first. Do you want to proceed? [Y/n]

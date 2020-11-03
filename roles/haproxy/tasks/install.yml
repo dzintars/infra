@@ -15,6 +15,7 @@
   loop: "{{ packages }}"
 
 - name: Make sure a HAProxy.service is enabled and running
+  become: true
   systemd:
     name: haproxy
     enabled: yes

@@ -70,14 +70,19 @@ padding-right = 2
 module-margin-left = 0
 module-margin-right = 2
 
-;font-0 = fixed:pixelsize=10;1
-;font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-;font-0 = SFNS Display:size=8:weight=bold
-;font-0 = Roboto Mono:size=9:weight=regular
+; font-0 = fixed:pixelsize=10;1
+; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+; font-1 = SFNS Display:size=8:weight=bold
+; font-1 = Roboto Mono:size=9:weight=regular
 
-font-0 = SauceCodePro Nerd Font Mono Light:size=10:weight=regular
+font-0 = Hack Nerd Font:size=10:weight=regular
 font-1 = FontAwesome:size=10
-;font-2 = "Wuncon Siji:pixelsize=10;1"
+; font-2 = Siji:style=Regular
+; font-2 = "Wuncon Siji:pixelsize=10;1"
+
+; font-0 = terminus:pixelsize=10;1
+; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
 
 modules-left = i3
 ;modules-left = menu i3 xwindow
@@ -182,11 +187,11 @@ format-offline = <label-offline>
 label-offline =  no music
 
 icon-prev = 
-icon-stop = o
-icon-play = 
-icon-pause = 
+icon-stop = 
+icon-play = 
+icon-pause = 
 icon-next = 
-icon-seekf = >>
+icon-seekf = 
 icon-random = 
 icon-repeat = 
 
@@ -200,7 +205,7 @@ toggle-off-foreground = #66
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
+format-prefix = " "
 ;format-underline = #f90000
 label = %percentage:2%%
 
@@ -213,7 +218,7 @@ format-underline = #4bffdc
 ;label = %percentage%%
 label = %gb_used%
 ; label = %gb_used%/%gb_total%
-;label-foreground = #ed5456
+; label-foreground = #ed5456
 label-foreground = #999999
 
 ;bar-used-width = 10
@@ -234,7 +239,7 @@ format-connected = <ramp-signal> <label-connected>
 
 ;format-connected-underline = #0a6cf5
 ;label-connected =  %essid%
-;label-connected =    %downspeed% |     %upspeed% 
+;label-connected =    %downspeed% |     %upspeed%
 label-connected = " %signal% [  %downspeed% ] [  %upspeed% ]"
 
 format-disconnected = 
@@ -270,7 +275,7 @@ format-disconnected =
 type = internal/date
 interval = 60
 
-date =  %a %d-%m-%Y
+date =  %a %d-%m-%Y
 date-alt = " %Y-%m-%d"
 
 ;format-prefix = 
@@ -293,7 +298,7 @@ format-prefix-foreground = ${colors.foreground-alt}
 label = %time%
 
 [module/volume]
-type = internal/volume
+type = internal/pulseaudio
 master-mixer = Master
 
 ;format-underline = #55aa55
@@ -350,14 +355,14 @@ format-spacing = 1
 
 label-open = 
 label-open-foreground = ${colors.secondary}
-label-close = 
+label-close = 
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
-menu-0-0 =  
+menu-0-0 = 累
 menu-0-0-exec = menu-open-1
-menu-0-1 =  shutdown
+menu-0-1 = 襤 shutdown
 menu-0-1-exec = menu-open-2
 
 menu-1-0 = cancel
@@ -365,7 +370,7 @@ menu-1-0-exec = menu-open-0
 menu-1-1 = reboot
 menu-1-1-exec = sudo reboot
 
-menu-2-0 =  shutdown
+menu-2-0 = 襤 shutdown
 menu-2-0-exec = sudo poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
@@ -404,16 +409,16 @@ type = custom/menu
 
 ; "menu-LEVEL-N" has the same properties as "label-NAME" with
 ;  the additional "exec" property
-; 
+;
 ;  Available exec commands:
 ;    menu-open-LEVEL
 ;    menu-close
 ;  Other commands will be executed using "/usr/bin/env sh -c $COMMAND"
-; 
+;
 
- menu-0-0 =  
+ menu-0-0 = 
  #menu-0-0-exec = menu-open-1
- menu-0-2 =  
+ menu-0-2 = 
  #menu-0-2-exec = menu-open-3
 
  menu-1-0 = Firefox

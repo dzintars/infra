@@ -1,8 +1,17 @@
 ---
 # tasks file for roles/certbot
 
-- name: Synchronize existing certificates
-  become: true
+- name: mount backups drive
+  become: yes
+  mount:
+    path: /mnt/backups
+    src: UUID=478ebb49-bd04-4f34-b459-791638b9bec4 # /dev/sdb
+    fstype: btrfs
+    opts: bind
+    state: present
+
+- name: copy existing certificates
+  become: yes
   synchronize:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -10,4 +19,15 @@
     group: no
   delegate_to: '192.168.1.2'
   loop:
-    - { src: "/mnt/backups/workstation/etc/letsencrypt/", dest: "/etc/letsencrypt" }
+    - { src: "/mnt/backups/fedora/32/etc/letsencrypt/", dest: "/etc/letsencrypt" }
+
+- name: copy existing certificates into userspace
+  become: yes
+  synchronize:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: yes
+    group: yes
+  delegate_to: '192.168.1.2'
+  loop:
+    - { src: "/mnt/backups/fedora/32/home/dzintars/.tls/", dest: "/home/dzintars/.tls" }

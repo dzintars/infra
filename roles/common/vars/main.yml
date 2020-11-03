@@ -1,23 +1,26 @@
 ---
 # vars file for roles/common
 
-fedora_current: 32
+fedora_current: 33
+fedora_distribution_version: 2020
 
 packages:
   - 'https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm'
+  - 'https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm'
+  - 'https://downloads.slack-edge.com/linux_releases/slack-4.10.3-0.1.fc21.x86_64.rpm'
+  # - 'https://github.com/Figma-Linux/figma-linux/releases/download/v0.6.2/figma-linux-0.6.2.x86_64.rpm'
   - pcmanfm
   - xclip
-  - 'https://github.com/Figma-Linux/figma-linux/releases/download/v0.6.2/figma-linux-0.6.2.x86_64.rpm'
   - blender
   - remmina
   - ffmpeg
-  - xorg-x11-drv-nvidia-cuda
+  # - xorg-x11-drv-nvidia-cuda
   - obs-studio
   - keepassxc
   - breeze-icon-theme
   - libreoffice
   - htop
-  - 'https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm'
-  - 'https://downloads.slack-edge.com/linux_releases/slack-4.4.3-0.1.fc21.x86_64.rpm'
   - geany
   - flameshot
+  - peek
+  - qbittorrent.x86_64

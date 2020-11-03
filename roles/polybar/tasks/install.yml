@@ -8,11 +8,11 @@
     state: latest
   loop: "{{ packages }}"
 
-- name: clone polybar repository into /tmp.
-  git:
-    repo: https://github.com/polybar/polybar
-    version: master
-    dest: /tmp/polybar
+# - name: clone polybar repository into /tmp.
+#   git:
+#     repo: https://github.com/polybar/polybar
+#     version: master
+#     dest: /tmp/polybar
 
 # In order to fix `journalctl -b`'s `polybar|warn:  Dropping unmatched character  (U+e016)` errors i need to install Siji font
 - name: clone Siji font

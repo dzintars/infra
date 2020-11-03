@@ -11,6 +11,15 @@
     mode: '0755'
   loop: "{{ mountpoints }}"
 
+- name: create i3 config directory
+  file:
+    path: "$HOME/.config/i3"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+
+
 - name: copy configs
   template:
     src: "{{ item.src }}"
@@ -60,4 +69,4 @@
     group: "{{ become_user }}"
     mode: '0644'
   loop:
-    - { src: "tharsus.jpg", dest: "$HOME/Pictures/Wallpapers" }
+    - { src: "wallpapers/tharsus.jpg", dest: "$HOME/Pictures/Wallpapers" }

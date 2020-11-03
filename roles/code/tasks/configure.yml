@@ -1,5 +1,12 @@
 ---
   # tasks file for roles/common
+- name: create VS Code config directory
+  file:
+    path: "$HOME/.config/Code/User"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
 
 - name: copy configs
   template:

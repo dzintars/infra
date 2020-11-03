@@ -1,18 +1,40 @@
 ---
-  # tasks file for roles/common
+# tasks file for roles/common
+
+# - name: Google Linux signing key
+#   become: yes
+#   rpm_key:
+#     state: present
+#     key: https://dl.google.com/linux/linux_signing_key.pub
+
+# - name: Add Google Chrome Repository
+#   yum_repository:
+#     name: google-chrome
+#     description: google-chrome
+#     baseurl: http://dl.google.com/linux/chrome/rpm/stable/x86_64
+#     gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+#     gpgcheck: yes
+
+- name: install rpm keys
+  become: yes
+  rpm_key:
+    state: present
+    key: "{{ item }}"
+  loop:
+    - http://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-{{ fedora_distribution_version }}
+    - http://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ fedora_distribution_version }}
+    - https://linux.teamviewer.com/pubkey/currentkey.asc
+    - https://slack.com/gpg/slack_pubkey_2019.gpg
 
 - name: install the rpmfusion repo
   become: yes
   dnf:
     name: "{{ item }}"
     state: present
-  with_items:
+    # disable_gpg_check: yes # TODO: I should add RPM Keys https://github.com/ansible/ansible/issues/71634#issuecomment-687202262
+  loop:
     - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_current }}.noarch.rpm
     - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_current }}.noarch.rpm
-
-#https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
-#https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
 
 - name: install packages
   become: yes
@@ -20,3 +42,32 @@
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
+
+- name: create appimage directory
+  # become: yes
+  file:
+    path: $HOME/.local/bin/obsidian
+    state: directory
+    mode: '755'
+    recurse: yes
+
+- name: download obsiadian
+  get_url:
+    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.6/Obsidian-0.9.6.AppImage # TODO: remove `0.9.6` magvar
+    dest: $HOME/.local/bin/obsidian
+    mode: u+x
+
+- name: extract obsidian appimage
+  # become: yes
+  shell:
+  args:
+    cmd: ./Obsidian-0.9.6.AppImage --appimage-extract # TODO: remove `0.9.6` magvar
+    chdir: $HOME/.local/bin/obsidian
+
+- name: create obsidian symlink
+  become: yes
+  file:
+    src: /home/dzintars/.local/bin/obsidian/squashfs-root/obsidian # TODO: remove `dzintars` magvar
+    path: /usr/local/bin/obsidian
+    state: link
+    force: yes

@@ -1,2 +1,18 @@
 ---
-  # tasks file for roles/code
+# tasks file for roles/common
+
+- name: create qbittorent directory
+  file:
+    path: "$HOME/.config/qBittorrent"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+
+- name: copy qbittorrent theme file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "Absinthe.qbtheme", dest: "$HOME/.config/qBittorrent", mode: '0644' }

@@ -1,0 +1,11 @@
+---
+# tasks file for roles/espanso
+
+- name: copy config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "default.yml", dest: "$HOME/.config/espanso", mode: '0644' }
+

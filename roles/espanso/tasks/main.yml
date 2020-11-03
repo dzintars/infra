@@ -1,0 +1,19 @@
+---
+# tasks file for roles/espanso
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - espanso:setup
+    - espanso:setup:install
+
+- name: config
+  import_tasks: configure.yml
+  tags:
+    - espanso:setup
+    - espanso:setup:config
+
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - espanso:remove

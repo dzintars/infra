@@ -4,7 +4,7 @@
 # TODO: https://stackoverflow.com/a/49844531/6651080
 - name: install a modularity appstream with defined stream
   become: true
-  shell: curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+  shell: curl -sL https://rpm.nodesource.com/setup_15.x | sudo bash -
   args:
     warn: no
 
@@ -18,20 +18,16 @@
 - name: Install Yarn package globally
   become: yes
   npm:
-    name: yarn
+    name: yarn@latest
     global: yes
 
 - name: Install TypeScript package globally.
   yarn:
-    name: typescript
+    name: typescript@latest
     global: yes
 
 - name: Install Neovim package globally.
   yarn:
-    name: neovim
+    name: neovim@latest
     global: yes
 
-# - name: Install TypeScript package globally.
-#   npm:
-#     name: typescript
-#     global: yes
