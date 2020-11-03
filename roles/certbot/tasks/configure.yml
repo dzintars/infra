@@ -1,14 +1,23 @@
 ---
 # tasks file for roles/certbot
 
-- name: mount backups drive
-  become: yes
-  mount:
-    path: /mnt/backups
-    src: UUID=478ebb49-bd04-4f34-b459-791638b9bec4 # /dev/sdb
-    fstype: btrfs
-    opts: bind
-    state: present
+# - name: mount backups drive
+#   become: yes
+#   mount:
+#     path: /mnt/backups
+#     src: UUID=478ebb49-bd04-4f34-b459-791638b9bec4 # /dev/sdb
+#     fstype: btrfs
+#     opts: bind
+#     state: present
+
+# - name: mount and bind a backups volume
+#   become: true
+#   mount:
+#     path: /mnt/backups
+#     src: /dev/sdb
+#     opts: bind
+#     state: mounted
+#     fstype: btrfs
 
 - name: copy existing certificates
   become: yes

@@ -12,6 +12,10 @@
       tags: [bastion]
     - role: network
       tags: [network]
+    - role: bazel
+      tags: [bazel]
+    - role: espanso
+      tags: [espanso]
     - role: openshift
       tags: [openshift]
     - role: libvirt

@@ -32,3 +32,13 @@
     # owner: "{{ become_user }}"
     force: yes
 
+- name: Install Neovim package globally.
+  yarn:
+    name: neovim@latest
+    global: yes
+    
+- name: Install pynvim python package
+  pip:
+    name: pynvim
+    state: forcereinstall
+

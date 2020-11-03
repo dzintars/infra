@@ -1,20 +1,6 @@
 ---
 # tasks file for roles/common
 
-# - name: Google Linux signing key
-#   become: yes
-#   rpm_key:
-#     state: present
-#     key: https://dl.google.com/linux/linux_signing_key.pub
-
-# - name: Add Google Chrome Repository
-#   yum_repository:
-#     name: google-chrome
-#     description: google-chrome
-#     baseurl: http://dl.google.com/linux/chrome/rpm/stable/x86_64
-#     gpgkey: https://dl.google.com/linux/linux_signing_key.pub
-#     gpgcheck: yes
-
 - name: install rpm keys
   become: yes
   rpm_key:
@@ -25,6 +11,7 @@
     - http://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ fedora_distribution_version }}
     - https://linux.teamviewer.com/pubkey/currentkey.asc
     - https://slack.com/gpg/slack_pubkey_2019.gpg
+    - https://dl.google.com/linux/linux_signing_key.pub
 
 - name: install the rpmfusion repo
   become: yes

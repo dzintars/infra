@@ -1,5 +1,5 @@
 ---
-ansible_python_interpreter: "/usr/bin/python3.8"
+ansible_python_interpreter: "/usr/bin/python3.9"
 
 # TODO: Restructure variables
 

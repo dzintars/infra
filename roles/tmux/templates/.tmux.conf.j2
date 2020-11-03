@@ -1,9 +1,39 @@
 source "/usr/share/tmux/powerline.conf"
-bind-key b send-prefix
+
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# Index windows from 1 instead of 0
+set -g base-index 1
+
+# split panes using _ and -
+unbind '"'
+unbind %
+bind _ split-window -h
+bind - split-window -v
+
+# switch panes using Alt-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Shift arrow to switch windows
+bind -n S-Left  previous-window
+bind -n S-Right next-window
+
+# Enable mouse mode
+set -g mouse on
 
 # NeoVim ERROR: escape-time (500) is higher than 300ms
 set-option -sg escape-time 10
-set -g default-terminal "xterm-256color"
+
+# True color for the Vim
+# set -g default-terminal "xterm-256color"
+set-option -g default-terminal "alacritty"
+set-option -ga terminal-overrides ",alacritty:Tc,*256col*:Tc"
 
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'

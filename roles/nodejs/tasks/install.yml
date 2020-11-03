@@ -26,8 +26,3 @@
     name: typescript@latest
     global: yes
 
-- name: Install Neovim package globally.
-  yarn:
-    name: neovim@latest
-    global: yes
-
