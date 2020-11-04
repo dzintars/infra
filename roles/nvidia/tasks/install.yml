@@ -8,18 +8,12 @@
     state: latest
   loop: "{{ packages }}"
 
-- name: remove nouveau driver
-  become: true
-  dnf:
-    name: xorg-x11-drv-nouveau
-    state: absent
-
-- name: unload nouveau
-  become: true
-  modprobe:
-    name: nouveau
-    state: absent
-  ignore_errors: true
+# - name: unload nouveau
+#   become: true
+#   modprobe:
+#     name: nouveau
+#     state: absent
+#   ignore_errors: true
 
 - name: blacklist nouveau
   become: true
@@ -47,28 +41,34 @@
   become: true
   command: grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 
+- name: remove nouveau driver
+  become: true
+  dnf:
+    name: xorg-x11-drv-nouveau
+    state: absent
+
 - name: backup old initramfs nouveau image
   become: true
   copy:
-    src: "/boot/initramfs-$(uname -r).img"
-    dest: "/boot/initramfs-$(uname -r)-nouveau.img"
+    src: "/boot/initramfs-{{ ansible_kernel }}.img"
+    dest: "/boot/initramfs-{{ ansible_kernel }}-nouveau.img"
     remote_src: yes
 
 - name: create new initramfs image
   become: true
-  command: dracut /boot/initramfs-$(uname -r).img $(uname -r)
+  command: dracut --force /boot/initramfs-{{ ansible_kernel }}.img {{ ansible_kernel }}
 
-- name: Reboot to apply new kernel
-  shell: "sleep 5 && reboot"
-  async: 1
-  poll: 0
+# - name: Reboot to apply new kernel
+#   shell: "sleep 5 && reboot"
+#   async: 1
+#   poll: 0
 
-- name: Wait for the reboot to complete
-  wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
-    delay: 5
-    timeout: 300
+# - name: Wait for the reboot to complete
+#   wait_for_connection:
+#     connect_timeout: 20
+#     sleep: 5
+#     delay: 5
+#     timeout: 300
 
 - name: download Nvidia driver
   get_url:
@@ -76,22 +76,23 @@
     dest: /tmp
     mode: '0700'
 
-- name: Install Nvidia Driver
-  command: "/bin/bash /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run -q -a -n -X -s"
+# - name: Install Nvidia Driver
+#   become: yes
+#   command: "/bin/bash /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run -q -a -n -X -s"
 
-- name: Remove driver file
-  file:
-    path: /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run
-    state: absent
+# - name: Remove driver file
+#   file:
+#     path: /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run
+#     state: absent
 
-- name: Reboot to finish driver install
-  shell: "sleep 5 && reboot"
-  async: 1
-  poll: 0
+# - name: Reboot to finish driver install
+#   shell: "sleep 5 && reboot"
+#   async: 1
+#   poll: 0
 
-- name: Wait for the reboot to complete
-  wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
-    delay: 5
-    timeout: 300
+# - name: Wait for the reboot to complete
+#   wait_for_connection:
+#     connect_timeout: 20
+#     sleep: 5
+#     delay: 5
+#     timeout: 300
