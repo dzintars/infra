@@ -58,41 +58,41 @@
   become: true
   command: dracut --force /boot/initramfs-{{ ansible_kernel }}.img {{ ansible_kernel }}
 
-# - name: Reboot to apply new kernel
-#   shell: "sleep 5 && reboot"
-#   async: 1
-#   poll: 0
-
-# - name: Wait for the reboot to complete
-#   wait_for_connection:
-#     connect_timeout: 20
-#     sleep: 5
-#     delay: 5
-#     timeout: 300
+# - name: Reboot host and wait for it to restart
+#   reboot:
+#     msg: "Reboot initiated by Ansible"
+#     connect_timeout: 5
+#     reboot_timeout: 600
+#     pre_reboot_delay: 0
+#     post_reboot_delay: 30
+#     test_command: whoami
 
 - name: download Nvidia driver
   get_url:
     url: "http://us.download.nvidia.com/XFree86/Linux-x86_64/{{ driver_version }}/NVIDIA-Linux-x86_64-{{ driver_version }}.run"
-    dest: /tmp
+    dest: $HOME
     mode: '0700'
+
+######
+# When running locally the final installation i do manually
+# Ideally, i should run it form my other machine or to think, how can i continue ansible task after the host reboot.
+######
 
 # - name: Install Nvidia Driver
 #   become: yes
-#   command: "/bin/bash /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run -q -a -n -X -s"
+#   command: "/bin/bash $HOME/NVIDIA-Linux-x86_64-{{ driver_version }}.run -q -a -n -X -s"
 
 # - name: Remove driver file
 #   file:
-#     path: /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run
+#     path: $HOME/NVIDIA-Linux-x86_64-{{ driver_version }}.run
 #     state: absent
 
-# - name: Reboot to finish driver install
-#   shell: "sleep 5 && reboot"
-#   async: 1
-#   poll: 0
+# - name: Reboot host and wait for it to restart
+#   reboot:
+#     msg: "Reboot initiated by Ansible"
+#     connect_timeout: 5
+#     reboot_timeout: 600
+#     pre_reboot_delay: 0
+#     post_reboot_delay: 30
+#     test_command: whoami
 
-# - name: Wait for the reboot to complete
-#   wait_for_connection:
-#     connect_timeout: 20
-#     sleep: 5
-#     delay: 5
-#     timeout: 300
