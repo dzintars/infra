@@ -1,0 +1,19 @@
+---
+# tasks file for roles/obsidian
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - obsidian:setup
+    - obsidian:setup:install
+
+# - name: config
+#   import_tasks: configure.yml
+#   tags:
+#     - obsidian:setup
+#     - obsidian:setup:config
+
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - obsidian:remove

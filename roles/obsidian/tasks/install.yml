@@ -1,0 +1,31 @@
+---
+# tasks file for roles/obsidian
+
+- name: create appimage directory
+  # become: yes
+  file:
+    path: $HOME/.local/bin/obsidian
+    state: directory
+    mode: '755'
+    recurse: yes
+
+- name: download obsiadian
+  get_url:
+    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.10/Obsidian-0.9.10.AppImage # TODO: remove `0.9.10` magvar
+    dest: $HOME/.local/bin/obsidian
+    mode: u+x
+
+- name: extract obsidian appimage
+  # become: yes
+  shell:
+  args:
+    cmd: ./Obsidian-0.9.10.AppImage --appimage-extract # TODO: remove `0.9.10` magvar
+    chdir: $HOME/.local/bin/obsidian
+
+- name: create obsidian symlink
+  become: yes
+  file:
+    src: /home/dzintars/.local/bin/obsidian/squashfs-root/obsidian # TODO: remove `dzintars` magvar
+    path: /usr/local/bin/obsidian
+    state: link
+    force: yes

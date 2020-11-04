@@ -10,8 +10,8 @@
     - http://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-{{ fedora_distribution_version }}
     - http://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ fedora_distribution_version }}
     - https://linux.teamviewer.com/pubkey/currentkey.asc
-    - https://slack.com/gpg/slack_pubkey_2019.gpg
     - https://dl.google.com/linux/linux_signing_key.pub
+    - https://slack.com/gpg/slack_pubkey_2019.gpg
 
 - name: install the rpmfusion repo
   become: yes
@@ -30,31 +30,3 @@
     state: latest
   loop: "{{ packages }}"
 
-- name: create appimage directory
-  # become: yes
-  file:
-    path: $HOME/.local/bin/obsidian
-    state: directory
-    mode: '755'
-    recurse: yes
-
-- name: download obsiadian
-  get_url:
-    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.6/Obsidian-0.9.6.AppImage # TODO: remove `0.9.6` magvar
-    dest: $HOME/.local/bin/obsidian
-    mode: u+x
-
-- name: extract obsidian appimage
-  # become: yes
-  shell:
-  args:
-    cmd: ./Obsidian-0.9.6.AppImage --appimage-extract # TODO: remove `0.9.6` magvar
-    chdir: $HOME/.local/bin/obsidian
-
-- name: create obsidian symlink
-  become: yes
-  file:
-    src: /home/dzintars/.local/bin/obsidian/squashfs-root/obsidian # TODO: remove `dzintars` magvar
-    path: /usr/local/bin/obsidian
-    state: link
-    force: yes

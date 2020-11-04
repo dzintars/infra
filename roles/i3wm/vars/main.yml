@@ -5,8 +5,8 @@ packages:
   - i3
   - dmenu
   - i3lock
-  - sddm
-  - compton
+  # - sddm
+  # - compton
   # - scrot  # Replaced scrot with maim because of missing libraries.
   - maim
   - ImageMagick.x86_64  # Provides `convert` package to blur the screenshot
