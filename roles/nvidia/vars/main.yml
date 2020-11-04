@@ -12,6 +12,9 @@ packages:
   - libglvnd-opengl
   - libglvnd-devel
   - pkgconfig
+  - vdpauinfo
+  - libva-vdpau-driver
+  - libva-utils
 
 driver_version: "455.38"
 
