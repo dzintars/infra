@@ -13,4 +13,5 @@ packages:
   - libglvnd-devel
   - pkgconfig
 
-nvidia_driver: http://us.download.nvidia.com/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run
+driver_version: "455.38"
+

@@ -7,11 +7,11 @@
     - nvidia:setup
     - nvidia:setup:install
 
-- name: config
-  import_tasks: configure.yml
-  tags:
-    - nvidia:setup
-    - nvidia:setup:config
+# - name: config
+#   import_tasks: configure.yml
+#   tags:
+#     - nvidia:setup
+#     - nvidia:setup:config
 
 - name: remove
   import_tasks: remove.yml

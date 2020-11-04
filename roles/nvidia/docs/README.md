@@ -1,5 +1,7 @@
 # README
 
+**WARNING:** Before running this role, make sure you do the following (not automated yet):
+
 Stolen from https://gist.github.com/Rambou/c6769caee19b0b9915d8342b86c3ef72 :)
 
 If, like me, your are booting with UEFI (because having a triple boot ubuntu-windows-mac or because UEFI is the most modern type of bootloader and successor of EFI :p), you have to sign the proprietary modules each time they are recompiled (or upgrade kernel version) so that they are allowed to be loaded in the kernel.
@@ -22,7 +24,7 @@ At this step after reboot you will be prompted to select your certificate to imp
 
 ## 4) Now we can install our nvidia driver
 
-But first let us take a selfi... no seriously we need to take a selfi with our lovely linux installation because it can be fucked...
+But first let us take a selfie... no seriously we need to take a selfi with our lovely linux installation because it can be fucked...
 just kidding :D, it will not!
 
 ## 5) Before we install we first need to uninstall previous drivers, probably nouveau.

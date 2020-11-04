@@ -13,15 +13,18 @@
   lineinfile:
     path: /etc/modprobe.d/blacklist.conf
     line: blacklist nouveau
+    state: present
     create: yes
 
 - name: disable nonveau, opensource version of NVIDIA graphics driver
   become: true
   lineinfile:
-    dest: /etc/sysconfig/grub
-    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX rd.driver.blacklist=nouveau"'
-    validate: 'sh -n %s'
-    create: yes
+    path: "/etc/sysconfig/grub"
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX=(?!.*rd.driver.blacklist\=nouveau)\"[^\"]+)(\".*)'
+    line: '\1 rd.driver.blacklist=nouveau\2'
+    state: present
+    backup: yes
 
 - name: update grub2 conf BIOS
   become: true
@@ -33,7 +36,10 @@
 
 - name: backup old initramfs nouveau image
   become: true
-  command: mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r)-nouveau.img
+  copy:
+    src: "/boot/initramfs-$(uname -r).img"
+    dest: "/boot/initramfs-$(uname -r)-nouveau.img"
+    remote_src: yes
 
 - name: create new initramfs image
   become: true

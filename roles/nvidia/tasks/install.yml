@@ -1,12 +1,6 @@
 ---
 # tasks file for roles/nvidia
 
-- name: remove nouveau driver
-  become: true
-  dnf:
-    name: xorg-x11-drv-nouveau
-    state: absent
-
 - name: install packages
   become: true
   dnf:
@@ -14,8 +8,90 @@
     state: latest
   loop: "{{ packages }}"
 
+- name: remove nouveau driver
+  become: true
+  dnf:
+    name: xorg-x11-drv-nouveau
+    state: absent
+
+- name: unload nouveau
+  become: true
+  modprobe:
+    name: nouveau
+    state: absent
+  ignore_errors: true
+
+- name: blacklist nouveau
+  become: true
+  lineinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    line: blacklist nouveau
+    state: present
+    create: yes
+
+- name: disable nonveau, opensource version of NVIDIA graphics driver
+  become: true
+  lineinfile:
+    path: "/etc/sysconfig/grub"
+    backrefs: yes
+    regexp: '^(GRUB_CMDLINE_LINUX=(?!.*rd.driver.blacklist\=nouveau)\"[^\"]+)(\".*)'
+    line: '\1 rd.driver.blacklist=nouveau\2'
+    state: present
+    backup: yes
+
+- name: update grub2 conf BIOS
+  become: true
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+
+- name: update grub2 conf UEFI
+  become: true
+  command: grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+
+- name: backup old initramfs nouveau image
+  become: true
+  copy:
+    src: "/boot/initramfs-$(uname -r).img"
+    dest: "/boot/initramfs-$(uname -r)-nouveau.img"
+    remote_src: yes
+
+- name: create new initramfs image
+  become: true
+  command: dracut /boot/initramfs-$(uname -r).img $(uname -r)
+
+- name: Reboot to apply new kernel
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+
+- name: Wait for the reboot to complete
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+
 - name: download Nvidia driver
   get_url:
-    url: "{{nvidia_driver}}"
+    url: "http://us.download.nvidia.com/XFree86/Linux-x86_64/{{ driver_version }}/NVIDIA-Linux-x86_64-{{ driver_version }}.run"
     dest: /tmp
-    mode: '1777'
+    mode: '0700'
+
+- name: Install Nvidia Driver
+  command: "/bin/bash /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run -q -a -n -X -s"
+
+- name: Remove driver file
+  file:
+    path: /tmp/NVIDIA-Linux-x86_64-{{ driver_version }}.run
+    state: absent
+
+- name: Reboot to finish driver install
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+
+- name: Wait for the reboot to complete
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
