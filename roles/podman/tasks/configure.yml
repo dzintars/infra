@@ -1,0 +1,21 @@
+---
+# tasks file for roles/podman
+
+- name: create containers directory
+  file:
+    path: "$HOME/.config/containers"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+
+- name: copy scripts and make executable
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "containers.conf", dest: "$HOME/.config/containers/", mode: '0644' }
+    - { src: "registries.conf", dest: "$HOME/.config/containers/", mode: '0644' }
+    - { src: "storage.conf", dest: "$HOME/.config/containers/", mode: '0644' }
+    - { src: "auth.json", dest: "$HOME/.config/containers/", mode: '0644' }

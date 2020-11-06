@@ -5,34 +5,46 @@ endif
 
 call plug#begin(stdpath('data') . '/plugged')
 
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox' " Community fork of the original Gruvbox theme
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive' " Git
 
-Plug 'editorconfig/editorconfig-vim' "Use .editorconfig if provided
-Plug 'tpope/vim-commentary' "gcc Comments
-Plug 'jiangmiao/auto-pairs'
+Plug 'editorconfig/editorconfig-vim' " Use .editorconfig if provided
+Plug 'tpope/vim-commentary' " gcc Comments
+" Plug 'jiangmiao/auto-pairs' " Insert quotes, brackets, etc in pairs (not the best DX)
 Plug 'alvan/vim-closetag'
-Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround' " Change surroundings in pairs
 
-Plug 'HerringtonDarkholme/yats.vim' "TS Syntax
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" JavaScript
+Plug 'pangloss/vim-javascript'
 "Tagged template litterals https://github.com/jonsmithers/vim-html-template-literals
 Plug 'jonsmithers/vim-html-template-literals', {'branch': 'dev'}
-Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json'
+
+" TypeScript
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+" Plug 'leafgarland/typescript-vim' " TS Syntax
+
+" Golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'tweekmonster/gofmt.vim' " Auto gofmt
+
 " Protobufs
-Plug 'dense-analysis/ale'
 Plug 'bufbuild/vim-buf'
-Plug 'tpope/vim-markdown'
-Plug 'ap/vim-css-color' "Display a preview of colors with css
+
 " Ansible
 Plug 'pearofducks/ansible-vim'
+
 " Bazel
 Plug 'google/vim-maktaba'
 Plug 'bazelbuild/vim-bazel'
 
+" Other
+Plug 'dense-analysis/ale'
+Plug 'tpope/vim-markdown'
+Plug 'ap/vim-css-color' "Display a preview of colors with css
 Plug 'vimwiki/vimwiki'
 
 Plug 'autozimu/LanguageClient-neovim', {

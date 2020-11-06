@@ -35,6 +35,7 @@
     - { src: "plugins.d/01-startify.vim.j2", dest: "$HOME/.config/nvim/plugins.d/01-startify.vim" }
     - { src: "plugins.d/02-airline.vim.j2", dest: "$HOME/.config/nvim/plugins.d/02-airline.vim" }
     - { src: "plugins.d/20-coc.vim.j2", dest: "$HOME/.config/nvim/plugins.d/20-coc.vim" }
+    - { src: "plugins.d/30-ale.vim.j2", dest: "$HOME/.config/nvim/plugins.d/30-ale.vim" }
     - { src: "plugins.d/40-nerdtree.vim.j2", dest: "$HOME/.config/nvim/plugins.d/40-nerdtree.vim" }
     - { src: "plugins.d/50-fzf.vim.j2", dest: "$HOME/.config/nvim/plugins.d/50-fzf.vim" }
     - { src: "autocmd.vim.j2", dest: "$HOME/.config/nvim/autocmd.vim" }

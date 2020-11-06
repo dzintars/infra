@@ -5,8 +5,15 @@ unbind C-b
 set-option -g prefix C-a
 bind-key C-a send-prefix
 
-# Index windows from 1 instead of 0
+# Start windows index at 1 instead of 0
 set -g base-index 1
+
+# Start pane index at 1 instead of 0
+setw -g pane-base-index 1
+
+# Highlight window when it has new activity
+setw -g monitor-activity on
+set -g visual-activity on
 
 # split panes using _ and -
 unbind '"'
@@ -19,6 +26,12 @@ bind -n M-Left select-pane -L
 bind -n M-Right select-pane -R
 bind -n M-Up select-pane -U
 bind -n M-Down select-pane -D
+
+# Switch panes using Alt-hjkl without prefix
+# bind -n M-h select-pane -L
+# bind -n M-j select-pane -D
+# bind -n M-k select-pane -U
+# bind -n M-l select-pane -R
 
 # Shift arrow to switch windows
 bind -n S-Left  previous-window

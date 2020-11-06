@@ -24,3 +24,5 @@ packages:
   - flameshot
   - peek
   - qbittorrent.x86_64
+  - php
+  - ruby # For Tmuxinator

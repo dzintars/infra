@@ -27,6 +27,11 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: username.rolename, x: 42 }
 
+Resources
+----------------
+
+(https://github.com/containers/podman/blob/master/docs/tutorials/rootless_tutorial.md#user-configuration-files)
+
 License
 -------
 

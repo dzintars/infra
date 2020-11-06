@@ -1,2 +1,5 @@
 ---
 # vars file for roles/podman
+
+packages:
+  - podman
