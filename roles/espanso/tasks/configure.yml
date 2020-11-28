@@ -1,11 +1,17 @@
 ---
 # tasks file for roles/espanso
 
+- name: Create Espanso config directory
+  file:
+    path: $HOME/.config/espanso
+    state: directory
+    mode: '0755'
+
 - name: copy config files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
   loop:
-    - { src: "default.yml", dest: "$HOME/.config/espanso", mode: '0644' }
+    - { src: "default.yml", dest: "$HOME/.config/espanso/default.yml", mode: '0644' }
 
