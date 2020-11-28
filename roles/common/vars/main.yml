@@ -27,3 +27,4 @@ packages:
   - php
   - ruby # For Tmuxinator
   - bat # A better Cat
+  - brave-browser
