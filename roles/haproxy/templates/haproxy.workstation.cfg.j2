@@ -173,10 +173,10 @@ frontend https-in
 backend my_server
   balance roundrobin
   http-request add-header X-Forwarded-Proto https
-  # option httpchk HEAD / h2,HTTP/1.1
-  option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
-  # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
-    server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
+  # option httpchk HEAD / h2,HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
+  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
+  # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
 backend dzintars_dev
   balance roundrobin
