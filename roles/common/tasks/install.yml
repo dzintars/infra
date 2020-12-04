@@ -13,6 +13,8 @@
     - https://linux.teamviewer.com/pubkey/currentkey.asc
     - https://dl.google.com/linux/linux_signing_key.pub
     - https://slack.com/gpg/slack_pubkey_2019.gpg
+    # - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+    # - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
 - name: install the rpmfusion repo
   become: yes
@@ -23,7 +25,8 @@
   loop:
     - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_current }}.noarch.rpm
     - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_current }}.noarch.rpm
-    - https://brave-browser-rpm-release.s3.brave.com/x86_64/
+    # - https://brave-browser-rpm-release.s3.brave.com/x86_64/
+    # - https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
 
 - name: install packages
   become: yes

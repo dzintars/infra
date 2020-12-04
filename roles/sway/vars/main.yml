@@ -1,0 +1,13 @@
+---
+# vars file for roles/sway
+
+packages:
+  - sway
+  - waybar
+  - swaylock-effects
+  - mako
+  - wofi
+  - wl-clipboard
+  - slurp
+  - grim
+
