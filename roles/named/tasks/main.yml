@@ -1,20 +1,23 @@
 ---
-# tasks file for named
+# tasks file for roles/named
 
-- name: install named
+- name: install
   import_tasks: install.yml
   tags:
-  - named:install
+    - named:setup
+    - named:setup:install
 
-- name: update named configuration
+- name: configure
   import_tasks: configure.yml
   tags:
-  - named:config
+    - named:setup
+    - named:setup:config
 
-- name: start named
+- name: start
   import_tasks: start.yml
   tags:
-  - named:start
+    - named:setup
+    - named:setup:start
 
 # - name: remove named
 #   import_tasks: remove.yml

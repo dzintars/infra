@@ -1,4 +1,5 @@
 #version=FEDORA
+#REFERENCE: https://docs.fedoraproject.org/en-US/fedora/rawhide/install-guide/appendixes/Kickstart_Syntax_Reference/
 
 # Configure Installation Method
 install
@@ -7,10 +8,14 @@ install
 eula --agreed
 
 # Install from an installation tree on a remote server via FTP or HTTP.
-url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
+#url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
+url --url http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Server/x86_64/os/
+
+# Install from the first optical (DVD) drive on the system.
+#cdrom
 
 # Configure Additional Repositories
-repo --name=fedora --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Everything/x86_64/os/
+repo --name=fedora --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Server/x86_64/os/
 repo --name=updates --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/{{ fedora_server_release }}/Everything/x86_64/
 #repo --name=updates-testing --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/testing/{{ fedora_server_release }}/x86_64/
 
@@ -33,7 +38,7 @@ ignoredisk --only-use=vda
 bootloader --append=" net.ifnames=0" --location=mbr --boot-drive=vda --driveorder=vda
 
 # Automatic Partitioning
-autopart --type=lvm
+autopart --type=btrfs
 
 # Configure Keyboard Layouts
 keyboard --vckeymap=us --xlayouts='us'
@@ -69,8 +74,7 @@ firewall --enabled --ssh
 #-------------------------------------------------------------------------------------------
 # Install selected packages and software
 %packages --ignoremissing --excludedocs
-  @core
-  qemu-guest-agent
+  @^server-product-environment
 %end
 
 # Configure kdump
@@ -80,11 +84,11 @@ firewall --enabled --ssh
 # %end
 
 #-------------------------------------------------------------------------------------------
-# %anaconda
-# # pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-# # pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
-# # pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-# %end
+%anaconda
+# pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+# pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
 
 #-------------------------------------------------------------------------------------------
 %pre

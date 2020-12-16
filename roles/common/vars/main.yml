@@ -29,3 +29,4 @@ packages:
   - fzf
   # - brave-browser
   # - kubectl
+  - python3-netaddr # For Ansible

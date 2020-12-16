@@ -40,6 +40,7 @@
       --arch x86_64 \
       --os-type linux \
       --os-variant fedora{{ fedora_server_release }} \
+      --cpu host \
       --vcpus {{ cluster.nodes['bastion'].vcpu }} \
       --hvm \
       --memory {{ cluster.nodes['bastion'].memory }} \
@@ -47,11 +48,13 @@
       --disk path={{ cluster.libvirt.dir.images }}/{{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }},size={{ cluster.nodes['bastion'].disk.size }},cache=writeback,format={{ cluster.nodes['bastion'].disk.format }},io=threads,bus=virtio  \
       --autostart \
       --network bridge={{ cluster.nodes['bastion'].network.name }},model=virtio,mac={{ cluster.nodes['bastion'].network.mac }} \
+      --console pty,target_type=serial \
       --initrd-inject /tmp/kickstart.cfg \
-      -x "inst.ks=file:/kickstart.cfg" \
-      --console pty,target_type=serial
+      --extra-args \
+        'inst.ks=file:/kickstart.cfg'
 
 
+# 'inst.ks=file:/kickstart.cfg console=ttyS0,115200n8 serial'
 
 # TODO: We need to wait while guest machine will boot up, because otherwise we will delete kickstart file too early.
 # - name: delete kickstart.cfg

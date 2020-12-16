@@ -1,7 +1,7 @@
 ---
-# tasks file for install_named
+# tasks file for roles/named
 
-- name: Copy named.conf and zone files
+- name: copy named.conf and zone files
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'

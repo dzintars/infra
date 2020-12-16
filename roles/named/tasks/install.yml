@@ -1,5 +1,5 @@
 ---
-# tasks file for named
+# tasks file for roles/named
 
 - name: install dependencies
   become: true

@@ -20,8 +20,8 @@
     - role: bertvv.tftp
       tags: [tftp]
       become: true
-    - role: setup_firewalld
-      tags: [firewalld]
+    # - role: setup_firewalld
+    #   tags: [firewalld]
     # - role: setup_selinux
     #   tags: [selinux]
     # - role: install_dhcp
