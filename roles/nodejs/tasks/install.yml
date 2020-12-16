@@ -21,8 +21,9 @@
     name: yarn@latest
     global: yes
 
-- name: Install TypeScript package globally.
+- name: Install TypeScript package globally
   yarn:
     name: typescript@latest
     global: yes
 
+# TODO: Extend $PATH ENV variable with export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

@@ -8,9 +8,9 @@ cluster:
   name: "ocp"
   network: "192.168.1"
   libvirt:
-    pool:
-      # TODO: Replace hardcoded user home dir
-      dir: "/home/dzintars/kvm/pools"
+    dir:
+      iso: "$HOME/kvm/iso"
+      images: "$HOME/kvm/images"
 
   nodes:
     {
@@ -20,12 +20,11 @@ cluster:
           name: "bastion",
           host: "254",
           user: "ansible",
-          mac: "00:1a:4a:16:01:27",
           uuid: "2e1ca267-8527-42a3-a81b-6010f8b1c060",
           vcpu: "2",
           memory: 2048,
           disk: { size: 10, format: "qcow2" },
-          network: { name: "virbr0" },
+          network: { name: "virbr0", mac: "00:1a:4a:16:01:27" },
         },
       "bootstrap-0":
         {

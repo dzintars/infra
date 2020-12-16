@@ -1,0 +1,6 @@
+---
+# defaults file for roles/bastion
+
+fedora_server_release: '33'
+fedora_server_baseurl: 'https://download.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Server/x86_64/iso'
+fedora_server_iso: 'Fedora-Server-dvd-x86_64-{{ fedora_server_release }}-1.2.iso'

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/minecraft
+
+- name: Install
+  import_tasks: install.yml
+  tags:
+    - minecraft:setup
+    - minecraft:setup:install
+
+# - name: Configure
+#   import_tasks: configure.yml
+#   tags:
+#     - minecraft:setup
+#     - minecraft:setup:config
+
+# - name: Remove
+#   import_tasks: remove.yml
+#   tags:
+#     - minecraft:remove

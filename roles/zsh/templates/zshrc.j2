@@ -112,18 +112,8 @@ source $ZSH/oh-my-zsh.sh
 
 # Aliases
 
-alias docker='podman'
-
 # https://youtu.be/1a5NiMhqAR0?t=101
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPS="--extended --height 40% --layout=reverse --border"
 
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOROOT:$GOPATH:$GOBIN
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/vault vault

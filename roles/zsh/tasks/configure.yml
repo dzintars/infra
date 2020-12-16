@@ -40,3 +40,13 @@
   user:
     name: "{{ become_user }}"
     shell: /bin/zsh
+
+- name: copy envirionment variables
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0644'
+  loop:
+    - { src: ".zshenv", dest: "$HOME/" }

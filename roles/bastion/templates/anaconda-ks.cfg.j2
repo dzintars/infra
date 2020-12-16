@@ -1,0 +1,47 @@
+#version=F33
+# Use graphical install
+graphical
+
+
+%packages
+@^server-product-environment
+
+%end
+
+# Keyboard layouts
+keyboard --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp --device=enp1s0 --ipv6=auto --activate
+network  --hostname=bastion
+
+# Use CDROM installation media
+cdrom
+
+# Run the Setup Agent on first boot
+firstboot --enable
+
+# Generated using Blivet version 3.3.0
+ignoredisk --only-use=vda
+autopart
+# Partition clearing information
+clearpart --none --initlabel
+
+# System timezone
+timezone Europe/Riga --utc
+
+# Root password
+rootpw --iscrypted $6$yHDJ8x9XYwLVPlVD$CJyfnv1.h.vOB5lMZXGFqfU4vMJutcZ6jDXvhz0t/tTxn1pBNLRT6IdnIPIlJIbTYIvrau7SR9r3vb.kAz7J90
+user --groups=wheel --name=dzintars --password=$6$MdFh/vvlbGIdMsNJ$vZI/6/XyrGYFsQY7XZoicrkOlmOZtQEliz/rwhSoXjD9kdgTUal42W0JQ3yW1DvTUVtGuwewGWZ/MMpN92Qle/ --iscrypted --gecos="Dzintars Klavins"
+
+%addon com_redhat_kdump --disable --reserve-mb='128'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end

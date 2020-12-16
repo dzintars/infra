@@ -4,8 +4,12 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-### Variables
-#
+
+
+# *************************
+# Variables
+# *************************
+
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
@@ -34,9 +38,11 @@ output * bg /usr/share/backgrounds/tharsus.jpg fill
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
-output DP-4 pos 0 0
-output DVI-D-2 pos 2560 0 transform 270
-focus output DP-4
+output 'Dell Inc. DELL U2913WM 5YD8C328433L' pos 0 0
+output 'Dell Inc. DELL U2312HM 59DJP1AQFPQL' pos 2560 0 transform 270
+focus output 'Dell Inc. DELL U2913WM 5YD8C328433L'
+
+
 
 ### Idle configuration
 #
@@ -73,10 +79,12 @@ input "type:keyboard" {
     repeat_rate 50
 }
 
-### Key bindings
-#
-# Basics:
-#
+
+
+# *************************
+# Key bindings: Basics
+# *************************
+
     # Start a terminal
     bindsym $mod+Return exec $term
     bindsym $mod+Menu exec pcmanfm
@@ -116,9 +124,10 @@ input "type:keyboard" {
 
 
 
-#
-# Moving around:
-#
+# *************************
+# Key bindings: Moving around
+# *************************
+
     # Move your focus around
     bindsym $mod+$left focus left
     bindsym $mod+$down focus down
@@ -140,9 +149,13 @@ input "type:keyboard" {
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
-#
-# Workspaces:
-#
+
+
+
+# *************************
+# Key bindings: Workspaces
+# *************************
+
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
@@ -154,6 +167,7 @@ input "type:keyboard" {
     bindsym $mod+8 workspace number 8
     bindsym $mod+9 workspace number 9
     bindsym $mod+0 workspace number 10
+
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -171,7 +185,7 @@ input "type:keyboard" {
 
 
 # *************************
-# Layout stuff:
+# Key bindings: Layout stuff
 # *************************
 
     # You can "split" the current object of your focus with
@@ -197,17 +211,22 @@ input "type:keyboard" {
     # Move focus to the parent container
     bindsym $mod+a focus parent
 
-    default_border pixel 2
+    default_border none
     gaps inner 8
     smart_gaps on
 
-    workspace 1 output DP-2
+    workspace 1 output 'Dell Inc. DELL U2913WM 5YD8C328433L'
 
     seat seat0 xcursor_theme breeze_cursors 28
 
+    set $opacity 0.96
+    for_window [app_id="Alacritty"] opacity $opacity
+    for_window [class="obsidian"] opacity $opacity
+
+
 
 # *************************
-# Scratchpad
+# Key bindings: Scratchpad
 # *************************
 
     # Sway has a "scratchpad", which is a bag of holding for windows.
@@ -223,7 +242,7 @@ input "type:keyboard" {
 
 
 # *************************
-# Resizing containers:
+# Key bindings: Resizing containers
 # *************************
 
 # Resizing windows by 10 in sway using keyboard only
@@ -257,11 +276,16 @@ bindsym $mod+r mode "resize"
 
 
 # ***********************
-# Printscreen
+# Key bindings: Printscreen
 # ***********************
 
-bindsym Print exec grim ~/Pictures/Printscreens/screen-"$(date +%s)".png
-bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +%s)".png
+# bindsym Print exec grim ~/Pictures/Printscreens/screen-"$(date +%s)".png
+# bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +%s)".png
+
+bindsym Print exec grim - | wl-copy
+bindsym Shift+Print exec grim ~/Pictures/Printscreens/scren-"$(date +'%m.%d.%y %T')".png
+bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
+bindsym Shift+Alt+Print exec exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +'%m.%d.%y %T')".png
 
 # ***********************
 # Status Bar:
@@ -273,7 +297,7 @@ bar {
 }
 
 # ***********************
-# Gruvbox
+# Theme: Gruvbox
 # ***********************
 
 # set $bg0 #282828
@@ -310,14 +334,17 @@ bindsym $mod+Shift+m exec makoctl dismiss --all
 # Startup
 # ***********************
 
-exec --no-startup-id mako
+# exec --no-startup-id mako
+
+set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
-  # gsettings set $gnome-schema gtk-theme 'Ant-Dracula'
+  mako
+  $idle_path
+  gsettings set $gnome-schema gtk-theme 'Adwaita-dark'
   gsettings set $gnome-schema icon-theme 'breeze-dark'
-  gsettings set $gnome-schema cursor-theme 'breeze_cursors'
+  gsettings set $gnome-schema cursor-theme 'Breeze_Snow'
 }
-
 
 include /etc/sway/config.d/*
 

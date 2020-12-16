@@ -1,0 +1,60 @@
+---
+# tasks file for roles/bastion
+
+# - name: download ISO assets
+#   get_url:
+#     url: '{{ item }}'
+#     dest: $HOME/kvm/iso
+#     mode: '0644'
+#   loop:
+#     - "{{ fedora_server_baseurl }}/{{ fedora_server_iso }}"
+
+- name: create images directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+  loop:
+    - $HOME/kvm/images/{{ cluster.nodes['bastion'].name }}
+
+- name: copy kickstart file to make it accessible
+  become: true
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: qemu
+    group: qemu
+    mode: '0644'
+  loop:
+    - {src: 'kickstart-fedora.cfg.j2', dest: '/tmp/kickstart.cfg'}
+
+- name: create Bastion VM
+  command: >
+    virt-install \
+      --connect qemu:///system \
+      --name {{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }} \
+      --uuid {{ cluster.nodes['bastion'].uuid }} \
+      --description 'DHCP, DNS, HAProxy, TFTP, Matchbox' \
+      --arch x86_64 \
+      --os-type linux \
+      --os-variant fedora{{ fedora_server_release }} \
+      --vcpus {{ cluster.nodes['bastion'].vcpu }} \
+      --hvm \
+      --memory {{ cluster.nodes['bastion'].memory }} \
+      --location {{ cluster.libvirt.dir.iso }}/{{ fedora_server_iso }} \
+      --disk path={{ cluster.libvirt.dir.images }}/{{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }},size={{ cluster.nodes['bastion'].disk.size }},cache=writeback,format={{ cluster.nodes['bastion'].disk.format }},io=threads,bus=virtio  \
+      --autostart \
+      --network bridge={{ cluster.nodes['bastion'].network.name }},model=virtio,mac={{ cluster.nodes['bastion'].network.mac }} \
+      --initrd-inject /tmp/kickstart.cfg \
+      -x "inst.ks=file:/kickstart.cfg" \
+      --console pty,target_type=serial
+
+
+
+# TODO: We need to wait while guest machine will boot up, because otherwise we will delete kickstart file too early.
+# - name: delete kickstart.cfg
+#   file:
+#     state: absent
+#     path: "/tmp/kickstart.cfg"

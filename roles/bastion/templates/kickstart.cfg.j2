@@ -1,13 +1,13 @@
 install
 # cdrom
-url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-30&arch=x86_64"
+url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-33&arch=x86_64"
 
 cmdline
 skipx
 reboot --eject
 
-# repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/30/Everything/x86_64/os/"
-# repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/30/x86_64/"
+# repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/33/Everything/x86_64/os/"
+# repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/33/x86_64/"
 # repo --name=updates-testing --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/testing/26/x86_64/"
 
 
@@ -71,13 +71,13 @@ firewall --enabled --ssh
 #     chmod 0440 /etc/sudoers.d/ansible
 
 
-#     # Setup sudo with wheel group 
-#     #cp /etc/sudoers /etc/sudoers.bak 
+#     # Setup sudo with wheel group
+#     #cp /etc/sudoers /etc/sudoers.bak
 #     #echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 #     # Allow Ansible to execute commands as root on the system
-#     #echo "# Ansible" >> /etc/sudoers 
+#     #echo "# Ansible" >> /etc/sudoers
 #     #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers
 #
-#     # Disable SeLinux 
+#     # Disable SeLinux
 #     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
 # %end

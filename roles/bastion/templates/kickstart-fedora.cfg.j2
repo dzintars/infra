@@ -1,0 +1,106 @@
+#version=FEDORA
+
+# Install OS instead of upgrade
+install
+
+# License agreement
+eula --agreed
+
+# Use network installation
+repo --name=fedora --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Everything/x86_64/os/
+repo --name=updates --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/{{ fedora_server_release }}/Everything/x86_64/
+#repo --name=updates-testing --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/testing/{{ fedora_server_release }}/x86_64/
+url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
+
+cmdline
+
+# Do not configure the X Window System
+skipx
+
+# Clear the Master Boot Record
+zerombr
+
+# Partition clearing information
+clearpart --all --initlabel --drives=vda
+
+ignoredisk --only-use=vda
+
+# System bootloader configuration
+bootloader --append=" net.ifnames=0" --location=mbr --boot-drive=vda --driveorder=vda
+autopart --type=lvm
+
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+
+# System language
+lang en_US.UTF-8
+
+# System timezone
+timezone Europe/Riga --isUtc --ntpservers=lv.pool.ntp.org
+
+# Network information
+network --bootproto=dhcp --onboot=on --activate
+# network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.254 --netmask=255.255.255.0 --nameserver=192.168.1.254 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
+network --hostname={{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}
+
+rootpw --iscrypted {{ ansible_become_pass }} --lock
+user --name={{ ansible_ssh_user }} --password {{ ansible_ssh_user_pass }} --iscrypted --groups=wheel --gecos="Administrator"
+sshkey --username={{ ansible_ssh_user }} "{{ ssh_key }}"
+
+# SELinux configuration
+selinux --enforcing
+
+# System services
+services --enabled="NetworkManager,sshd,chronyd"
+
+# Firewall configuration
+firewall --enabled --ssh
+
+#-------------------------------------------------------------------------------------------
+# Install selected packages and software
+%packages --ignoremissing --excludedocs
+  @core
+  qemu-guest-agent
+%end
+
+#-------------------------------------------------------------------------------------------
+# %addon
+# # com_redhat_kdump --enable --reserve-mb='auto'
+# %end
+
+#-------------------------------------------------------------------------------------------
+# %anaconda
+# # pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# # pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+# # pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# %end
+
+#-------------------------------------------------------------------------------------------
+%pre
+%end
+
+#-------------------------------------------------------------------------------------------
+# %post --interpreter=/bin/bash --log=/root/ks-post.log
+#     #dnf install epel-release -y
+#     #dnf install ansible git -y
+#     #dnf update -y
+
+#     #useradd -p '$6$HpkbIwlR0GAMPaDz$eNvnNozGR1K9kFff5sVng1cUN5G8LVj8LagVfM6d/6lYnVksfiR/XFtKMrPCd8VdpH3kdE4VnLx7IVjdyjaIu.' ansible
+#     echo "ansible ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ansible
+#     echo "Defaults:ansible !requiretty" | tee -a /etc/sudoers.d/ansible
+#     chmod 0440 /etc/sudoers.d/ansible
+
+
+#     # Setup sudo with wheel group
+#     #cp /etc/sudoers /etc/sudoers.bak
+#     #echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+#     # Allow Ansible to execute commands as root on the system
+#     #echo "# Ansible" >> /etc/sudoers
+#     #echo "ansible ALL=EXEC: ALL" >> /etc/sudoers
+#
+#     # Disable SeLinux
+#     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
+# %end
+
+# Reboot after installation
+reboot --eject

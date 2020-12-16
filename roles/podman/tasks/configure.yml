@@ -19,3 +19,13 @@
     - { src: "registries.conf", dest: "$HOME/.config/containers/", mode: '0644' }
     - { src: "storage.conf", dest: "$HOME/.config/containers/", mode: '0644' }
     - { src: "auth.json", dest: "$HOME/.config/containers/", mode: '0644' }
+
+- name: add docker alias
+  lineinfile:
+    path: $HOME/.zshrc
+    line: "alias docker='podman'"
+    owner: "{{ become_user }}"
+    regexp: "^alias docker='podman'$"
+    state: present
+    insertafter: '^# Aliases'
+    # create: True

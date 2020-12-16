@@ -4,10 +4,20 @@
 packages:
   - sway
   - waybar
+  # - swaylock
   - swaylock-effects
+  - swayidle
   - mako
   - wofi
   - wl-clipboard
   - slurp
   - grim
+  - breeze-cursor-theme
+  - breeze-icon-theme
+
+
+mountpoints:
+  - /mnt/external
+  - /mnt/backups
+  - /mnt/nextcloud
 

@@ -15,6 +15,7 @@ packages:
   - vdpauinfo
   - libva-vdpau-driver
   - libva-utils
+  # - xorg-x11-drv-nvidia-cuda
 
 driver_version: "455.38"
 

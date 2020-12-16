@@ -27,7 +27,6 @@
     - {pattern: '^#?group = (?!{{ become_user }})', value: 'group = "{{ become_user }}"'}
   notify: restart libvirtd
 
- 
 - name: define a new network
   virt_net:
     command: define
@@ -43,3 +42,14 @@
   virt_net:
     autostart: yes
     name: virbr0
+
+- name: create KVM userspace direcories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: '0755'
+  loop:
+    - "{{ cluster.libvirt.dir.images }}"
+    - "{{ cluster.libvirt.dir.iso }}"

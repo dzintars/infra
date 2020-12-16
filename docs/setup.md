@@ -11,4 +11,3 @@ Generate SSH keys
 Add ssh keys to the ssh agent
 Deploy bastion server
 Configure bastion server
-

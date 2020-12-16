@@ -11,7 +11,7 @@
 
 - name: download obsiadian
   get_url:
-    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.10/Obsidian-0.9.10.AppImage # TODO: remove `0.9.10` magvar
+    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.17/Obsidian-0.9.17.AppImage # TODO: remove `0.9.10` magvar
     dest: $HOME/.local/bin/obsidian
     mode: u+x
 
@@ -19,7 +19,7 @@
   # become: yes
   shell:
   args:
-    cmd: ./Obsidian-0.9.10.AppImage --appimage-extract # TODO: remove `0.9.10` magvar
+    cmd: ./Obsidian-0.9.17.AppImage --appimage-extract # TODO: remove `0.9.10` magvar
     chdir: $HOME/.local/bin/obsidian
 
 - name: create obsidian symlink

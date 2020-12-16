@@ -3,7 +3,7 @@
 
 - name: download Go binary
   unarchive:
-    src: https://golang.org/dl/go1.15.3.linux-amd64.tar.gz
+    src: https://golang.org/dl/go1.15.6.linux-amd64.tar.gz
     dest: /tmp
     remote_src: yes
 

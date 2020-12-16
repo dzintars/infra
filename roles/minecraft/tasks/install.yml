@@ -1,0 +1,54 @@
+---
+# tasks file for roles/minecraft
+
+
+- name: install packages
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: download minecraft launcher
+  unarchive:
+    src: https://launcher.mojang.com/download/Minecraft.tar.gz
+    dest: $HOME
+    remote_src: yes
+
+- name: create minecraft symlink
+  become: yes
+  file:
+    src: $HOME/minecraft-launcher/minecraft-launcher
+    path: /usr/local/bin/minecraft-launcher
+    state: link
+    force: yes
+
+- name: download Minecraft Forge
+  get_url:
+    url: https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2854/forge-1.12.2-14.23.5.2854-installer.jar
+    dest: $HOME/Downloads/
+    mode: '0700'
+
+- name: create mods directory
+  file:
+    path: $HOME/.minecraft/mods
+    state: directory
+    mode: '0755'
+
+- name: download Kami Blue client (Highway Worker Tools)
+  get_url:
+    url: https://github.com/Avanatiker/client/releases/download/v1.1.7_04/client-1.1.7-beta-release.jar
+    dest: $HOME/.minecraft/mods/
+    mode: '0700'
+
+- name: download Impact client
+  get_url:
+    url: 'https://impactclient.net/?brady-money-grubbing-completed=true&platform=jar'
+    dest: $HOME/.minecraft/mods/
+    mode: '0700'
+
+- name: download OptiFine mod
+  get_url:
+    url: 'https://optifine.net/downloadx?f=OptiFine_1.16.4_HD_U_G5.jar&x=7f5101cbb46c8575b40a7fda14326017'
+    dest: $HOME/.minecraft/mods/
+    mode: '0700'

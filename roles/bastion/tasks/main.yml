@@ -1,7 +1,7 @@
 ---
-# tasks file for roles/deploy_bastion
+# tasks file for roles/bastion
 
 - name: create bastion guest VM
   import_tasks: create.yml
   tags:
-    - bastion:create
+    - bastion:setup
