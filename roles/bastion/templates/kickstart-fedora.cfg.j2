@@ -1,56 +1,66 @@
 #version=FEDORA
 
-# Install OS instead of upgrade
+# Configure Installation Method
 install
 
-# License agreement
+# License Agreement
 eula --agreed
 
-# Use network installation
+# Install from an installation tree on a remote server via FTP or HTTP.
+url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
+
+# Configure Additional Repositories
 repo --name=fedora --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Everything/x86_64/os/
 repo --name=updates --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/{{ fedora_server_release }}/Everything/x86_64/
 #repo --name=updates-testing --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/testing/{{ fedora_server_release }}/x86_64/
-url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
 
+# Perform Installation in Command Line Mode
 cmdline
 
 # Do not configure the X Window System
 skipx
 
-# Clear the Master Boot Record
+# Reinitialize Partition Tables (Clear the Master Boot Record)
 zerombr
 
-# Partition clearing information
+# Remove All Existing Partitions
 clearpart --all --initlabel --drives=vda
 
+# Ignore Specified Disks
 ignoredisk --only-use=vda
 
-# System bootloader configuration
+# Configure Boot Loader
 bootloader --append=" net.ifnames=0" --location=mbr --boot-drive=vda --driveorder=vda
+
+# Automatic Partitioning
 autopart --type=lvm
 
-# Keyboard layouts
+# Configure Keyboard Layouts
 keyboard --vckeymap=us --xlayouts='us'
 
-# System language
+# Configure Language During Installation
 lang en_US.UTF-8
 
-# System timezone
+# Configure Time Zone
 timezone Europe/Riga --isUtc --ntpservers=lv.pool.ntp.org
 
-# Network information
+# Configure Network Interfaces
 network --bootproto=dhcp --onboot=on --activate
-# network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.254 --netmask=255.255.255.0 --nameserver=192.168.1.254 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
 network --hostname={{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}
 
+# Set Root Password
 rootpw --iscrypted {{ ansible_become_pass }} --lock
+
+# Create User Account
 user --name={{ ansible_ssh_user }} --password {{ ansible_ssh_user_pass }} --iscrypted --groups=wheel --gecos="Administrator"
+
+# Add an Authorized SSH Key
 sshkey --username={{ ansible_ssh_user }} "{{ ssh_key }}"
 
-# SELinux configuration
+# Configure SELinux
 selinux --enforcing
 
-# System services
+# Configure Services
 services --enabled="NetworkManager,sshd,chronyd"
 
 # Firewall configuration
@@ -63,6 +73,7 @@ firewall --enabled --ssh
   qemu-guest-agent
 %end
 
+# Configure kdump
 #-------------------------------------------------------------------------------------------
 # %addon
 # # com_redhat_kdump --enable --reserve-mb='auto'
@@ -102,5 +113,5 @@ firewall --enabled --ssh
 #     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
 # %end
 
-# Reboot after installation
+# Reboot After Installation
 reboot --eject
