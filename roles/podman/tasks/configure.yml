@@ -1,7 +1,7 @@
 ---
 # tasks file for roles/podman
 
-- name: create containers directory
+- name: create containers config directory
   file:
     path: "$HOME/.config/containers"
     state: directory
@@ -9,7 +9,7 @@
     group: "{{ become_user }}"
     mode: '0755'
 
-- name: copy scripts and make executable
+- name: copy configuration files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -20,7 +20,7 @@
     - { src: "storage.conf", dest: "$HOME/.config/containers/", mode: '0644' }
     - { src: "auth.json", dest: "$HOME/.config/containers/", mode: '0644' }
 
-- name: add docker alias
+- name: add docker alias to zshrc
   lineinfile:
     path: $HOME/.zshrc
     line: "alias docker='podman'"
