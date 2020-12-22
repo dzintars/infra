@@ -1,0 +1,19 @@
+---
+# tasks file for roles/spire
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - spire:setup
+    - spire:setup:install
+
+# - name: configure
+#   import_tasks: configure.yml
+#   tags:
+#     - terraform:setup
+#     - terraform:setup:config
+
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - terraform:remove

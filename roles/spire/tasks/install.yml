@@ -1,0 +1,31 @@
+---
+# tasks file for roles/spire
+
+- name: download Spire
+  unarchive:
+    src: https://github.com/spiffe/spire/releases/download/v0.11.2/spire-0.11.2-linux-x86_64-glibc.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: copy Spire
+  become: yes
+  copy:
+    src: /tmp/spire-0.11.2/
+    dest: /opt/spire/
+    remote_src: yes
+
+- name: create spire-server symlink
+  become: yes
+  file:
+    src: /opt/spire/bin/spire-server
+    path: /usr/bin/spire-server
+    state: link
+    force: yes
+
+- name: create spire-agent symlink
+  become: yes
+  file:
+    src: /opt/spire/bin/spire-agent
+    path: /usr/bin/spire-agent
+    state: link
+    force: yes
