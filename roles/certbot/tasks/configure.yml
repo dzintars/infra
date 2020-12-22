@@ -26,7 +26,7 @@
     dest: "{{ item.dest }}"
     owner: no
     group: no
-  delegate_to: '192.168.1.2'
+  delegate_to: 'localhost'
   loop:
     - { src: "/mnt/backups/fedora/32/etc/letsencrypt/", dest: "/etc/letsencrypt" }
 
@@ -37,6 +37,6 @@
     dest: "{{ item.dest }}"
     owner: yes
     group: yes
-  delegate_to: '192.168.1.2'
+  delegate_to: 'localhost'
   loop:
     - { src: "/mnt/backups/fedora/32/home/dzintars/.tls/", dest: "/home/dzintars/.tls" }

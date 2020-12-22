@@ -21,7 +21,7 @@ global
 
     # curl https://ssl-config.mozilla.org/ffdhe2048.txt > /path/to/dhparam.pem
     # Be carefull about SELinux. If you get error there.. for debuging use `sudo setenforce 0`
-    # ssl-dh-param-file /home/{{ cluster.nodes['workstation'].user }}/.tls/{{ cluster.fqdn }}/dhparam.pem
+    # ssl-dh-param-file /home/dzintars/.tls/{{ fqdn }}/dhparam.pem
     tune.ssl.default-dh-param 4096
 
 defaults
@@ -106,7 +106,9 @@ frontend https-in
   # If HAProxy does not start, try `sudo setenforce 0`
   # https://www.haproxy.com/blog/haproxy-2-0-and-beyond/
   # TODO: Organize into separate frontends
-  bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem crt /etc/letsencrypt/live/dzintars.dev/haproxy.pem crt /etc/letsencrypt/live/merumore.com/haproxy.pem ecdhe secp384r1
+  bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem ecdhe secp384r1
+  #bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/haproxy.pem crt /etc/letsencrypt/live/dzintars.dev/haproxy.pem crt /etc/letsencrypt/live/merumore.com/haproxy.pem ecdhe secp384r1
+  #bind *:443 ssl alpn h2,http/1.1 crt /etc/letsencrypt/live/oswee.com/fullchain.pem crt /etc/letsencrypt/live/dzintars.dev/fullchain.pem crt /etc/letsencrypt/live/merumore.com/fullchain.pem ecdhe secp384r1
   http-response replace-header Location ^http://(.*)$	https://\1
   maxconn 60000
 
@@ -140,13 +142,13 @@ frontend https-in
 	# http-response set-header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'"
 
   # https://serverfault.com/a/677060/440073
-  acl dev.oswee.com.host hdr(host) -i dev.{{ cluster.fqdn }}
+  acl dev.oswee.com.host hdr(host) -i dev.{{ fqdn }}
   use_backend my_server if dev.oswee.com.host
 
-  acl cloud.oswee.com.host hdr(host) -i cloud.{{ cluster.fqdn }}
+  acl cloud.oswee.com.host hdr(host) -i cloud.{{ fqdn }}
   use_backend cloud.oswee.com.backend if cloud.oswee.com.host
 
-  acl office.oswee.com.host hdr(host) -i office.{{ cluster.fqdn }}
+  acl office.oswee.com.host hdr(host) -i office.{{ fqdn }}
   use_backend office.oswee.com.backend if office.oswee.com.host
 
   acl dzintars.dev.host hdr(host) -i dzintars.dev
@@ -155,13 +157,13 @@ frontend https-in
   acl merumore.com.host hdr(host) -i merumore.com
   use_backend merumore.com.backend if merumore.com.host
 
-  acl host_jenkins hdr(Host) -i jenkins.{{ cluster.fqdn }}
+  acl host_jenkins hdr(Host) -i jenkins.{{ fqdn }}
   use_backend jenkins if host_jenkins
 
-  acl host_my hdr(Host) -i my.{{ cluster.fqdn }}
+  acl host_my hdr(Host) -i my.{{ fqdn }}
   use_backend my_oswee if host_my
 
-  # acl host_api hdr(Host) -i api.{{ cluster.fqdn }}
+  # acl host_api hdr(Host) -i api.{{ fqdn }}
   # use_backend bk_ws if host_api
 
   acl hdr_connection_upgrade hdr(Connection)  -i upgrade
@@ -173,10 +175,10 @@ frontend https-in
 backend my_server
   balance roundrobin
   http-request add-header X-Forwarded-Proto https
-  # option httpchk HEAD / h2,HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 check
-  # server {{ cluster.nodes['workstation'].name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
+  # option httpchk HEAD / h2,HTTP/1.1\r\nHost:\ dev.{{ fqdn }}
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ dev.{{ fqdn }}
+  server {{ name }} 127.0.0.1:3000 check
+  # server {{ name }} 127.0.0.1:3000 ssl verify none alpn h2,HTTP/1.1 check
 
 backend dzintars_dev
   balance roundrobin
@@ -184,13 +186,13 @@ backend dzintars_dev
   compression algo gzip
   compression type text/html text/plain text/css
   # option httpchk HEAD / HTTP/1.1\r\nHost:\ dzintars.dev
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8084 check
+  server {{ name }} {{ network }}.{{ host }}:8084 check
 
 backend api
   balance roundrobin
   http-request add-header X-Forwarded-Proto https
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ api.oswee.com
-  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ api.{{ fqdn }}
+  server {{ name }} 127.0.0.1:9090 check
 
 backend bk_ws
   balance roundrobin
@@ -208,7 +210,7 @@ backend bk_ws
   ## websocket health checking
   option httpchk GET / HTTP/1.1\r\nHost:\ api.oswee.com\r\nConnection:\ Upgrade\r\nUpgrade:\ websocket\r\nSec-WebSocket-Key:\ haproxy\r\nSec-WebSocket-Version:\ 13\r\nSec-WebSocket-Protocol:\ echo-protocol
   http-check expect status 101
-  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:9090 maxconn 30000 weight 10 cookie {{ cluster.nodes['workstation'].name }} check
+  server {{ name }} 127.0.0.1:9090 maxconn 30000 weight 10 cookie {{ name }} check
   #server websrv2 192.168.10.12:8080 maxconn 30000 weight 10 cookie websrv2 check
 
 backend my_oswee
@@ -217,8 +219,8 @@ backend my_oswee
   compression algo gzip
   compression type text/html text/plain text/css
   # https://serverfault.com/a/887396/440073
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8081 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:8081 check
 
 backend jenkins
   balance roundrobin
@@ -226,8 +228,8 @@ backend jenkins
   compression algo gzip
   compression type text/html text/plain text/css
   # https://serverfault.com/a/887396/440073
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9093 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:9093 check
 
 backend merumore.com.backend
   balance roundrobin
@@ -235,8 +237,8 @@ backend merumore.com.backend
   compression algo gzip
   compression type text/html text/plain text/css
   # https://serverfault.com/a/887396/440073
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8082 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:8082 check
 
 backend cloud.oswee.com.backend
   balance roundrobin
@@ -244,8 +246,8 @@ backend cloud.oswee.com.backend
   compression algo gzip
   compression type text/html text/plain text/css
   # https://serverfault.com/a/887396/440073
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:8085 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:8085 check
 
 backend office.oswee.com.backend
   balance roundrobin
@@ -253,11 +255,11 @@ backend office.oswee.com.backend
   compression algo gzip
   compression type text/html text/plain text/css
   # https://serverfault.com/a/887396/440073
-  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ cluster.fqdn }}
-  server {{ cluster.nodes['workstation'].name }} {{ cluster.network }}.{{ cluster.nodes['workstation'].host }}:9980 check
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:9980 check
 
 backend be_default
-  server {{ cluster.nodes['workstation'].name }} 127.0.0.1:8888 maxconn 50 check
+  server {{ name }} 127.0.0.1:8888 maxconn 50 check
   http-request set-header Host Default
 
   # Set custom response headers

@@ -1,28 +1,44 @@
 [WORKSTATION]
-localhost
+workstation
 
 [BASTION]
-192.168.1.254
+bastion
 
 [BOOTSTRAP]
-192.168.1.253
+bootstrap
 
-[MASTERS]
-192.168.1.10
-192.168.1.11
-192.168.1.12
+[MASTER]
+master-0
+master-1
+master-2
 
 [INFNOD]
-192.168.1.20
-192.168.1.21
+infnod-0
+infnod-1
 
 [CPTNOD]
-192.168.1.30
-192.168.1.31
-192.168.1.32
+cptnod-0
+cptnod-1
+cptnod-2
+
+[ALL:children]
+WORKSTATION
+BASTION
+BOOTSTRAP
+MASTER
+INFNOD
+CPTNOD
+
+[VIRTUAL:children]
+BASTION
+BOOTSTRAP
+MASTER
+INFNOD
+CPTNOD
 
 [CLUSTER:children]
 BOOTSTRAP
-MASTERS
+MASTER
 INFNOD
 CPTNOD
+

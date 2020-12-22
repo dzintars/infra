@@ -2,6 +2,7 @@
 # tasks file for ipxe
 
 - name: Install iPXE
+  become: yes
   dnf:
     name: '{{ item }}'
     state: latest
@@ -16,6 +17,7 @@
 #     state: link
 
 - name: Copy undionly.kpxe chainboot
+  become: yes
   copy:
     src: /usr/share/ipxe/undionly.kpxe
     dest: /var/lib/tftpboot/undionly.kpxe
@@ -25,6 +27,7 @@
     remote_src: yes
 
 - name: Start TFTP service
+  become: yes
   service:
     name: tftp
     state: started

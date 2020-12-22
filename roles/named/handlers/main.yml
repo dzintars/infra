@@ -1,10 +1,14 @@
 ---
 # handlers file for install_named
 
-- name: enable and start named
+- name: enable named
   systemd:
     name: named-chroot
     enabled: yes
+
+- name: start named
+  systemd:
+    name: named-chroot
     state: started
 
 - name: restart named

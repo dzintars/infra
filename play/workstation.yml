@@ -79,3 +79,7 @@
       tags: [minecraft]
     - role: vagrant
       tags: [vagrant]
+    - role: terraform
+      tags: [terraform]
+    - role: spire
+      tags: [spire]

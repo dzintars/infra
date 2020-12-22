@@ -11,20 +11,20 @@
 
 - name: Download Matchbox
   unarchive:
-    src: https://github.com/poseidon/matchbox/releases/download/v0.8.0/matchbox-v0.8.0-linux-amd64.tar.gz
-    dest: $HOME
+    src: https://github.com/poseidon/matchbox/releases/download/v0.9.0/matchbox-v0.9.0-linux-amd64.tar.gz
+    dest: /tmp
     remote_src: yes
 
 - name: Copy Matchbox binary
   copy:
-    src: $HOME/matchbox-v0.8.0-linux-amd64/matchbox
+    src: /tmp/matchbox-v0.9.0-linux-amd64/matchbox
     dest: /usr/local/bin
     mode: a+x
     remote_src: yes
 
 - name: Copy Matchbox example systemd unit to allow starting matchbox at boot
   copy:
-    src: $HOME/matchbox-v0.8.0-linux-amd64/contrib/systemd/matchbox-local.service
+    src: /tmp/matchbox-v0.9.0-linux-amd64/contrib/systemd/matchbox.service
     dest: /etc/systemd/system/matchbox.service
     remote_src: yes
     mode: '0644'
@@ -36,7 +36,7 @@
     system: yes
 
 - name: Create Matchbox user
-  user: 
+  user:
     name: matchbox
     system: yes
     group: matchbox
@@ -67,7 +67,7 @@
   notify: Restart Firewalld
 
 - name: Start Matchbox service
-  service: 
+  service:
     name: matchbox
     state: started
     enabled: yes

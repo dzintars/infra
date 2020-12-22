@@ -1,5 +1,5 @@
 ---
-# tasks file for haproxy
+# tasks file for roles/haproxy
 
 - name: Create HAProxy error templates directory
   become: true
@@ -18,9 +18,7 @@
     # setype: named_conf_t
     mode: '0644'
   loop:
-    # To set up the cluster please use `haproxy.bastion.cfg.j2` template
-    # - { src: "haproxy.bastion.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
-    - { src: "haproxy.workstation.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
+    - { src: "haproxy.{{ name }}.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
     - { src: "errors/400.http.j2", dest: "/etc/haproxy/errors/400.http" }
     - { src: "errors/403.http.j2", dest: "/etc/haproxy/errors/403.http" }
     - { src: "errors/408.http.j2", dest: "/etc/haproxy/errors/408.http" }
@@ -28,4 +26,4 @@
     - { src: "errors/502.http.j2", dest: "/etc/haproxy/errors/502.http" }
     - { src: "errors/503.http.j2", dest: "/etc/haproxy/errors/503.http" }
     - { src: "errors/504.http.j2", dest: "/etc/haproxy/errors/504.http" }
-  notify: Restart HAProxy
+    #notify: Restart HAProxy

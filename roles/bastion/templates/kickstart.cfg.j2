@@ -1,65 +1,100 @@
+#version=FEDORA
+#REFERENCE: https://docs.fedoraproject.org/en-US/fedora/rawhide/install-guide/appendixes/Kickstart_Syntax_Reference/
+
+# Configure Installation Method
 install
-# cdrom
-url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-33&arch=x86_64"
 
-cmdline
-skipx
-reboot --eject
-
-# repo --name=fedora --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/releases/33/Everything/x86_64/os/"
-# repo --name=updates --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/33/x86_64/"
-# repo --name=updates-testing --baseurl="https://dl.fedoraproject.org/pub/fedora/linux/updates/testing/26/x86_64/"
-
-
-zerombr
-clearpart --all --initlabel
-ignoredisk --only-use=vda
-autopart --type=lvm
-bootloader --location=mbr --driveorder=vda
-
-# text
-keyboard --vckeymap=us --xlayouts='us'
-lang en_US.UTF-8
-timezone Europe/Riga --isUtc
+# License Agreement
 eula --agreed
 
-network --hostname={{ cluster.nodes['bastion'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}
-# network --bootproto=dhcp
-network --bootproto=static --gateway=192.168.1.1 --ip=192.168.1.254 --netmask=255.255.255.0 --nameserver=192.168.1.254 --nameserver=1.1.1.1 --noipv6 --onboot=on --activate
+# Install from an installation tree on a remote server via FTP or HTTP.
+#url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-{{ fedora_server_release }}&arch=x86_64
+url --url http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Server/x86_64/os/
 
+# Install from the first optical (DVD) drive on the system.
+#cdrom
+
+# Configure Additional Repositories
+repo --name=fedora --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_server_release }}/Server/x86_64/os/
+repo --name=updates --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/{{ fedora_server_release }}/Everything/x86_64/
+#repo --name=updates-testing --baseurl=http://mirrorservice.org/sites/dl.fedoraproject.org/pub/fedora/linux/updates/testing/{{ fedora_server_release }}/x86_64/
+
+# Perform Installation in Command Line Mode
+cmdline
+
+# Do not configure the X Window System
+skipx
+
+# Reinitialize Partition Tables (Clear the Master Boot Record)
+zerombr
+
+# Remove All Existing Partitions
+clearpart --all --initlabel --drives=vda
+
+# Ignore Specified Disks
+ignoredisk --only-use=vda
+
+# Configure Boot Loader
+bootloader --append=" net.ifnames=0" --location=mbr --boot-drive=vda --driveorder=vda
+
+# Automatic Partitioning
+autopart --type=btrfs
+
+# Configure Keyboard Layouts
+keyboard --vckeymap=us --xlayouts='us'
+
+# Configure Language During Installation
+lang en_US.UTF-8
+
+# Configure Time Zone
+timezone Europe/Riga --isUtc --ntpservers={{ ntp_server }}
+
+# Configure Network Interfaces
+network --bootproto=dhcp --onboot=on --activate
+network --hostname={{ hostvars['bastion'].name }}.{{ cluster_name }}.{{ fqdn }}
+
+# Set Root Password
 rootpw --iscrypted {{ ansible_become_pass }} --lock
+
+# Create User Account
 user --name={{ ansible_ssh_user }} --password {{ ansible_ssh_user_pass }} --iscrypted --groups=wheel --gecos="Administrator"
+
+# Add an Authorized SSH Key
 sshkey --username={{ ansible_ssh_user }} "{{ ssh_key }}"
 
+# Configure SELinux
 selinux --enforcing
 
+# Configure Services
 services --enabled="NetworkManager,sshd,chronyd"
 
+# Firewall configuration
 firewall --enabled --ssh
 
-
-%packages --ignoremissing
-    @core
-    @base
-    #vim
-    #tar
-    #python
-    #python-dnf
-    #libselinux-python
-    #libsemanage-python
-    #git
+#-------------------------------------------------------------------------------------------
+# Install selected packages and software
+%packages --ignoremissing --excludedocs
+  @^server-product-environment
 %end
 
-# %addon
-# # com_redhat_kdump --enable --reserve-mb='auto'
-# %end
+# Configure kdump (kernel crash dumping mechanism)
+#-------------------------------------------------------------------------------------------
+%addon
+  com_redhat_kdump --enable --reserve-mb='auto'
+%end
 
-# %anaconda
-# # pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-# # pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
-# # pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-# %end
+#-------------------------------------------------------------------------------------------
+%anaconda
+# pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+# pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+# pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
 
+#-------------------------------------------------------------------------------------------
+%pre
+%end
+
+#-------------------------------------------------------------------------------------------
 # %post --interpreter=/bin/bash --log=/root/ks-post.log
 #     #dnf install epel-release -y
 #     #dnf install ansible git -y
@@ -81,3 +116,6 @@ firewall --enabled --ssh
 #     # Disable SeLinux
 #     #sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/sysconfig/selinux
 # %end
+
+# Reboot After Installation
+reboot --eject

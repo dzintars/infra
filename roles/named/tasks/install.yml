@@ -22,4 +22,6 @@
     state: enabled
   notify:
     - restart firewalld
-    - enable and start named
+    - enable named
+    - start named
+

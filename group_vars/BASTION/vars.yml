@@ -1,9 +1,0 @@
----
-
-ansible_ssh_user     : 'dzintars'
-ansible_become_pass  : '{{ vault_ansible_become_pass }}'
-
-pull_secret          : '{{ vault_pull_secret | to_json }}'
-ssh_key              : '{{ vault_ssh_key }}'
-bastion_root_pass    : '{{ vault_bastion_root_pass }}'
-bastion_ansible_pass : '{{ vault_bastion_ansible_pass }}'

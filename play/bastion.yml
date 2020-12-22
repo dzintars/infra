@@ -16,27 +16,27 @@
     #   tags: [debug]
     - role: named
       tags: [named]
-      become: true
+      # become: true
     - role: bertvv.tftp
       tags: [tftp]
-      become: true
+      # become: true
     # - role: setup_firewalld
     #   tags: [firewalld]
     # - role: setup_selinux
     #   tags: [selinux]
-    # - role: install_dhcp
-    #   tags: [dhcpd]
-    #   become: true
-    # - role: haproxy
-    #   tags: [haproxy]
-    # - role: install_ipxe
-    #   tags: [ipxe]
-    #   become: true
-    # - role: install_matchbox
-    #   tags: [matchbox]
-    #   become: true
-    # - role: deploy_ignition
-    #   tags: [ignition]
-    #   become: true
+    - role: dhcpd
+      tags: [dhcpd]
+      # become: true
+    - role: haproxy
+      tags: [haproxy]
+    - role: ipxe
+      tags: [ipxe]
+      # become: true
+    - role: matchbox
+      tags: [matchbox]
+      become: true
+    - role: ignition
+      tags: [ignition]
+      become: true
     # - role: provision_tls
     # - role: install_tftp

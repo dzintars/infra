@@ -1,7 +1,0 @@
----
-- name: Debug playbook subdir
-  hosts: localhost
-  become: no
-
-  roles:
-    - debug

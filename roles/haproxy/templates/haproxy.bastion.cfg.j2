@@ -9,7 +9,7 @@ global
     stats socket /var/lib/haproxy/stats
     ssl-default-bind-ciphers PROFILE=SYSTEM
     ssl-default-server-ciphers PROFILE=SYSTEM
-    
+
 defaults
     mode http
     log global
@@ -42,7 +42,7 @@ listen stats # Define a listen section called "stats"
     stats auth admin:password  # Authentication credentials
     monitor-uri /healthz
 
-  
+
 
 frontend {{ cluster.name }}-kubernetes-api-server
     mode tcp
@@ -75,7 +75,7 @@ backend {{ cluster.name }}-machine-config-server
     mode tcp
     # log global
     # timeout connect 10s
-    # timeout server 1m 
+    # timeout server 1m
     server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
     server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
     server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/terraform
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - terraform:setup
+    - terraform:setup:install
+
+# - name: configure
+#   import_tasks: configure.yml
+#   tags:
+#     - terraform:setup
+#     - terraform:setup:config
+
+# - name: remove
+#   import_tasks: remove.yml
+#   tags:
+#     - terraform:remove

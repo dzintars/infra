@@ -4,9 +4,11 @@
 - name: install Hashicorp Vault
   import_tasks: install.yml
   tags:
-    - vault:install
+    - vault:setup
+    - vault:setup:install
 
-# - name: configure vault
-#   import_tasks: configure.yml
-#   tags:
-#     - vault:config
+- name: configure vault
+  import_tasks: configure.yml
+  tags:
+    - vault:setup
+    - vault:setup:config
