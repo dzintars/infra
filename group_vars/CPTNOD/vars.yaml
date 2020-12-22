@@ -1,0 +1,5 @@
+---
+
+vcpu: 4
+memory: 6144
+disk_size: 20

@@ -1,0 +1,8 @@
+---
+
+ansible_python_interpreter : "/usr/bin/python3.9"
+
+fqdn                       : "oswee.com"
+cluster_name               : "ocp"
+network                    : "192.168.1"
+ntp_server                 : lv.pool.ntp.org

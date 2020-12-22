@@ -1,0 +1,5 @@
+---
+
+vcpu: 6
+memory: 8192
+disk_size: 60
