@@ -1,0 +1,17 @@
+---
+
+ansible_ssh_user     : 'dzintars'
+ansible_become_pass  : '{{ vault_ansible_become_pass }}'
+
+pull_secret          : '{{ vault_pull_secret | to_json }}'
+ssh_key              : '{{ vault_ssh_key }}'
+bastion_root_pass    : '{{ vault_bastion_root_pass }}'
+bastion_ansible_pass : '{{ vault_bastion_ansible_pass }}'
+name: "bastion"
+host: "254"
+user: "ansible"
+uuid: "2e1ca267-8527-42a3-a81b-6010f8b1c060"
+vcpu: 2
+memory: 2048
+disk_size: 10
+mac: "00:1a:4a:16:01:27"

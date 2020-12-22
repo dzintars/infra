@@ -1,0 +1,9 @@
+---
+
+name: "bootstrap-0"
+host: "253"
+uuid: "0ae7c565-029a-43e4-a13a-84de3d67bb46"
+vcpu: "2"
+memory: 2048
+disk_size: 20
+mac: "00:1a:4a:16:01:28"
