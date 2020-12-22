@@ -151,6 +151,9 @@ frontend https-in
   acl office.oswee.com.host hdr(host) -i office.{{ fqdn }}
   use_backend office.oswee.com.backend if office.oswee.com.host
 
+  acl vault.oswee.com.host hdr(host) -i vault.{{ fqdn }}
+  use_backend vault.oswee.com.backend if vault.oswee.com.host
+
   acl dzintars.dev.host hdr(host) -i dzintars.dev
   use_backend dzintars_dev if dzintars.dev.host
 
@@ -257,6 +260,15 @@ backend office.oswee.com.backend
   # https://serverfault.com/a/887396/440073
   # option httpchk HEAD / HTTP/1.1\r\nHost:\ my.{{ fqdn }}
   server {{ name }} {{ network }}.{{ host }}:9980 check
+
+backend vault.oswee.com.backend
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ vault.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:8200 ssl verify none alpn h2,HTTP/1.1 check
 
 backend be_default
   server {{ name }} 127.0.0.1:8888 maxconn 50 check

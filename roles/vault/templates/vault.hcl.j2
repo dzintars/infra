@@ -27,13 +27,13 @@ storage "raft" {
 
 # HTTPS listener
 listener "tcp" {
-  address       = "127.0.0.1:8200"
+address       = "{{ network }}.{{ host }}:8200"
   tls_cert_file = "/opt/vault/tls/fullchain.pem"
   tls_key_file  = "/opt/vault/tls/privkey.pem"
 }
 
-api_addr = "https://127.0.0.1:8200"
-cluster_addr = "https://127.0.0.1:8201"
+api_addr = "https://vault.{{ fqdn }}"
+cluster_addr = "https://vault.{{ fqdn }}:8201"
 
 # Example AWS KMS auto unseal
 #seal "awskms" {
