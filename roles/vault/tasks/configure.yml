@@ -35,8 +35,8 @@
     group: vault
     remote_src: yes
   loop:
-    - { src: "/etc/letsencrypt/live/oswee.com/fullchain.pem", dest: "/opt/vault/tls" }
-    - { src: "/etc/letsencrypt/live/oswee.com/privkey.pem", dest: "/opt/vault/tls" }
+    - { src: "/etc/letsencrypt/live/{{ fqdn }}/fullchain.pem", dest: "/opt/vault/tls" }
+    - { src: "/etc/letsencrypt/live/{{ fqdn }}/privkey.pem", dest: "/opt/vault/tls" }
 
 - name: Make sure a vault.service is enabled and running
   become: yes
