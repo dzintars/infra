@@ -83,3 +83,5 @@
       tags: [terraform]
     - role: spire
       tags: [spire]
+    - role: minio
+      tags: [minio]
