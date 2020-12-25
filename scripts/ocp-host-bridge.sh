@@ -17,16 +17,16 @@ export NETWORK_DNS_ADDRESES="192.168.1.254,1.1.1.1"
 # General cleanup
 
 # # Delete all existing connections
-# for i in `nmcli c | \
-# grep -o -- "[0-9a-fA-F]\{8\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{12\}"` ; \
-# do nmcli connection delete uuid $i ; \
-# done
+for i in `nmcli c | \
+grep -o -- "[0-9a-fA-F]\{8\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{12\}"` ; \
+do nmcli connection delete uuid $i ; \
+done
 
 # # Delete all devices (optional/not sure)
-# for i in `nmcli d | \
-# grep -o -- "[0-9a-fA-F]\{8\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{12\}"` ; \
-# do nmcli device delete uuid $i ; \
-# done
+for i in `nmcli d | \
+grep -o -- "[0-9a-fA-F]\{8\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{4\}-[0-9a-fA-F]\{12\}"` ; \
+do nmcli device delete uuid $i ; \
+done
 
 # Create new bridge connection
 nmcli connection add type bridge autoconnect yes con-name ${NETWORK_BRIDGE_CONNECTION} ifname ${NETWORK_BRIDGE_CONNECTION}
