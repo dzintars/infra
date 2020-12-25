@@ -55,7 +55,7 @@ defaults
     errorfile 504 /etc/haproxy/errors/504.http
 
 listen stats # Define a listen section called "stats"
-    bind :9001 # Listen on localhost:9000
+    bind :9001 # Listen on localhost:9001/stats
     mode http
     option forwardfor
     option httpclose
@@ -153,6 +153,9 @@ frontend https-in
 
   acl vault.oswee.com.host hdr(host) -i vault.{{ fqdn }}
   use_backend vault.oswee.com.backend if vault.oswee.com.host
+
+  acl s3.oswee.com.host hdr(host) -i s3.{{ fqdn }}
+  use_backend s3.oswee.com.backend if s3.oswee.com.host
 
   acl dzintars.dev.host hdr(host) -i dzintars.dev
   use_backend dzintars_dev if dzintars.dev.host
@@ -269,6 +272,15 @@ backend vault.oswee.com.backend
   # https://serverfault.com/a/887396/440073
   # option httpchk HEAD / HTTP/1.1\r\nHost:\ vault.{{ fqdn }}
   server {{ name }} {{ network }}.{{ host }}:8200 ssl verify none alpn h2,HTTP/1.1 check
+
+backend s3.oswee.com.backend
+  balance roundrobin
+  http-request add-header X-Forwarded-Proto https
+  compression algo gzip
+  compression type text/html text/plain text/css
+  # https://serverfault.com/a/887396/440073
+  # option httpchk HEAD / HTTP/1.1\r\nHost:\ vault.{{ fqdn }}
+  server {{ name }} {{ network }}.{{ host }}:9000 check
 
 backend be_default
   server {{ name }} 127.0.0.1:8888 maxconn 50 check
