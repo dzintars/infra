@@ -51,5 +51,26 @@
     group: "{{ become_user }}"
     mode: '0755'
   loop:
-    - "{{ cluster.libvirt.dir.images }}"
-    - "{{ cluster.libvirt.dir.iso }}"
+    - "{{ libvirt_dir_iso }}"
+    - "{{ libvirt_dir_images }}"
+
+- name: Create libvirt userspace config directory
+  file:
+    path: $HOME/.config/libvirt
+    state: directory
+    mode: '0755'
+
+- name: Copy default config file to allow virsh to use qemu:///system
+  become: yes
+  copy:
+    src: /etc/libvirt/libvirt.conf
+    dest: /home/{{ become_user }}/.config/libvirt/libvirt.conf
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    remote_src: yes
+
+- name: Use qemu:///system for virsh by default
+  replace:
+    path: $HOME/.config/libvirt/libvirt.conf
+    regexp: '#uri_default = "qemu:///system'
+    replace: 'uri_default = "qemu:///system'
