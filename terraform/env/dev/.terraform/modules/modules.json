@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"bastion","Source":"../../modules/libvirt-domain","Dir":"../../modules/libvirt-domain"},{"Key":"libvirt_pool","Source":"../../modules/libvirt-pool","Dir":"../../modules/libvirt-pool"},{"Key":"libvirt_network","Source":"../../modules/libvirt-network","Dir":"../../modules/libvirt-network"},{"Key":"","Source":"","Dir":"."}]}
