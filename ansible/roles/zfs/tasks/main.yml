@@ -1,0 +1,7 @@
+---
+# tasks file for roles/zfs
+
+# sudo dnf install http://download.zfsonlinux.org/fedora/zfs-release.fc33.noarch.rpm
+# dnf install kernel-devel zfs --allowerasing # to remove zfs-fuse
+# sudo /sbin/modprobe zfs
+# dd if=/dev/zero of=/root/disk1 count=1 bs=512

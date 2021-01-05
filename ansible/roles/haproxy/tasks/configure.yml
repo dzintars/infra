@@ -1,0 +1,29 @@
+---
+# tasks file for roles/haproxy
+
+- name: Create HAProxy error templates directory
+  become: true
+  file:
+    path: /etc/haproxy/errors
+    state: directory
+    mode: '0755'
+
+- name: Copy haproxy.cfg and reload HAProxy
+  become: true
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    # setype: named_conf_t
+    mode: '0644'
+  loop:
+    - { src: "haproxy.{{ name }}.cfg.j2", dest: "/etc/haproxy/haproxy.cfg" }
+    - { src: "errors/400.http.j2", dest: "/etc/haproxy/errors/400.http" }
+    - { src: "errors/403.http.j2", dest: "/etc/haproxy/errors/403.http" }
+    - { src: "errors/408.http.j2", dest: "/etc/haproxy/errors/408.http" }
+    - { src: "errors/500.http.j2", dest: "/etc/haproxy/errors/500.http" }
+    - { src: "errors/502.http.j2", dest: "/etc/haproxy/errors/502.http" }
+    - { src: "errors/503.http.j2", dest: "/etc/haproxy/errors/503.http" }
+    - { src: "errors/504.http.j2", dest: "/etc/haproxy/errors/504.http" }
+  notify: Restart HAProxy

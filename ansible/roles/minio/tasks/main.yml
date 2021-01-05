@@ -1,0 +1,119 @@
+---
+# tasks file for roles/minio
+
+- name: Create minio system group
+  become: yes
+  group:
+    name: "{{ group }}"
+    state: present
+    system: yes
+
+- name: Create minio user
+  become: yes
+  user:
+    name: "{{ user }}"
+    system: yes
+    shell: /sbin/nologin
+    group: "{{ group }}"
+
+# - name: download MinIO Server
+#   become: yes
+#   get_url:
+#     url: https://dl.min.io/server/minio/release/linux-amd64/minio
+#     dest: /usr/local/bin
+#     owner: "{{ user }}"
+#     group: "{{ group }}"
+#     mode: 0755
+
+# - name: download MinIO Client
+#   become: yes
+#   get_url:
+#     url: https://dl.min.io/client/mc/release/linux-amd64/mc
+#     dest: /usr/local/bin
+#     owner: "{{ user }}"
+#     group: "{{ group }}"
+#     mode: 0755
+
+- name: create minio storage and config directories
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'
+  loop:
+    - /agora/s3
+    - /etc/minio
+    - /home/{{ become_user }}/.minio/certs
+
+- name: copy minio envirionment variables
+  become: true
+  template:
+    src: minio.env.j2
+    dest: /etc/default/minio
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0644'
+
+- name: copy minio systemd service
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service
+    dest: /etc/systemd/system/
+    mode: '0644'
+
+- name: change the username
+  become: yes
+  replace:
+    path: /etc/systemd/system/minio.service
+    regexp: 'User=minio-user'
+    replace: 'User={{ user }}'
+
+- name: change the group name
+  become: yes
+  replace:
+    path: /etc/systemd/system/minio.service
+    regexp: 'Group=minio-user'
+    replace: 'Group={{ group }}'
+
+- name: just force systemd to re-execute itself (2.8 and above)
+  become: true
+  systemd:
+    daemon_reexec: yes
+
+- name: allowing firewall rules for ports
+  become: true
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  notify: Restart firewalld
+  loop:
+    - 8001/tcp
+
+- name: copy TLS certificates
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    remote_src: yes
+  loop:
+    - { src: "/etc/letsencrypt/live/{{ fqdn }}/privkey.pem", dest: "/home/{{ become_user }}/.minio/certs/privkey.key" }
+    - { src: "/etc/letsencrypt/live/{{ fqdn }}/fullchain.pem", dest: "/home/{{ become_user }}/.minio/certs/public.crt" }
+
+# - name: Set cap_net_bind_service=+ep on ./minio
+#   become: yes
+#   capabilities:
+#     path: /home/{{ become_user }}/.minio
+#     capability: cap_net_bind_service=+ep
+#     state: present
+
+- name: start minio service
+  become: true
+  service:
+    name: minio
+    state: started
+    enabled: yes
