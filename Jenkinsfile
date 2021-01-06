@@ -13,7 +13,7 @@ pipeline {
       steps {
         dir('./terraform/env/dev') {
           sh '${env.TERRAFORM_HOME}/terraform --version'
-          sh '''#!/bin/bash
+          sh '''#!/bin/bash -xe
             ${env.TERRAFORM_HOME}/terraform init \
             -backend-config "access_key=${env.MINIO_ACCESS_KEY}" \
             -backend-config "secret_key=${env.MINIO_SECRET_KEY}" \
