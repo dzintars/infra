@@ -11,12 +11,12 @@ pipeline {
   stages {
     stage('1 Terraform Init') {
       steps {
-        sh "${env.TERRAFORM_HOME}/terraform init -input=false"
+        sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform init -input=false"
       }
     }
     stage('2 Terraform Plan') {
       steps {
-        sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
+        sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
       }
     }
     stage('3 Terraform Apply') {
