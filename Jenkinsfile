@@ -4,9 +4,9 @@ pipeline {
     TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.3', type: 'terraform'
-    MINIO_ACCESS_KEY="minio"
-    MINIO_SECRET_KEY="miniostorage"
-    BUCKET="terraform"
+    MINIO_ACCESS_KEY = 'minio'
+    MINIO_SECRET_KEY = 'miniostorage'
+    BUCKET = 'terraform'
   }
   stages {
     stage('1 Terraform Init') {
