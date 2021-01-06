@@ -12,7 +12,7 @@ pipeline {
     stage('1 Terraform Init') {
       steps {
         dir('./terraform/env/dev') {
-          sh 'terraform --version'
+          sh '${env.TERRAFORM_HOME}/terraform --version'
           /* sh "${env.TERRAFORM_HOME}/terraform init -input=false" */
           sh "${env.TERRAFORM_HOME}/terraform init -backend-config access_key minio -backend-config secret_key miniostorage -backend-config bucket terraform -input=false"
         }
