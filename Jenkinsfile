@@ -11,7 +11,9 @@ pipeline {
   stages {
     stage('1 Terraform Init') {
       steps {
-        sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform init -backend-config="access_key=${env.MINIO_ACCESS_KEY}" -backend-config="secret_key=${env.MINIO_SECRET_KEY}" -backend-config="bucket=${env.BUCKET}" -input=false"
+        dir('./terraform/env/dev') {
+          sh "${env.TERRAFORM_HOME}/terraform init -input=false"
+        }
       }
     }
     stage('2 Terraform Plan') {
