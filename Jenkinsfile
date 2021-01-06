@@ -14,7 +14,7 @@ pipeline {
         dir('./terraform/env/dev') {
           sh "${env.TERRAFORM_HOME}/terraform --version"
           /* sh "${env.TERRAFORM_HOME}/terraform init -input=false" */
-          sh "${env.TERRAFORM_HOME}/terraform init -backend-config=\\"access_key=minio\\" -backend-config=\\"secret_key=${env.MINIO_SECRET_KEY}\\" -backend-config=\\"bucket=${env.BUCKET}\\""
+          sh "${env.TERRAFORM_HOME}/terraform init -backend-config=\"access_key=minio\" -backend-config=\"secret_key=${env.MINIO_SECRET_KEY}\" -backend-config=\"bucket=${env.BUCKET}\""
         }
       }
     }
