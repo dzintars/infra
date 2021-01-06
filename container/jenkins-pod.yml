@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins
+  labels:
+    app: jenkins
+spec:
+  # restartPolicy: Always
+  restartPolicy: Never
+  containers:
+    - name: server
+      image: docker.io/jenkins/jenkins:latest
+      resources: {}
+      ports:
+        - containerPort: 8080
+          hostPort: 9093
+          protocol: TCP
+        # - containerPort: 50000
+        #   hostPort: 50000
+        #   protocol: TCP
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: true
+        capabilities: {}
+          # drop:
+          # - CAP_MKNOD
+          # - CAP_NET_RAW
+          # - CAP_AUDIT_WRITE
+        privileged: false
+        readOnlyRootFilesystem: false
+        seLinuxOptions: {}
+      tty: true
+      volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home:Z
+      command:
+        - /sbin/tini
+        - --
+        - /usr/local/bin/jenkins.sh
+        - /sbin/tini
+        - --
+        - /usr/local/bin/jenkins.sh
+      env:
+        - name: TINI_SUBREAPER
+        - name: PATH
+          value: /usr/local/openjdk-8/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        - name: TERM
+          value: xterm
+        - name: HOSTNAME
+        - name: container
+          value: podman
+        - name: JAVA_BASE_URL
+          value: https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_
+        - name: JENKINS_VERSION
+          value: "2.192"
+        - name: LANG
+          value: C.UTF-8
+        - name: JAVA_HOME
+          value: /usr/local/openjdk-8
+        - name: JAVA_VERSION
+          value: 8u222
+        - name: JENKINS_HOME
+          value: /var/jenkins_home
+        - name: JENKINS_UC
+          value: https://updates.jenkins.io
+        - name: JENKINS_INCREMENTALS_REPO_MIRROR
+          value: https://repo.jenkins-ci.org/incrementals
+        - name: JAVA_URL_VERSION
+          value: 8u222b10
+        - name: REF
+          value: /usr/share/jenkins/ref
+        - name: JENKINS_UC_EXPERIMENTAL
+          value: https://updates.jenkins.io/experimental
+        - name: COPY_REFERENCE_FILE_LOG
+          value: /var/jenkins_home/copy_reference_file.log
+        - name: JENKINS_SLAVE_AGENT_PORT
+          value: "50000"
+  volumes:
+    - name: jenkins-home
+      hostPath:
+        path: /home/dzintars/containers/jenkins/volume/jenkins_home
+        type: Directory
+
