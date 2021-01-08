@@ -35,7 +35,7 @@ pipeline {
               sh 'ls -lah'
               sh 'make'
             } catch (err) {
-                echo err.getMessage()
+                echo err
             }
         }
               sh 'ls -lah'
