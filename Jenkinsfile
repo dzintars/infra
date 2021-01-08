@@ -37,7 +37,7 @@ pipeline {
       steps {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
-          sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false"
+          sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan"
         }
       }
     }
