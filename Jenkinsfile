@@ -11,8 +11,8 @@ pipeline {
       steps {
         echo 'Hello'
         dir('./terraform/env/dev') {
-          echo 'Fir changed'
-          sh '${env.TERRAFORM_HOME}/terraform --version'
+          echo 'Dir changed'
+          sh '$TERRAFORM_HOME/terraform --version'
           echo 'TF version'
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
             script {
