@@ -9,6 +9,7 @@ pipeline {
   stages {
     stage('1 Terraform Init') {
       steps {
+        echo 'Hello'
         dir('./terraform/env/dev') {
           sh '${env.TERRAFORM_HOME}/terraform --version'
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
@@ -22,16 +23,16 @@ pipeline {
         }
       }
     }
-    stage('2 Terraform Plan') {
-      steps {
-        sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
-      }
-    }
-    stage('3 Terraform Apply') {
-      steps {
-        input 'Apply Plan'
-        sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
-      }
-    }
+    // stage('2 Terraform Plan') {
+    //   steps {
+    //     sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
+    //   }
+    // }
+    // stage('3 Terraform Apply') {
+    //   steps {
+    //     input 'Apply Plan'
+    //     sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
+    //   }
+    // }
   }
 }
