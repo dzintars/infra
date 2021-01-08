@@ -18,6 +18,7 @@ pipeline {
                 echo err.getMessage()
             }
           }
+          sh 'pwd'
         }
       }
     }
