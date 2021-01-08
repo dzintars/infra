@@ -30,14 +30,18 @@ pipeline {
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
+          sh 'ls -lah'
           script {
             try {
-              sh 'ls -lah'
               sh 'make'
             } catch (err) {
-                echo err
+              frame_list = err.getStackTrace()
+              for(frame in frame_list) {
+                println(frame)
+              }
+              // echo err.getMessage()
             }
-        }
+          }
               sh 'ls -lah'
       }
     }
