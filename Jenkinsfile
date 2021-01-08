@@ -15,6 +15,7 @@ pipeline {
           // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
           //   sh 'make'
           // }
+          sh 'ls -lah'
           script {
             try {
               sh 'make'
