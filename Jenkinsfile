@@ -10,7 +10,7 @@ pipeline {
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
         // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-        dir('/tmp') {
+        dir('tmp') {
           sh 'pwd'
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
           // sh 'make'
