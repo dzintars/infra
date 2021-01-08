@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
+    TF_WORKSPACE = 'default' //Sets the Terraform Workspace
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
