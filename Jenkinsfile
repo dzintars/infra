@@ -7,24 +7,38 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
+    // stage('1 Install dmacvicar/libvirt plugin') {
+    //   steps {
+    //     // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
+    //       sh 'pwd'
+    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
+    //       // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+    //       //   sh 'make'
+    //       // }
+    //       sh 'ls -lah'
+    //       script {
+    //         try {
+    //           sh 'make'
+    //         } catch (err) {
+    //             echo err.getMessage()
+    //         }
+    //       }
+    //       sh 'ls -lah'
+    //       sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
+    //   }
+    // }
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
-        // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-          sh 'pwd'
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-          // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-          //   sh 'make'
-          // }
-          sh 'ls -lah'
           script {
             try {
+              sh 'ls -lah'
               sh 'make'
+              sh 'ls -lah'
             } catch (err) {
                 echo err.getMessage()
             }
-          }
-          sh 'ls -lah'
-          sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
+        }
       }
     }
     // stage('2 Terraform Init') {
