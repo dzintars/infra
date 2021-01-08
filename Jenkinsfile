@@ -9,14 +9,10 @@ pipeline {
   stages {
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
-        dir('/tmp') {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-        }
-        dir('/tmp/terraform-provider-libvirt') {
             sh 'ls -lah'
             sh 'make'
             sh 'ls -lah'
-        }
       }
     }
     stage('2 Terraform Init') {
