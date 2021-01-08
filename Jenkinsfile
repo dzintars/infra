@@ -34,11 +34,11 @@ pipeline {
             try {
               sh 'ls -lah'
               sh 'make'
-              sh 'ls -lah'
             } catch (err) {
                 echo err.getMessage()
             }
         }
+              sh 'ls -lah'
       }
     }
     // stage('2 Terraform Init') {
