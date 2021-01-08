@@ -12,9 +12,7 @@ pipeline {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
           script {
             try {
-              sh 'ls -lah'
               sh 'make'
-              sh 'ls -lah'
             } catch (err) {
                 echo err.getMessage()
             }
@@ -35,11 +33,13 @@ pipeline {
         }
       }
     }
-    // stage('2 Terraform Plan') {
-    //   steps {
-    //     sh "cd ./terraform/env/dev && ${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
-    //   }
-    // }
+    stage('2 Terraform Plan') {
+      steps {
+        dir('./terraform/env/dev') {
+          sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform/env/dev/terraform.tfvars'"
+        }
+      }
+    }
     // stage('3 Terraform Apply') {
     //   steps {
     //     input 'Apply Plan'
