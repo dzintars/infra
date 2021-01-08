@@ -11,7 +11,7 @@ pipeline {
       steps {
         dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-          sh 'make'
+          sh 'sudo make'
           sh 'ls -lah'
         }
       }
