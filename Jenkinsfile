@@ -10,9 +10,9 @@ pipeline {
   }
   stages {
     stage('1 Terraform Init') {
-      withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {}
       steps {
         dir('./terraform/env/dev') {
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {}
           sh '${env.TERRAFORM_HOME}/terraform --version'
           sh """#!/bin/bash -xe
             ${env.TERRAFORM_HOME}/terraform init \
