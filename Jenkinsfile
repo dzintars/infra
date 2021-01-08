@@ -18,6 +18,7 @@ pipeline {
                 echo err.getMessage()
             }
           }
+          sh 'ls -lah'
           sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
         }
       }
