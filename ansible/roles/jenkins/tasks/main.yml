@@ -1,0 +1,15 @@
+---
+# tasks file for roles/jenkins
+
+- name: install
+  import_tasks: install.yml
+  tags:
+    - jenkins:setup
+    - jenkins:setup:install
+
+# - name: configure
+#   import_tasks: configure.yml
+#   tags:
+#     - jenkins:setup
+#     - jenkins:setup:config
+

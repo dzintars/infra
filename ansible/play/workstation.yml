@@ -3,7 +3,7 @@
   hosts: WORKSTATION
   connection: local
   gather_facts: yes
-  # become: yes
+  become: yes
   # become_user: dzintars
   # become_method: sudo
 
@@ -85,3 +85,11 @@
       tags: [spire]
     - role: minio
       tags: [minio]
+    - role: jenkins
+      tags: [jenkins]
+    - role: geerlingguy.java
+      tags:
+        - geerlingguy:jenkins
+    - role: geerlingguy.jenkins
+      tags:
+        - geerlingguy:jenkins
