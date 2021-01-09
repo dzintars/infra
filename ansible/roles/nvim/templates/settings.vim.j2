@@ -46,6 +46,8 @@ set shortmess+=c                        " Don't pass messages to |ins-completion
 let python_highlight_all = 1
 let g:vim_json_syntax_conceal = 0       " Disable quote concealing in JSON files (https://github.com/Yggdroot/indentLine/issues/140#issuecomment-624662832)
 
+au BufNewFile,BufRead Jenkinsfile setf groovy
+
 au! BufWritePost $MYVIMRC source %      " Autosource when writing to the init.vim
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " ???
 

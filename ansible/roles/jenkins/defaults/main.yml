@@ -1,0 +1,6 @@
+---
+# defaults file for roles/jenkins
+
+jenkins_home: /var/lib/jenkins
+jenkins_hostname: localhost
+jenkins_http_port: 9093
