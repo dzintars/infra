@@ -35,14 +35,10 @@ pipeline {
             try {
               sh 'make'
             } catch (err) {
-              frame_list = err.getStackTrace()
-              for(frame in frame_list) {
-                println(frame)
-              }
-              // echo err.getMessage()
+              echo err.getMessage()
             }
           }
-              sh 'ls -lah'
+          sh 'ls -lah'
       }
     }
     // stage('2 Terraform Init') {
@@ -81,9 +77,9 @@ pipeline {
     //   }
     // }
   }
-  post {
-    always {
-      cleanWs()
-    }
-  }
+  // post {
+  //   always {
+  //     cleanWs()
+  //   }
+  // }
 }
