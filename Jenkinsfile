@@ -7,7 +7,7 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
-    stage('1 Install dmacvicar/libvirt plugin') {
+    stage('1 Build dmacvicar/libvirt plugin') {
       steps {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
           sh 'ls -lah'
