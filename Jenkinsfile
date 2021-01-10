@@ -7,26 +7,6 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
-    // stage('1 Install dmacvicar/libvirt plugin') {
-    //   steps {
-    //     // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-    //       sh 'pwd'
-    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-    //       // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-    //       //   sh 'make'
-    //       // }
-    //       sh 'ls -lah'
-    //       script {
-    //         try {
-    //           sh 'make'
-    //         } catch (err) {
-    //             echo err.getMessage()
-    //         }
-    //       }
-    //       sh 'ls -lah'
-    //       sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
-    //   }
-    // }
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
@@ -70,7 +50,7 @@ pipeline {
     stage('3 Terraform Plan') {
       steps {
         dir('./terraform/env/dev') {
-                // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
+          // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
             script {
               sh 'pwd'
