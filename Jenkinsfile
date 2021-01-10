@@ -82,12 +82,20 @@ pipeline {
         }
       }
     }
-    // stage('4 Terraform Apply') {
-    //   steps {
-    //     input 'Apply Plan'
-    //     sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
-    //   }
-    // }
+    stage('4 Terraform Apply') {
+      steps {
+        dir('./terraform/env/dev') {
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
+            script {
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform apply -input=false tfplan
+              """
+            }
+          }
+        }
+        // input 'Apply Plan'
+      }
+    }
   }
   // post {
   //   always {
