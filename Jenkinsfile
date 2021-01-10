@@ -39,7 +39,7 @@ pipeline {
             }
           }
           sh 'ls -lah'
-          // sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
+          sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
       }
     }
     stage('2 Terraform Init') {
