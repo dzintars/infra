@@ -39,22 +39,23 @@ pipeline {
             }
           }
           sh 'ls -lah'
+          // sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
       }
     }
-    // stage('2 Terraform Init') {
-    //   steps {
-    //     dir('./terraform/env/dev') {
-    //       sh '$TERRAFORM_HOME/terraform --version'
-    //       withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
-    //         script {
-    //           sh """#!/bin/bash
-    //             ${env.TERRAFORM_HOME}/terraform init -backend-config=access_key=${env.MINIO_ACCESS_KEY} -backend-config=secret_key=${env.MINIO_SECRET_KEY} -backend-config=bucket=${env.BUCKET}
-    //           """
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    stage('2 Terraform Init') {
+      steps {
+        dir('./terraform/env/dev') {
+          sh '$TERRAFORM_HOME/terraform --version'
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
+            script {
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform init -backend-config=access_key=${env.MINIO_ACCESS_KEY} -backend-config=secret_key=${env.MINIO_SECRET_KEY} -backend-config=bucket=${env.BUCKET}
+              """
+            }
+          }
+        }
+      }
+    }
     // stage('2 Terraform Plan') {
     //   steps {
     //     dir('./terraform/env/dev') {
