@@ -39,6 +39,7 @@ pipeline {
             }
           }
           sh 'ls -lah'
+          sh 'mkdir ~/.terraform.d/plugins'
           sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
       }
     }
