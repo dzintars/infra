@@ -39,10 +39,16 @@ pipeline {
             }
           }
           sh 'ls -lah'
-          sh 'mkdir ~/.terraform.d/plugins'
-          sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
-          sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
-          sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+          // sh 'mkdir ~/.terraform.d/plugins'
+          // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
+          // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+          // sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+          dir('~/.terraform.d/plugins') {
+            sh 'cp ~/terraform-provider-libvirt .'
+          }
+          dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
+            sh 'cp ~/terraform-provider-libvirt .'
+          }
       }
     }
     stage('2 Terraform Init') {
