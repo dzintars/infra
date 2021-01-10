@@ -10,7 +10,7 @@ pipeline {
     stage('1 Build dmacvicar/libvirt plugin') {
       steps {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-          sh 'ls -lah'
+          // sh 'ls -lah'
           script {
             try {
               sh 'make'
@@ -18,7 +18,7 @@ pipeline {
               echo err.getMessage()
             }
           }
-          sh 'ls -lah'
+          // sh 'ls -lah'
           // sh 'mkdir ~/.terraform.d/plugins'
           // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
           // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
@@ -53,7 +53,7 @@ pipeline {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
             script {
-              sh 'pwd'
+              // sh 'pwd'
               sh """#!/bin/bash
                 ${env.TERRAFORM_HOME}/terraform plan
               """
@@ -77,9 +77,9 @@ pipeline {
       }
     }
   }
-  // post {
-  //   always {
-  //     cleanWs()
-  //   }
-  // }
+  post {
+    always {
+      cleanWs()
+    }
+  }
 }
