@@ -27,21 +27,21 @@ pipeline {
     //       sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
     //   }
     // }
-    stage('1 Install dmacvicar/libvirt plugin') {
-      steps {
-          git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-          sh 'ls -lah'
-          script {
-            try {
-              sh 'make'
-            } catch (err) {
-              echo err.getMessage()
-            }
-          }
-          sh 'ls -lah'
-          // sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
-      }
-    }
+    // stage('1 Install dmacvicar/libvirt plugin') {
+    //   steps {
+    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
+    //       sh 'ls -lah'
+    //       script {
+    //         try {
+    //           sh 'make'
+    //         } catch (err) {
+    //           echo err.getMessage()
+    //         }
+    //       }
+    //       sh 'ls -lah'
+    //       // sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
+    //   }
+    // }
     stage('2 Terraform Init') {
       steps {
         dir('./terraform/env/dev') {
@@ -56,7 +56,7 @@ pipeline {
         }
       }
     }
-    stage('2 Terraform Plan') {
+    stage('3 Terraform Plan') {
       steps {
         dir('./terraform/env/dev') {
                 // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
@@ -71,16 +71,16 @@ pipeline {
         }
       }
     }
-    // stage('3 Terraform Apply') {
+    // stage('4 Terraform Apply') {
     //   steps {
     //     input 'Apply Plan'
     //     sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
     //   }
     // }
   }
-  // post {
-  //   always {
-  //     cleanWs()
-  //   }
-  // }
+  post {
+    always {
+      cleanWs()
+    }
+  }
 }
