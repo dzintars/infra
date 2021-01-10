@@ -7,26 +7,6 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
-    // stage('1 Install dmacvicar/libvirt plugin') {
-    //   steps {
-    //     // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-    //       sh 'pwd'
-    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-    //       // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-    //       //   sh 'make'
-    //       // }
-    //       sh 'ls -lah'
-    //       script {
-    //         try {
-    //           sh 'make'
-    //         } catch (err) {
-    //             echo err.getMessage()
-    //         }
-    //       }
-    //       sh 'ls -lah'
-    //       sh 'cp terraform-provider-libvirt /var/jenkins_home/.terraform.d/plugins/'
-    //   }
-    // }
     stage('1 Install dmacvicar/libvirt plugin') {
       steps {
           git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
@@ -39,43 +19,63 @@ pipeline {
             }
           }
           sh 'ls -lah'
+          // sh 'mkdir ~/.terraform.d/plugins'
+          // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
+          // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+          // sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+
+          // dir('~/.terraform.d/plugins') {
+          //   sh 'cp ~/terraform-provider-libvirt .'
+          // }
+          // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
+          //   sh 'cp ~/terraform-provider-libvirt .'
+          // }
       }
     }
-    // stage('2 Terraform Init') {
-    //   steps {
-    //     dir('./terraform/env/dev') {
-    //       sh '$TERRAFORM_HOME/terraform --version'
-    //       withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
-    //         script {
-    //           sh """#!/bin/bash
-    //             ${env.TERRAFORM_HOME}/terraform init -backend-config=access_key=${env.MINIO_ACCESS_KEY} -backend-config=secret_key=${env.MINIO_SECRET_KEY} -backend-config=bucket=${env.BUCKET}
-    //           """
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // stage('2 Terraform Plan') {
-    //   steps {
-    //     dir('./terraform/env/dev') {
-    //             // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
-    //       withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-root-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
-    //         script {
-    //           sh 'pwd'
-    //           sh """#!/bin/bash
-    //             ${env.TERRAFORM_HOME}/terraform plan
-    //           """
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // stage('3 Terraform Apply') {
-    //   steps {
-    //     input 'Apply Plan'
-    //     sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
-    //   }
-    // }
+    stage('2 Terraform Init') {
+      steps {
+        git 'https://github.com/dzintars/infra.git'
+        dir('./terraform/env/dev') {
+          sh '$TERRAFORM_HOME/terraform --version'
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
+            script {
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform init -backend-config=access_key=${env.MINIO_ACCESS_KEY} -backend-config=secret_key=${env.MINIO_SECRET_KEY} -backend-config=bucket=${env.BUCKET}
+              """
+            }
+          }
+        }
+      }
+    }
+    stage('3 Terraform Plan') {
+      steps {
+        dir('./terraform/env/dev') {
+          // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
+            script {
+              sh 'pwd'
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform plan
+              """
+            }
+          }
+        }
+      }
+    }
+    stage('4 Terraform Apply') {
+      steps {
+        dir('./terraform/env/dev') {
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
+            script {
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
+              """
+            }
+          }
+        }
+        // input 'Apply Plan'
+      }
+    }
   }
   // post {
   //   always {

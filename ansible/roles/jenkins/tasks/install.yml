@@ -38,6 +38,8 @@
     shell: /bin/false
     group: jenkins
 
+  # TODO: Add the henkins to the libvirt group!
+
 - name: allowing firewall service rules
   become: true
   firewalld:
