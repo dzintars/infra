@@ -44,6 +44,7 @@ pipeline {
     // }
     stage('2 Terraform Init') {
       steps {
+        git 'https://github.com/dzintars/infra.git'
         dir('./terraform/env/dev') {
           sh '$TERRAFORM_HOME/terraform --version'
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
@@ -78,9 +79,9 @@ pipeline {
     //   }
     // }
   }
-  post {
-    always {
-      cleanWs()
-    }
-  }
+  // post {
+  //   always {
+  //     cleanWs()
+  //   }
+  // }
 }
