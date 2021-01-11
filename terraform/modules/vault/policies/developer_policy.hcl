@@ -1,5 +1,0 @@
-path "developers/*"
-{
-  capabilities = ["list"]
-}
-

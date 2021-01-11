@@ -49,7 +49,6 @@ pipeline {
     }
     stage('3 Terraform Plan') {
       steps {
-        git branch: 'develop', url: 'https://github.com/dzintars/infra.git'
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
@@ -65,7 +64,6 @@ pipeline {
     }
     stage('4 Terraform Apply') {
       steps {
-        git branch: 'develop', url: 'https://github.com/dzintars/infra.git'
         dir('./terraform/env/dev') {
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'], vaultSecrets: [[path: 'oswee/minio', secretValues: [[envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'], [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key']]]]) {
             script {
