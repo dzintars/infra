@@ -1,6 +1,8 @@
 ---
 # tasks file for roles/vault
 
+# TODO: 1: Disable mlock
+
 - name: install rpm keys
   become: yes
   rpm_key:
