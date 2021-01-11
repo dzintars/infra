@@ -14,13 +14,13 @@ resource "vault_mount" "operations" {
   description = "KV2 Secrets Engine for Operations"
 }
 
-resource "vault_generic_secret" "developer_sample_data" {
-  path = "${vault_mount.developers.path}/test_account"
-  data_json = <<EOT
-{
-  "username": "foo",
-  "password": "bar"
-}
-EOT
-}
+/* resource "vault_generic_secret" "developer_sample_data" { */
+/*   path = "${vault_mount.developers.path}/test_account" */
+/*   data_json = <<EOT */
+/* { */
+/*   "username": "foo", */
+/*   "password": "bar" */
+/* } */
+/* EOT */
+/* } */
 

@@ -38,7 +38,11 @@ pipeline {
         dir('./terraform/env/dev') {
           sh '$TERRAFORM_HOME/terraform --version'
           withVault(
-            configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'],
+            configuration: [
+              timeout: 60,
+              vaultCredentialId: 'vault-token',
+              vaultUrl: 'https://vault.oswee.com'
+            ],
             vaultSecrets: [
               [path: 'oswee/minio',
                 secretValues: [
@@ -67,7 +71,11 @@ pipeline {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(
-            configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'],
+            configuration: [
+              timeout: 60,
+              vaultCredentialId: 'vault-token',
+              vaultUrl: 'https://vault.oswee.com'
+            ],
             vaultSecrets: [
               [path: 'oswee/minio',
                 secretValues: [
@@ -96,7 +104,11 @@ pipeline {
       steps {
         dir('./terraform/env/dev') {
           withVault(
-            configuration: [timeout: 60, vaultCredentialId: 'vault-token', vaultUrl: 'https://vault.oswee.com'],
+            configuration: [
+              timeout: 60,
+              vaultCredentialId: 'vault-token',
+              vaultUrl: 'https://vault.oswee.com'
+            ],
             vaultSecrets: [
               [path: 'oswee/minio',
                 secretValues: [
