@@ -1,0 +1,5 @@
+path "developers/*"
+{
+  capabilities = ["list"]
+}
+

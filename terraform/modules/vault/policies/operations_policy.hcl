@@ -1,0 +1,5 @@
+path "operations/*"
+{
+  capabilities = ["list"]
+}
+
