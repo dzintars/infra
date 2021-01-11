@@ -1,29 +1,29 @@
 ---
 # tasks file for roles/terraform
 
-- name: download Hashicorp Terraform
+- name: download Terraform
   unarchive:
-    src: https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
+    src: "{{ terraform_url }}"
     dest: /tmp
     remote_src: yes
 
 - name: copy Terraform binary
+  become: yes
   copy:
     src: /tmp/terraform
     dest: /usr/local/bin
     mode: a+x
     remote_src: yes
-  become: yes
 
 - name: download Terraform Libvit provider
   unarchive:
-    src: https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/v0.6.3/terraform-provider-libvirt-0.6.3+git.1604843676.67f4f2aa.Fedora_32.x86_64.tar.gz
+    src: "{{ libvirt_provider_url }}"
     dest: /tmp
     remote_src: yes
 
-- name: create libvirt provider directory
+- name: create Libvirt provider directory
   file:
-    path: "~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64"
+    path: "~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/{{ libvirt_provider_version }}/linux_amd64"
     state: directory
     owner: "{{ become_user }}"
     group: "{{ become_user }}"
@@ -40,14 +40,14 @@
 - name: copy Terraform Libvirt Plugin binary into libvirt provider directory
   copy:
     src: /tmp/terraform-provider-libvirt
-    dest: ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64/
+    dest: "~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/{{ libvirt_provider_version }}/linux_amd64/"
     mode: a+x
     remote_src: yes
 
 - name: copy Terraform Libvirt Plugin binary into plugins directory
   copy:
     src: /tmp/terraform-provider-libvirt
-    dest: /home/{{ become_user }}/.terraform.d/plugins
+    dest: "/home/{{ become_user }}/.terraform.d/plugins"
     mode: a+x
     remote_src: yes
 
