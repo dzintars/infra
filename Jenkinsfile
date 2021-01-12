@@ -9,32 +9,31 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
-    stage('1 Build dmacvicar/libvirt plugin') {
-      steps {
-          git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-          // sh 'ls -lah'
-          script {
-            try {
-              sh 'make'
-            } catch (err) {
-              echo err.getMessage()
-            }
-          }
-          // sh 'ls -lah'
-          // sh 'mkdir ~/.terraform.d/plugins'
-          // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
-          // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
-          // sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
-
-          // dir('~/.terraform.d/plugins') {
-          //   sh 'cp ~/terraform-provider-libvirt .'
-          // }
-          // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-          //   sh 'cp ~/terraform-provider-libvirt .'
-          // }
-      }
-    }
-    stage('2 Terraform Init') {
+    // stage('Build dmacvicar/libvirt plugin') {
+    //   steps {
+    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
+    //       // sh 'ls -lah'
+    //       script {
+    //         try {
+    //           sh 'make'
+    //         } catch (err) {
+    //           echo err.getMessage()
+    //         }
+    //       }
+    //       // sh 'ls -lah'
+    //       // sh 'mkdir ~/.terraform.d/plugins'
+    //       // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
+    //       // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+    //       // sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
+    //       // dir('~/.terraform.d/plugins') {
+    //       //   sh 'cp ~/terraform-provider-libvirt .'
+    //       // }
+    //       // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
+    //       //   sh 'cp ~/terraform-provider-libvirt .'
+    //       // }
+    //   }
+    // }
+    stage('Terraform Init') {
       steps {
         git branch: 'develop', url: 'https://github.com/dzintars/infra.git'
         dir('./terraform/env/dev') {
@@ -68,7 +67,7 @@ pipeline {
         }
       }
     }
-    stage('3 Terraform Plan') {
+    stage('Terraform Plan') {
       steps {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
@@ -102,7 +101,7 @@ pipeline {
         }
       }
     }
-    stage('4 Terraform Apply') {
+    stage('Terraform Apply') {
       steps {
         dir('./terraform/env/dev') {
           withVault(
