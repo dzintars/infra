@@ -9,30 +9,6 @@ pipeline {
     BUCKET = 'terraform'
   }
   stages {
-    // stage('Build dmacvicar/libvirt plugin') {
-    //   steps {
-    //       git 'https://github.com/dmacvicar/terraform-provider-libvirt.git'
-    //       // sh 'ls -lah'
-    //       script {
-    //         try {
-    //           sh 'make'
-    //         } catch (err) {
-    //           echo err.getMessage()
-    //         }
-    //       }
-    //       // sh 'ls -lah'
-    //       // sh 'mkdir ~/.terraform.d/plugins'
-    //       // sh 'cp terraform-provider-libvirt ~/.terraform.d/plugins/'
-    //       // sh 'mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
-    //       // sh 'cp terraform-provider-libvirt ~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64'
-    //       // dir('~/.terraform.d/plugins') {
-    //       //   sh 'cp ~/terraform-provider-libvirt .'
-    //       // }
-    //       // dir('~/.local/share/terraform/plugins/registry.terraform.io/dmacvicar/libvirt/0.6.3/linux_amd64') {
-    //       //   sh 'cp ~/terraform-provider-libvirt .'
-    //       // }
-    //   }
-    // }
     stage('Terraform Init') {
       steps {
         git branch: 'develop', url: 'https://github.com/dzintars/infra.git'
