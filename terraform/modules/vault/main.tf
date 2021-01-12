@@ -2,6 +2,10 @@ resource "vault_auth_backend" "userpass" {
   type = "userpass"
 }
 
+resource "vault_auth_backend" "ssh_engine" {
+  type = "ssh"
+}
+
 resource "vault_mount" "developers" {
   path = "developers"
   type = "kv-v2"
