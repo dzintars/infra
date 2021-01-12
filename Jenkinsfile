@@ -78,12 +78,6 @@ pipeline {
               vaultUrl: 'https://vault.oswee.com'
             ],
             vaultSecrets: [
-              [path: 'oswee/minio',
-                secretValues: [
-                  [envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'],
-                  [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key'],
-                ],
-              ],
               [path: 'oswee/vault',
                 secretValues: [
                   [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
@@ -111,12 +105,6 @@ pipeline {
               vaultUrl: 'https://vault.oswee.com'
             ],
             vaultSecrets: [
-              [path: 'oswee/minio',
-                secretValues: [
-                  [envVar: 'MINIO_ACCESS_KEY', vaultKey: 'access_key'],
-                  [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key'],
-                ],
-              ],
               [path: 'oswee/vault',
                 secretValues: [
                   [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
