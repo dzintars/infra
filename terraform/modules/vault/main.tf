@@ -2,7 +2,7 @@ resource "vault_auth_backend" "userpass" {
   type = "userpass"
 }
 
-resource "vault_auth_backend" "ssh_engine" {
+resource "vault_mount" "ssh_engine" {
   type = "ssh"
 }
 
