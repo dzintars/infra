@@ -3,7 +3,9 @@ resource "vault_auth_backend" "userpass" {
 }
 
 resource "vault_mount" "ssh_engine" {
+  path = "ssh"
   type = "ssh"
+  description = "General use SSH Engine"
 }
 
 resource "vault_mount" "developers" {
