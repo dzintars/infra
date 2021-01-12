@@ -137,7 +137,7 @@ pipeline {
     }
     stage('Bazel build') {
       steps {
-        sh 'bazel --version'
+        sh 'bazelisk --version'
       }
     }
   }
