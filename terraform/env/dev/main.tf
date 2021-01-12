@@ -20,3 +20,7 @@ module "bastion" {
   network_name = module.libvirt_network.name
   img_url      = "https://mirror.netsite.dk/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
 }
+
+module "vault" {
+  source = "../../modules/vault"
+}

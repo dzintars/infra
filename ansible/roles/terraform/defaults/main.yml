@@ -1,2 +1,8 @@
 ---
 # defaults file for roles/terraform
+
+terraform_version: 0.14.4
+terraform_url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+libvirt_provider_version: 0.6.3
+libvirt_provider_url: https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/v0.6.3/terraform-provider-libvirt-0.6.3+git.1604843676.67f4f2aa.Fedora_32.x86_64.tar.gz
+
