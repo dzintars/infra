@@ -27,11 +27,6 @@ pipeline {
                   [envVar: 'MINIO_SECRET_KEY', vaultKey: 'secret_key'],
                 ],
               ],
-              [path: 'oswee/vault',
-                secretValues: [
-                  [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
-                ],
-              ]
             ]
           ) {
             script {
