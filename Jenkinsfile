@@ -1,3 +1,5 @@
+// vim: set filetype=groovy:
+
 pipeline {
   agent any
   environment {
@@ -131,6 +133,11 @@ pipeline {
           }
         }
         // input 'Apply Plan'
+      }
+    }
+    stage('Bazel build') {
+      steps {
+        sh 'bazel --version'
       }
     }
   }
