@@ -66,7 +66,34 @@ pipeline {
         }
       }
     }
-    stage('Terraform Apply') {
+    // stage('Terraform Apply') {
+    //   steps {
+    //     dir('./terraform/env/dev') {
+    //       withVault(
+    //         configuration: [
+    //           timeout: 60,
+    //           vaultCredentialId: 'vault-token',
+    //           vaultUrl: 'https://vault.oswee.com'
+    //         ],
+    //         vaultSecrets: [
+    //           [path: 'oswee/vault',
+    //             secretValues: [
+    //               [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
+    //             ],
+    //           ]
+    //         ]
+    //       ) {
+    //         script {
+    //           sh """#!/bin/bash
+    //             ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
+    //           """
+    //         }
+    //       }
+    //     }
+    //     // input 'Apply Plan'
+    //   }
+    // }
+    stage('Terraform Destroy') {
       steps {
         dir('./terraform/env/dev') {
           withVault(
@@ -85,12 +112,11 @@ pipeline {
           ) {
             script {
               sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
+                ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
               """
             }
           }
         }
-        // input 'Apply Plan'
       }
     }
     stage('Bazel build') {
