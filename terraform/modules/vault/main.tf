@@ -12,7 +12,7 @@ resource "vault_mount" "ssh_host_signer" {
   description = "SSH Certs host signer"
   path = "ssh-host-signer"
   type = "ssh"
-  max_lease_ttl_seconds = "87600h"
+  max_lease_ttl_seconds = 315360000
 }
 
 resource "vault_ssh_secret_backend_ca" "ssh_backend" {
