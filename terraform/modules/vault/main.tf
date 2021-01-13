@@ -3,9 +3,16 @@ resource "vault_auth_backend" "userpass" {
 }
 
 resource "vault_mount" "ssh_engine" {
+  description = "SSH Certs user key signer"
   path = "ssh-client-signer"
   type = "ssh"
-  description = "SSH Certs signer"
+}
+
+resource "vault_mount" "ssh_engine" {
+  description = "SSH Certs host signer"
+  path = "ssh-host-signer"
+  type = "ssh"
+  max_lease_ttl_seconds = "87600h"
 }
 
 resource "vault_ssh_secret_backend_ca" "ssh_backend" {
@@ -13,15 +20,15 @@ resource "vault_ssh_secret_backend_ca" "ssh_backend" {
  generate_signing_key	= "true"
 }
 
-resource "vault_ssh_secret_backend_role" "bar" {
+resource "vault_ssh_secret_backend_role" "ca_role" {
   name                    = "ca-role"
   backend                 = vault_mount.ssh_engine.path
   key_type                = "ca"
   allow_user_certificates = "true"
+  allowed_users           = "*"
   allowed_extensions      = var.allowed_extensions
   default_extensions      = var.default_extensions
   default_user            = "fedora"
-  allowed_users           = "*"
   cidr_list               = "0.0.0.0/0"
   ttl                     = "30m0s"
 }
