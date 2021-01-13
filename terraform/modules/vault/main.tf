@@ -3,9 +3,9 @@ resource "vault_auth_backend" "userpass" {
 }
 
 resource "vault_mount" "ssh_engine" {
-  path = "ssh"
+  path = "ssh-client-signer"
   type = "ssh"
-  description = "General use SSH Engine"
+  description = "SSH Certs signer"
 }
 
 resource "vault_mount" "developers" {
