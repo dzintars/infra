@@ -2,13 +2,13 @@ resource "vault_auth_backend" "userpass" {
   type = "userpass"
 }
 
-resource "vault_mount" "ssh_engine" {
+resource "vault_mount" "ssh_client_signer" {
   description = "SSH Certs user key signer"
   path = "ssh-client-signer"
   type = "ssh"
 }
 
-resource "vault_mount" "ssh_engine" {
+resource "vault_mount" "ssh_host_signer" {
   description = "SSH Certs host signer"
   path = "ssh-host-signer"
   type = "ssh"
@@ -16,13 +16,13 @@ resource "vault_mount" "ssh_engine" {
 }
 
 resource "vault_ssh_secret_backend_ca" "ssh_backend" {
- backend		= vault_mount.ssh_engine.path
+ backend		= vault_mount.ssh_client_signer.path
  generate_signing_key	= "true"
 }
 
 resource "vault_ssh_secret_backend_role" "ca_role" {
   name                    = "ca-role"
-  backend                 = vault_mount.ssh_engine.path
+  backend                 = vault_mount.ssh_client_signer.path
   key_type                = "ca"
   allow_user_certificates = "true"
   allowed_users           = "*"
