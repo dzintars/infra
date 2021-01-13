@@ -15,13 +15,13 @@ resource "vault_mount" "ssh_host_signer" {
   max_lease_ttl_seconds = 315360000
 }
 
-resource "vault_ssh_secret_backend_ca" "ssh_backend" {
+resource "vault_ssh_secret_backend_ca" "client_ca" {
  backend		= vault_mount.ssh_client_signer.path
  generate_signing_key	= "true"
 }
 
-resource "vault_ssh_secret_backend_role" "ca_role" {
-  name                    = "ca-role"
+resource "vault_ssh_secret_backend_role" "clientrole" {
+  name                    = "clientrole"
   backend                 = vault_mount.ssh_client_signer.path
   key_type                = "ca"
   allow_user_certificates = "true"
