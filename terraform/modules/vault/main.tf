@@ -8,6 +8,11 @@ resource "vault_mount" "ssh_engine" {
   description = "SSH Certs signer"
 }
 
+resource "vault_ssh_secret_backend_ca" "ssh_backend" {
+ backend		= vault_mount.ssh_engine.path
+ generate_signing_key	= "true"
+}
+
 resource "vault_mount" "developers" {
   path = "developers"
   type = "kv-v2"
