@@ -33,6 +33,16 @@ resource "vault_ssh_secret_backend_role" "ca_role" {
   ttl                     = "30m0s"
 }
 
+resource "vault_ssh_secret_backend_role" "hostrole" {
+  name                    = "hostrole"
+  backend                 = vault_mount.ssh_host_signer.path
+  key_type                = "ca"
+  allow_host_certificates = "true"
+  allowed_domains         = "localdomain,oswee.com"
+  allow_subdomains        = true
+  ttl                     = "87600h"
+}
+
 resource "vault_mount" "developers" {
   path = "developers"
   type = "kv-v2"
