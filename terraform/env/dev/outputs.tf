@@ -3,3 +3,7 @@ output "bastion_ip" {
   value       = module.bastion.instance_ip_addr
 }
 
+output "vault_ssh_public_key" {
+  description = "SSH Public Key"
+  value       = module.vault.public_key
+}
