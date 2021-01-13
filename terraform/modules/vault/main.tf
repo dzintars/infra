@@ -13,6 +13,19 @@ resource "vault_ssh_secret_backend_ca" "ssh_backend" {
  generate_signing_key	= "true"
 }
 
+resource "vault_ssh_secret_backend_role" "bar" {
+  name                    = "ca-role"
+  backend                 = vault_mount.ssh_engine.path
+  key_type                = "ca"
+  allow_user_certificates = "true"
+  allowed_extensions      = var.allowed_extensions
+  default_extensions      = var.default_extensions
+  default_user            = "fedora"
+  allowed_users           = "*"
+  cidr_list               = "0.0.0.0/0"
+  ttl                     = "30m0s"
+}
+
 resource "vault_mount" "developers" {
   path = "developers"
   type = "kv-v2"
