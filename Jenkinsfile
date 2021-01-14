@@ -7,16 +7,6 @@ pipeline {
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
-    ACTION = "${params.ACTION}"
-  }
-  parameters {
-    choice (name: 'ACTION',
-      description: 'Terraform stage name to execute',
-	    choices: ['plan', 'apply', 'destroy'],
-      defaultValue: 'apply')
-    // string (name: 'ENV_NAME',
-    //   defaultValue: 'tf-customer1',
-    //   description: 'Env or Customer name')
   }
   stages {
     stage('Terraform Init') {
@@ -49,12 +39,6 @@ pipeline {
       }
     }
     stage('Terraform Plan') {
-      when { anyOf
-        {
-          environment name: 'ACTION', value: 'plan';
-          environment name: 'ACTION', value: 'apply';
-        }
-      }
       steps {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
@@ -83,11 +67,6 @@ pipeline {
       }
     }
     stage('Terraform Apply') {
-      when { anyOf
-        {
-          environment name: 'ACTION', value: 'apply';
-        }
-      }
       steps {
         dir('./terraform/env/dev') {
           withVault(
@@ -114,37 +93,37 @@ pipeline {
         // input 'Apply Plan'
       }
     }
-    stage('Terraform Destroy') {
-      when { anyOf
-        {
-          environment name: 'ACTION', value: 'destroy';
-        }
-      }
-      steps {
-        dir('./terraform/env/dev') {
-          withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
-            ],
-            vaultSecrets: [
-              [path: 'oswee/vault',
-                secretValues: [
-                  [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
-                ],
-              ]
-            ]
-          ) {
-            script {
-              sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
-              """
-            }
-          }
-        }
-      }
-    }
+    // stage('Terraform Destroy') {
+    //   when { anyOf
+    //     {
+    //       environment name: 'ACTION', value: 'destroy';
+    //     }
+    //   }
+    //   steps {
+    //     dir('./terraform/env/dev') {
+    //       withVault(
+    //         configuration: [
+    //           timeout: 60,
+    //           vaultCredentialId: 'vault-token',
+    //           vaultUrl: 'https://vault.oswee.com'
+    //         ],
+    //         vaultSecrets: [
+    //           [path: 'oswee/vault',
+    //             secretValues: [
+    //               [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
+    //             ],
+    //           ]
+    //         ]
+    //       ) {
+    //         script {
+    //           sh """#!/bin/bash
+    //             ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
+    //           """
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     stage('Bazel build') {
       steps {
         sh 'bazelisk --version'
