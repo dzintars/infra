@@ -11,8 +11,9 @@ pipeline {
   }
   parameters {
     choice (name: 'ACTION',
+      description: 'Terraform stage name to execute',
 	    choices: ['plan', 'apply', 'destroy'],
-      description: 'Terraform stage name to execute')
+      defaultValue: 'apply')
     // string (name: 'ENV_NAME',
     //   defaultValue: 'tf-customer1',
     //   description: 'Env or Customer name')
