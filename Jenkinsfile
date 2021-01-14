@@ -83,7 +83,9 @@ pipeline {
     }
     stage('Terraform Apply') {
       when { anyOf
-        {environment name: 'ACTION', value: 'apply';}
+        {
+          environment name: 'ACTION', value: 'apply';
+        }
       }
       steps {
         dir('./terraform/env/dev') {
@@ -113,7 +115,9 @@ pipeline {
     }
     stage('Terraform Destroy') {
       when { anyOf
-        {environment name: 'ACTION', value: 'destroy';}
+        {
+          environment name: 'ACTION', value: 'destroy';
+        }
       }
       steps {
         dir('./terraform/env/dev') {
