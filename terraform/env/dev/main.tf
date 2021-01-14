@@ -15,10 +15,11 @@ module "libvirt_network" {
 module "bastion" {
   source = "../../modules/libvirt-domain"
 
-  pool_name    = module.libvirt_pool.name
-  network_id   = module.libvirt_network.id
-  network_name = module.libvirt_network.name
-  img_url      = "https://mirror.netsite.dk/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
+  pool_name      = module.libvirt_pool.name
+  network_id     = module.libvirt_network.id
+  network_name   = module.libvirt_network.name
+  img_url        = "https://mirror.netsite.dk/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
+  instance_count = 1
 }
 
 module "vault" {
