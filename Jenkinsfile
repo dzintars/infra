@@ -7,7 +7,7 @@ pipeline {
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
-    ACTION = params.ACTION
+    ACTION = "${params.ACTION}"
   }
   parameters {
     choice (name: 'ACTION',
