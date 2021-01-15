@@ -7,5 +7,5 @@ packages:
   - fzf
   - ripgrep
   - the_silver_searcher
-  - bat
+  - bat # for the pretty fzf prewiews
 
