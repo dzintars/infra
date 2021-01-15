@@ -1,2 +1,11 @@
 ---
 # vars file for roles/nvim
+
+packages:
+  - neovim
+  - python3-neovim
+  - fzf
+  - ripgrep
+  - the_silver_searcher
+  - bat
+
