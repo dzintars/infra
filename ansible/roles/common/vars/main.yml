@@ -32,5 +32,5 @@ packages:
   - python3-netaddr # For Ansible
   - nmap
   - ripgrep
-
+  - the_silver_searcher
 
