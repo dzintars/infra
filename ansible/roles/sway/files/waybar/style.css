@@ -1,77 +1,114 @@
 * {
-	font-size: 12px;
-	font-family: monospace;
+  border: none;
+  border-radius: 0;
+  font-family: "Hack Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 0;
 }
 
 window#waybar {
-	/* background: #292b2e; */
-  background: rgba(2, 4, 15, 0.5);
-	color: #fdf6e3;
-}
-
-#custom-right-arrow-dark,
-#custom-left-arrow-dark {
-	color: #1a1a1a;
-	font-size: 20px;
-}
-#custom-right-arrow-light,
-#custom-left-arrow-light {
-	color: #292b2e;
-	background: #1a1a1a;
-	font-size: 20px;
-}
-
-#workspaces,
-#clock.1,
-#clock.2,
-#clock.3,
-#pulseaudio,
-#memory,
-#cpu,
-#battery,
-#disk,
-#tray {
-	background: #1a1a1a;
+  background: #1d2021;
+  color: #fbf1c7;
 }
 
 #workspaces button {
-	padding: 0 2px;
-	color: #fdf6e3;
-}
-#workspaces button.focused {
-	color: #268bd2;
-}
-#workspaces button:hover {
-	box-shadow: inherit;
-	text-shadow: inherit;
-}
-#workspaces button:hover {
-	background: #1a1a1a;
-	border: #1a1a1a;
-	padding: 0 3px;
+  padding: 0 4px;
+  background: transparent;
+  color: #fbf1c7;
+  border-bottom: 2px solid transparent;
 }
 
-#pulseaudio {
-	color: #268bd2;
-}
-#memory {
-	color: #2aa198;
-}
-#cpu {
-	color: #6c71c4;
-}
-#battery {
-	color: #859900;
-}
-#disk {
-	color: #b58900;
+#workspaces button.focused {
+  background: #181818;
+  border-bottom: 2px solid #d3869b;
 }
 
 #clock,
-#pulseaudio,
-#memory,
-#cpu,
 #battery,
-#disk {
-	padding: 0 10px;
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#tray,
+#mode,
+#idle_inhibitor,
+#custom-keyboard_layout,
+#custom-arch,
+#custom-disturb_on,
+#custom-disturb_off,
+#mpd {
+  padding: 0 8px;
+  margin: 0;
+}
+
+#clock {
+  background-color: #282828;
+}
+
+#network {
+  border-bottom: 2px solid #b16286;
+}
+
+#pulseaudio {
+  border-bottom: 2px solid #83a598;
+}
+
+#idle_inhibitor {
+  border-bottom: 2px solid #cc241d;
+}
+
+#idle_inhibitor.activated {
+  background-color: #fb4934;
+  color: white;
+}
+
+#custom-keyboard_layout {
+  border-bottom: 2px solid #8ec07c;
+}
+
+#custom-disturb-on,
+#custom-disturb-off,
+#custom-arch {
+  color: white;
+  background: #283F6E;
+}
+
+@keyframes blink {
+  to {
+    background-color: #26a65b;
+    color: #fb4934;
+  }
+}
+
+#battery {
+  background-color: #98971a;
+  color: #1d2021;
+}
+
+#battery.full {
+  background-color: transparent;
+  color: #b8bb26;
+}
+
+#battery.discharging {
+  color: #1d2021;
+  background-color: #d79921;
+}
+
+#battery.charging {
+  background-color: #98971a;
+  color: #1d2021;
+}
+
+#battery.warning:not(.charging) {
+  background: #cc241d;
+  color: #26a65b;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
