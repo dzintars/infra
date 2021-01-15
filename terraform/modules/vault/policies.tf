@@ -1,3 +1,8 @@
+resource "vault_policy" "terraform_policy" {
+  name   = "terraform"
+  policy = data.local_file.terraform_policy.content
+}
+
 resource "vault_policy" "admin_policy" {
   name   = "admins"
   policy = data.local_file.admin_policy.content
