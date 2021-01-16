@@ -55,6 +55,15 @@
     - "{{ libvirt_dir_images }}"
     - "{{ libvirt_dir_pools }}"
 
+- name: create libvirt pools directory
+  become: yes
+  file:
+    path: "{{ libvirt_dir_pools }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Create libvirt userspace config directory
   file:
     path: $HOME/.config/libvirt

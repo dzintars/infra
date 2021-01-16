@@ -16,7 +16,7 @@ name                   : workstation
 host                   : 2
 libvirt_dir_iso        : $HOME/kvm/iso
 libvirt_dir_images     : $HOME/kvm/images
-libvirt_dir_pools      : $HOME/kvm/pools
+libvirt_dir_pools      : /var/lib/libvirt/pools
 disk_format            : qcow2
 network_interface      : virbr0
 
