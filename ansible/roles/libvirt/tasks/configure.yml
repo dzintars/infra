@@ -53,6 +53,7 @@
   loop:
     - "{{ libvirt_dir_iso }}"
     - "{{ libvirt_dir_images }}"
+    - "{{ libvirt_dir_pools }}"
 
 - name: Create libvirt userspace config directory
   file:

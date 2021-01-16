@@ -85,7 +85,7 @@ pipeline {
           ) {
             script {
               sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
+                ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
               """
             }
           }

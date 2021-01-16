@@ -1,7 +1,7 @@
 resource "libvirt_pool" "pool" {
   name = var.name
   type = "dir"
-  path = "/tmp/terraform-provider-libvirt-pool-${var.name}"
+  path = "$HOME/kvm/pools/terraform-provider-pool-${var.name}"
 }
 
 
