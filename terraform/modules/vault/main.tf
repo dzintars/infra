@@ -29,8 +29,8 @@ resource "tls_private_key" "example" {
 
 resource "vault_ssh_secret_backend_ca" "client_ca" {
   backend		  = vault_mount.ssh_client_signer.path
-  public_key = tls_private_key.example.public_key_openssh
   private_key = tls_private_key.example.private_key_pem
+  public_key = tls_private_key.example.public_key_openssh
 }
 
 resource "vault_ssh_secret_backend_role" "clientrole" {
@@ -41,7 +41,7 @@ resource "vault_ssh_secret_backend_role" "clientrole" {
   allowed_users           = "*"
   allowed_extensions      = var.allowed_extensions
   default_extensions      = var.default_extensions
-  default_user            = "fedora"
+  default_user            = "dzintars"
   cidr_list               = "0.0.0.0/0"
   ttl                     = "30m0s"
 }
