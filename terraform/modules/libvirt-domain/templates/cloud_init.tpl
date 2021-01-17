@@ -8,7 +8,8 @@ runcmd:
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
-  - sed -i -e 'TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub' /etc/ssh/sshd_config
+  - [ sed, -i, -e, "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
+  - [ systemctl, restart, sshd.service ]
 
 # TODO: cluster name and fqdn IMO should come from Vault's KV store
 fqdn: ${hostname}.${subdomain}.${root_domain}
