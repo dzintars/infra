@@ -8,6 +8,6 @@
     }
   ],
   "key_type": "ca",
-  "default_user": "fedora",
+  "default_user": "${user}",
   "ttl": "30m0s"
 }

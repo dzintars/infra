@@ -16,4 +16,7 @@ data "local_file" "operations_policy" {
 
 data "local_file" "ssh_user_role" {
   filename = "${path.module}/roles/ssh.user.hcl"
+  vars = {
+    user = var.user
+  }
 }

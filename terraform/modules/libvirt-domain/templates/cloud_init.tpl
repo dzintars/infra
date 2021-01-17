@@ -15,6 +15,7 @@ runcmd:
 fqdn: ${hostname}.${subdomain}.${root_domain}
 hostname: ${hostname}
 users:
+  - default
   - name: ${user}
     sudo: ALL=(ALL) NOPASSWD:ALL
     lock_passwd: false
