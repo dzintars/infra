@@ -1,5 +1,9 @@
 #cloud-config
 
+# TODO: cluster name and fqdn IMO should come from Vault's KV store
+fqdn: ${hostname}.${subdomain}.${root_domain}
+hostname: ${hostname}
+
 packages:
   - qemu-guest-agent
 
@@ -11,15 +15,16 @@ runcmd:
   - [ sed, "$ a TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
   - [ systemctl, restart, sshd.service ]
 
-# TODO: cluster name and fqdn IMO should come from Vault's KV store
-fqdn: ${hostname}.${subdomain}.${root_domain}
-hostname: ${hostname}
 users:
   - default
   - name: ${user}
     sudo: ALL=(ALL) NOPASSWD:ALL
     lock_passwd: false
     passwd: $6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi. #"pass"
+
+ssh_pwauth: True
+chpasswd:
+  - ${user}:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
 
 growpart:
   mode: auto
