@@ -16,15 +16,17 @@ runcmd:
   - [ systemctl, restart, sshd.service ]
 
 users:
-  - default
+  #- default
   - name: ${user}
     sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, wheel
+    ssh_import_id:
     lock_passwd: false
     passwd: $6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi. #"pass"
 
-ssh_pwauth: True
-chpasswd:
-  - ${user}:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
+#ssh_pwauth: True
+#chpasswd:
+#  - ${user}:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
 
 growpart:
   mode: auto
