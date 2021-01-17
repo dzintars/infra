@@ -29,7 +29,7 @@ resource "tls_private_key" "example" {
 
 resource "vault_ssh_secret_backend_ca" "client_ca" {
   backend		  = vault_mount.ssh_client_signer.path
-  public_key = tls_private_key.example.public_key_pem
+  public_key = tls_private_key.example.public_key_openssh
   private_key = tls_private_key.example.private_key_pem
 }
 
