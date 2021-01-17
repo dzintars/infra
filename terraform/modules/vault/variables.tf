@@ -15,3 +15,10 @@ variable "default_extensions" {
   type        = map(string)
   default     = {"permit-pty": ""}
 }
+
+variable "user" {
+  description = ""
+  type        = string
+  default     = "fedora"
+}
+
