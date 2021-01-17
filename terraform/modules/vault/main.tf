@@ -41,7 +41,7 @@ resource "vault_ssh_secret_backend_role" "clientrole" {
   allowed_users           = "*"
   allowed_extensions      = var.allowed_extensions
   default_extensions      = var.default_extensions
-  default_user            = "dzintars"
+  default_user            = var.user
   cidr_list               = "0.0.0.0/0"
   ttl                     = "30m0s"
 }
