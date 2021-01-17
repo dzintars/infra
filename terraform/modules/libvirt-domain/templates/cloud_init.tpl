@@ -16,8 +16,8 @@ runcmd:
   - [ systemctl, restart, sshd.service ]
 
 users:
-  #- default
-  - name: ${user}
+  - default
+  - name: test
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: users, wheel
     ssh_import_id:
