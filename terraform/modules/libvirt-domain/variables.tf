@@ -31,7 +31,7 @@ variable "instance_count" {
 variable "user" {
   description = ""
   type        = string
-  default     = "dzintars"
+  default     = "fedora"
 }
 
 variable "hostname" {
