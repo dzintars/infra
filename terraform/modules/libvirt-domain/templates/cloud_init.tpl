@@ -12,7 +12,7 @@ runcmd:
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
-  - [ sed, "$ a TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
+  - [ sed, -i, "$ a TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
   - [ systemctl, restart, sshd.service ]
 
 users:
