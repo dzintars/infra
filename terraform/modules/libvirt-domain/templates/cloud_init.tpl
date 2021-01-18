@@ -12,7 +12,7 @@ runcmd:
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
-  - [ sed, -i, "$ a TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
+  - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
   - [ systemctl, restart, sshd.service ]
 
 users:
@@ -26,7 +26,7 @@ users:
 
 #ssh_pwauth: True
 #chpasswd:
-#  - ${user}:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
+#  - test:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
 
 growpart:
   mode: auto
