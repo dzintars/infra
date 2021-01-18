@@ -4,19 +4,19 @@ resource "vault_auth_backend" "userpass" {
 
 resource "vault_mount" "ssh_client_signer" {
   description = "SSH Certs user key signer"
-  path = "ssh-client-signer"
-  type = "ssh"
+  path        = "ssh-client-signer"
+  type        = "ssh"
 }
 
 resource "vault_mount" "ssh_host_signer" {
   description = "SSH Certs host signer"
-  path = "ssh-host-signer"
-  type = "ssh"
+  path        = "ssh-host-signer"
+  type        = "ssh"
   max_lease_ttl_seconds = 315360000
 }
 
 resource "tls_private_key" "example" {
-  algorithm = "ECDSA"
+  algorithm   = "ECDSA"
   ecdsa_curve = "P521"
 }
 
@@ -30,7 +30,7 @@ resource "tls_private_key" "example" {
 resource "vault_ssh_secret_backend_ca" "client_ca" {
   backend		  = vault_mount.ssh_client_signer.path
   private_key = tls_private_key.example.private_key_pem
-  public_key = tls_private_key.example.public_key_openssh
+  public_key  = tls_private_key.example.public_key_openssh
 }
 
 resource "vault_ssh_secret_backend_role" "clientrole" {
@@ -57,14 +57,14 @@ resource "vault_ssh_secret_backend_role" "hostrole" {
 }
 
 resource "vault_mount" "developers" {
-  path = "developers"
-  type = "kv-v2"
+  path        = "developers"
+  type        = "kv-v2"
   description = "KV2 Secrets Engine for Developers"
 }
 
 resource "vault_mount" "operations" {
-  path = "operations"
-  type = "kv-v2"
+  path        = "operations"
+  type        = "kv-v2"
   description = "KV2 Secrets Engine for Operations"
 }
 
