@@ -1,5 +1,3 @@
-// vim: set filetype=groovy:
-
 pipeline {
   agent any
   environment {
