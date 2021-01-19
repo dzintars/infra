@@ -8,4 +8,5 @@ packages:
   - ripgrep
   - the_silver_searcher
   - bat # for the pretty fzf prewiews
+  - yamllint
 

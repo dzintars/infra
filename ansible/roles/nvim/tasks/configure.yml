@@ -23,6 +23,7 @@
     - "$HOME/.config/nvim/plugged"
     - "$HOME/.config/nvim/sessions"
     - "$HOME/.config/nvim/undodir"
+    - "$HOME/.config/yamllint"
 
 - name: Copy init.vim
   # become: false
@@ -48,6 +49,14 @@
     - { src: "settings.vim.j2", dest: "$HOME/.config/nvim/settings.vim" }
     - { src: "theme.vim.j2", dest: "$HOME/.config/nvim/theme.vim" }
   notify: Install plugins
+
+- name: copy files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "yamllint/", dest: "$HOME/.config/yamllint/", mode: '0644' }
 
 # # Update remote plugins (e.g., deoplete).
 # - name: Update remote plugins
