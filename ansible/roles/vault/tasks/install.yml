@@ -68,6 +68,15 @@
     state: enabled
   notify: Restart Firewalld
 
+# https://www.vaultproject.io/docs/configuration#parameters
+# Actually we don't need to do this because it's done in Systemd unit file.
+# - name: Set mlock capabilities
+#   become: yes
+#   capabilities:
+#     path: /usr/bin/vault
+#     capability: cap_ipc_lock=+ep
+#     state: present
+
 # - name: install packages
 #   become: yes
 #   package:

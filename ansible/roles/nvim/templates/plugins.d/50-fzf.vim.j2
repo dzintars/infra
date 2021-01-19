@@ -3,7 +3,9 @@
 Plug 'junegunn/fzf.vim'
 
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
-" let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =

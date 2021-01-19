@@ -5,6 +5,8 @@ ui = true
 #mlock = true
 #disable_mlock = true
 
+#log_level = "warn"
+
 #storage "file" {
 #  path = "/opt/vault/data"
 #}
@@ -27,7 +29,7 @@ storage "raft" {
 
 # HTTPS listener
 listener "tcp" {
-address       = "{{ network }}.{{ host }}:8200"
+  address       = "{{ network }}.{{ host }}:8200"
   tls_cert_file = "/opt/vault/tls/fullchain.pem"
   tls_key_file  = "/opt/vault/tls/privkey.pem"
 }

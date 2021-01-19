@@ -1,5 +1,9 @@
 #cloud-config
 
+# TODO: cluster name and fqdn IMO should come from Vault's KV store
+fqdn: ${hostname}.${subdomain}.${root_domain}
+hostname: ${hostname}
+
 packages:
   - qemu-guest-agent
 
@@ -7,17 +11,23 @@ runcmd:
   - [ systemctl, daemon-reload ]
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
+  - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
+  - [ chmod, 0600, /etc/ssh/trusted-user-ca-keys.pem ]
+  - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pub", /etc/ssh/sshd_config ]
+  - [ systemctl, restart, sshd.service ]
 
-# TODO: cluster name and fqdn IMO should come from Vault's KV store
-fqdn: ${hostname}.${subdomain}.${root_domain}
-hostname: ${hostname}
 users:
-  - name: ${user}
+  - default
+  - name: test
     sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, wheel
+    ssh_import_id:
     lock_passwd: false
-    ssh_authorized_keys:
-      # TODO: This should be injected from the Vault
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/0ttzKRwT5/8Lxq+cUhzDGCIEV31T2Z4lqLPMKMMHMBtcqChQdNrKACS3gydM3qXhxeZoERP9GhPwqiaoM5eLS28lyHGRo1uYjqpAmaGwyVgOCPA9ObVGWvkOj1ULB7+2dn96tS8v97KkHkM0JYCKSwTKg44OIznOeIny8jHrOIYmsy4R85eC/e47+3X33/kB8fbA5Br4YZi1E1LuwTx/dyf9yzq4kgIcQh0pV9pMClPHKCZ+bYKsAPPT7Q48SG3IfXt0OcZd7huVth/dyHkfasbwZwuZ+2C3BEyLFmTu8Cmn6sVr0wTggPoVb85bIx4Mk2bAk35m5ihw4XzW9KBFuhpEooxJRiqvkBQ/WjfPGD3NZqX7R6FM1aYFOWHbQCLgRQP51cMshaG/1mqT1/P/ssjJDN4EWvFKg3lI/iL7/1ETzUk9t0i1hCBSn+FewTafCJhCIMNn4QJqbpxYGRORrY6YMyXuVaJ0PjYm0gAPKtk3PtiiYAe7ACdcUz9am/M= dzintars@workstationAAAAB3NzaC1yc2EAAAADAQABAAABgQC/0ttzKRwT5/8Lxq+cUhzDGCIEV31T2Z4lqLPMKMMHMBtcqChQdNrKACS3gydM3qXhxeZoERP9GhPwqiaoM5eLS28lyHGRo1uYjqpAmaGwyVgOCPA9ObVGWvkOj1ULB7+2dn96tS8v97KkHkM0JYCKSwTKg44OIznOeIny8jHrOIYmsy4R85eC/e47+3X33/kB8fbA5Br4YZi1E1LuwTx/dyf9yzq4kgIcQh0pV9pMClPHKCZ+bYKsAPPT7Q48SG3IfXt0OcZd7huVth/dyHkfasbwZwuZ+2C3BEyLFmTu8Cmn6sVr0wTggPoVb85bIx4Mk2bAk35m5ihw4XzW9KBFuhpEooxJRiqvkBQ/WjfPGD3NZqX7R6FM1aYFOWHbQCLgRQP51cMshaG/1mqT1/P/ssjJDN4EWvFKg3lI/iL7/1ETzUk9t0i1hCBSn+FewTafCJhCIMNn4QJqbpxYGRORrY6YMyXuVaJ0PjYm0gAPKtk3PtiiYAe7ACdcUz9am/M= dzintars@workstation
+    passwd: $6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi. #"pass"
+
+#ssh_pwauth: True
+#chpasswd:
+#  - test:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
 
 growpart:
   mode: auto

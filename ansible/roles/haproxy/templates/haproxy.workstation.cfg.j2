@@ -124,7 +124,7 @@ frontend https-in
   http-request deny deny_status 429 if { sc_http_req_rate(0) gt 1000 }
 
   # Deny illegal user agents
-  http-request deny if { req.hdr(user-agent) -i -m sub curl phantomjs slimerjs }
+  http-request deny if { req.hdr(user-agent) -i -m sub phantomjs slimerjs }
   http-request deny unless { req.hdr(user-agent) -m found }
 
   # Add security headers

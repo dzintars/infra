@@ -1,14 +1,13 @@
 ---
 # tasks file for nvim
 
-- name: Install Neovim
+- name: Install packages
   become: true
   dnf:
     name: "{{ item }}"
     state: latest
   loop:
-    - neovim
-    - python3-neovim
+    "{{ packages }}"
 
 # - name: Determine if vim plug is installed for neovim
 #   stat:
@@ -36,7 +35,7 @@
   yarn:
     name: neovim@latest
     global: yes
-    
+
 - name: Install pynvim python package
   pip:
     name: pynvim

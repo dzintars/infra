@@ -93,6 +93,37 @@ pipeline {
         // input 'Apply Plan'
       }
     }
+    // stage('Terraform Destroy') {
+    //   when { anyOf
+    //     {
+    //       environment name: 'ACTION', value: 'destroy';
+    //     }
+    //   }
+    //   steps {
+    //     dir('./terraform/env/dev') {
+    //       withVault(
+    //         configuration: [
+    //           timeout: 60,
+    //           vaultCredentialId: 'vault-token',
+    //           vaultUrl: 'https://vault.oswee.com'
+    //         ],
+    //         vaultSecrets: [
+    //           [path: 'oswee/vault',
+    //             secretValues: [
+    //               [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
+    //             ],
+    //           ]
+    //         ]
+    //       ) {
+    //         script {
+    //           sh """#!/bin/bash
+    //             ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
+    //           """
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     stage('Bazel build') {
       steps {
         sh 'bazelisk --version'

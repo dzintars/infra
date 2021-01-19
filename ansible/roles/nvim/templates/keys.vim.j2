@@ -4,14 +4,14 @@ nnoremap <Leader>pt :NERDTreeToggle<CR>
 nnoremap <silent> <expr> <Leader>n g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
 
 " ===== FZF =====
-nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-g> :GFiles<CR>
-nnoremap <silent> <C-o> :Buffers<CR>
-" nnoremap <Leader>g :Rg<CR>
-" nnoremap <Leader>t :Tags<CR>
-" nnoremap <Leader>m :Marks<CR>
+nnoremap <silent> <C-f> :Files<CR>
+"nnoremap <silent> <C-g> :GFiles<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <Leader>g :Rg<CR>
+nnoremap <Leader>t :Tags<CR>
+nnoremap <Leader>m :Marks<CR>
 
-" This is the default extra key bindings
+" Extra key bindings to open found files into splits
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
@@ -28,10 +28,8 @@ xnoremap <C-l> <C-w>l
 "xnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Move VISUAL LINE selection within buffer. https://youtu.be/X5IAdaN6IwM
-xnoremap <silent> J :call move_down()<CR>
-xnoremap <silent> K :call move_up()<CR>
-
-"xnoremap <C-/> 'gc' " Comment in/out selection
+"xnoremap <silent> J :call move_down()<CR>
+"xnoremap <silent> K :call move_up()<CR>
 
 "nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 "nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
