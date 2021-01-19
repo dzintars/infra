@@ -25,7 +25,7 @@
 
 - name: download Minecraft Forge
   get_url:
-    url: https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.4-35.1.13/forge-1.16.4-35.1.13-installer.jar
+    url: https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.5-36.0.1/forge-1.16.5-36.0.1-installer.jar
     dest: $HOME/Downloads/
     mode: '0700'
 
@@ -37,7 +37,7 @@
 
 - name: download Kami Blue client (Highway Worker Tools)
   get_url:
-    url: https://github.com/Avanatiker/client/releases/download/1.12.xx-ht_v05/client-1.12.xx-dev.jar
+    url: https://github.com/Avanatiker/client/releases/download/2.01.xx-dev-ht-v07/client-2.01.xx-dev-ht-v07.jar
     dest: $HOME/.minecraft/mods/
     mode: '0700'
 
