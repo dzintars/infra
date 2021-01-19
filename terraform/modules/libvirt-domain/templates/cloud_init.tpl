@@ -16,9 +16,9 @@ runcmd:
   - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem", /etc/ssh/sshd_config ]
   - [ systemctl, restart, sshd.service ]
 
-# users:
+users:
 #   - name: terraform
-#   - name: ansible
+  - name: fedora
 #   - name: test
 #     sudo: ['ALL=(ALL) NOPASSWD:ALL']
 #     groups: users, wheel
