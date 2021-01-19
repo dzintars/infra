@@ -12,5 +12,3 @@ data "template_file" "user_data" {
 data "template_file" "network_config" {
   template = file("${path.module}/templates/network_config_dhcp.tpl")
 }
-
-
