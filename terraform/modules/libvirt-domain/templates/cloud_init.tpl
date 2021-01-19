@@ -30,7 +30,7 @@ runcmd:
 ssh_deletekeys: true
 ssh_pwauth: True
 chpasswd:
-  - test:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
+  - root:$6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi.
 
 growpart:
   mode: auto
