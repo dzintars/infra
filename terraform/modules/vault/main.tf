@@ -15,7 +15,12 @@ resource "vault_mount" "ssh_host_signer" {
   max_lease_ttl_seconds = 315360000
 }
 
-resource "tls_private_key" "example" {
+resource "tls_private_key" "client" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P521"
+}
+
+resource "tls_private_key" "host" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P521"
 }
@@ -29,8 +34,14 @@ resource "tls_private_key" "example" {
 
 resource "vault_ssh_secret_backend_ca" "client_ca" {
   backend		  = vault_mount.ssh_client_signer.path
-  private_key = tls_private_key.example.private_key_pem
-  public_key  = tls_private_key.example.public_key_openssh
+  private_key = tls_private_key.client.private_key_pem
+  public_key  = tls_private_key.client.public_key_openssh
+}
+
+resource "vault_ssh_secret_backend_ca" "host_ca" {
+  backend		  = vault_mount.ssh_host_signer.path
+  private_key = tls_private_key.host.private_key_pem
+  public_key  = tls_private_key.host.public_key_openssh
 }
 
 resource "vault_ssh_secret_backend_role" "clientrole" {

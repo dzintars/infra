@@ -11,6 +11,9 @@ runcmd:
   - [ systemctl, daemon-reload ]
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
+  # Terraform does not support DSA and ED25519
+  - [ rm, -R, /etc/ssh/ssh_host_dsa*]
+  - [ rm, -R, /etc/ssh/ssh_host_ed25519*]
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
   - [ chmod, 0600, /etc/ssh/trusted-user-ca-keys.pem ]
   - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem", /etc/ssh/sshd_config ]
