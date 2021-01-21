@@ -5,5 +5,5 @@ output "bastion_ip" {
 
 output "vault_ssh_client_public_key" {
   description = "SSH Client CA Public Key"
-  value       = module.vault.client_ca_public_key
+  value       = module.vault-ssh.client_ca_public_key
 }
