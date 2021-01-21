@@ -35,7 +35,34 @@ pipeline {
           }
         }
       }
-    }
+     stage('Terraform Refresh') {
+      steps {
+        dir('./terraform/env/dev') {
+          // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
+          withVault(
+            configuration: [
+              timeout: 60,
+              vaultCredentialId: 'vault-token',
+              vaultUrl: 'https://vault.oswee.com'
+            ],
+            vaultSecrets: [
+              [path: 'oswee/vault',
+                secretValues: [
+                  [envVar: 'VAULT_TOKEN', vaultKey: 'token'],
+                ],
+              ]
+            ]
+          ) {
+            script {
+              // sh 'pwd'
+              sh """#!/bin/bash
+                ${env.TERRAFORM_HOME}/terraform refresh
+              """
+            }
+          }
+        }
+      }
+    }   }
     stage('Terraform Plan') {
       steps {
         dir('./terraform/env/dev') {
