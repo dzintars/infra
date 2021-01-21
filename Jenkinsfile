@@ -57,7 +57,7 @@ pipeline {
             script {
               // sh 'pwd'
               sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform taint vault_auth_backend.approle
+                ${env.TERRAFORM_HOME}/terraform taint "module.vault-ssh.vault_auth_backend.approle"
               """
               sh """#!/bin/bash
                 ${env.TERRAFORM_HOME}/terraform plan
