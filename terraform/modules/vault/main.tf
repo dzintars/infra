@@ -2,6 +2,11 @@ resource "vault_auth_backend" "userpass" {
   type = "userpass"
 }
 
+resource "vault_auth_backend" "approle" {
+  type = "approle"
+  path = "approle"
+}
+
 resource "vault_mount" "developers" {
   path        = "developers"
   type        = "kv-v2"
