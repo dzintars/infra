@@ -25,3 +25,7 @@ module "bastion" {
 module "vault" {
   source = "../../modules/vault"
 }
+
+module "vault-ssh" {
+  source = "../../modules/vault-ssh"
+}
