@@ -31,11 +31,6 @@ resource "vault_approle_auth_backend_role_secret_id" "instance" {
   role_name = vault_approle_auth_backend_role.instance.role_name
 }
 
-resource "vault_policy" "instance" {
-  name = "instance"
-  policy = data.vault_policy_document.instance.hcl
-}
-
 output "approle" {
   value = {
     id = vault_approle_auth_backend_role.instance.id
