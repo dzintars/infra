@@ -56,9 +56,9 @@ pipeline {
           ) {
             script {
               // sh 'pwd'
-              sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform taint "module.vault.vault_auth_backend.approle"
-              """
+              // sh """#!/bin/bash
+              //   ${env.TERRAFORM_HOME}/terraform taint "module.vault.vault_auth_backend.approle"
+              // """
               sh """#!/bin/bash
                 ${env.TERRAFORM_HOME}/terraform plan
               """
@@ -86,7 +86,7 @@ pipeline {
           ) {
             script {
               sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
+                ${env.TERRAFORM_HOME}/terraform destroy -input=false -auto-approve
               """
             }
           }
