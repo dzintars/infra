@@ -32,10 +32,3 @@ resource "vault_approle_auth_backend_role_secret_id" "instance" {
   role_name = vault_approle_auth_backend_role.instance.role_name
 }
 
-output "approle" {
-  value = {
-    id = vault_approle_auth_backend_role.instance.id
-    role = vault_approle_auth_backend_role.instance.role_id
-    secret = vault_approle_auth_backend_role_secret_id.instance.secret_id
-  }
-}
