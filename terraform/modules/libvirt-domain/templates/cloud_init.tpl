@@ -6,6 +6,16 @@ hostname: ${hostname}
 
 packages:
   - qemu-guest-agent
+  - jq
+
+write_files:
+  - content: |
+      #!/bin/sh
+      set -eu -o pipefail
+      token_path=/root/.vault-token
+    path: /etc/vault/sign-host-cert.sh
+    permissions: '0644'
+    owner: root:root
 
 runcmd:
   - [ systemctl, daemon-reload ]

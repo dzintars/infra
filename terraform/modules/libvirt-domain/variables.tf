@@ -78,3 +78,14 @@ variable "network_name" {
   default     = "default-network"
 }
 
+variable "approle_role_id" {
+  description = "AppRole role ID"
+  type        = string
+  default     = ""
+}
+
+variable "approle_secret_id" {
+  description = "AppRole Secret ID"
+  type        = string
+  default     = ""
+}
