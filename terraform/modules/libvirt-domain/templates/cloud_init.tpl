@@ -29,13 +29,13 @@ write_files:
       curl -sS \
         -H "X-Vault-Token: $(cat $token_path)" \
         -X POST \
-        -d @- "${vault_addr}/v1/ssh-host-signer/sign/instance" <<-EOF | jq -r .data.signed_key > $cert_path
+        -d @- "${vault_addr}/v1/ssh-host-signer/sign/hostrole" <<-EOF | jq -r .data.signed_key > $ssh_cert_path
       {
         "public_key": "$(cat $ssh_pub_key_path)",
         "cert_type": "host"
       }
       EOF
-      chmod 0640 $cert_path
+      chmod 0640 $ssh_cert_path
       echo "Successfully signed cert"
     path: /etc/vault/sign-host-cert.sh
     permissions: '0644'
@@ -67,9 +67,11 @@ runcmd:
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
   - [ chmod, 0600, /etc/ssh/trusted-user-ca-keys.pem ]
   - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem", /etc/ssh/sshd_config ]
-  - [ systemctl, restart, sshd.service ]
   - [ systemctl, enable, sign-host-certificate.service ]
   - [ systemctl, start, sign-host-certificate.service ]
+  - [ sed, -i, -e, "$aHostKey /etc/ssh/ssh_host_ecdsa_key", /etc/ssh/sshd_config ]
+  - [ sed, -i, -e, "$aHostCertificate /etc/ssh/ssh_host_ecdsa_key-cert.pub", /etc/ssh/sshd_config ]
+  - [ systemctl, restart, sshd.service ]
 
 users:
 #   - name: terraform

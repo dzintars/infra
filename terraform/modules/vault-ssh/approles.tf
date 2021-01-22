@@ -10,7 +10,7 @@ resource "vault_auth_backend" "approle" {
 
 data "vault_policy_document" "instance" {
   rule {
-    path         = "ssh-host-signer/sign/instance"
+    path         = "ssh-host-signer/sign/hostrole"
     capabilities = ["update"]
     description  = "Allow hosts to sign their own certs"
   }
