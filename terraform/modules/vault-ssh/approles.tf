@@ -2,14 +2,10 @@
 #   path = "approle"
 # }
 
+# Create approle backend
 resource "vault_auth_backend" "approle" {
   type = "approle"
   path = "approle"
-}
-
-resource "vault_policy" "instance" {
-  name   = "instance"
-  policy = data.vault_policy_document.instance.hcl
 }
 
 data "vault_policy_document" "instance" {
@@ -18,6 +14,11 @@ data "vault_policy_document" "instance" {
     capabilities = ["update"]
     description  = "Allow hosts to sign their own certs"
   }
+}
+
+resource "vault_policy" "instance" {
+  name   = "instance"
+  policy = data.vault_policy_document.instance.hcl
 }
 
 resource "vault_approle_auth_backend_role" "instance" {
@@ -31,10 +32,10 @@ resource "vault_approle_auth_backend_role_secret_id" "instance" {
   role_name = vault_approle_auth_backend_role.instance.role_name
 }
 
-# output "approle" {
-#   value = {
-#     id = vault_approle_auth_backend_role.instance.id
-#     role = vault_approle_auth_backend_role.instance.role_id
-#     secret = vault_approle_auth_backend_role_secret_id.instance.secret_id
-#   }
-# }
+output "approle" {
+  value = {
+    id = vault_approle_auth_backend_role.instance.id
+    role = vault_approle_auth_backend_role.instance.role_id
+    secret = vault_approle_auth_backend_role_secret_id.instance.secret_id
+  }
+}
