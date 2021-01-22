@@ -6,6 +6,7 @@ data "template_file" "user_data" {
     subdomain    = var.subdomain
     root_domain  = var.root_domain
     time_zone    = var.time_zone
+    vault_addr   = var.vault_addr
     role_id      = var.vault_role_id
     secret_id    = var.vault_secret_id
   }
