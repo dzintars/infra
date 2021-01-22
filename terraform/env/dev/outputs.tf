@@ -12,7 +12,7 @@ output "approle" {
   description = "Instance approle parameters"
   value = {
     id = module.vault-ssh.approle.id
-    role = module.vault-ssh.approle.role_id
-    secret = module.vault-ssh.approle.secret_id
+    role = module.vault-ssh.approle.role
+    secret = module.vault-ssh.approle.secret
   }
 }
