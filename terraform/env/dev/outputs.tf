@@ -11,8 +11,8 @@ output "vault_ssh_client_public_key" {
 output "approle" {
   description = "Instance approle parameters"
   value = {
-    id = module.vault-ssh.vault_approle_auth_backend_role.instance.id
-    role = module.vault-ssh.vault_approle_auth_backend_role.instance.role_id
-    secret = module.vault-ssh.vault_approle_auth_backend_role_secret_id.instance.secret_id
+    id = module.vault-ssh.approle.id
+    role = module.vault-ssh.approle.role_id
+    secret = module.vault-ssh.approle.secret_id
   }
 }
