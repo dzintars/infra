@@ -1,11 +1,14 @@
 data "template_file" "user_data" {
   template = file("${path.module}/templates/cloud_init.tpl")
   vars = {
-    user         = var.user
-    hostname     = var.hostname
-    subdomain    = var.subdomain
-    root_domain  = var.root_domain
-    time_zone    = var.time_zone
+    user            = var.user
+    hostname        = var.hostname
+    subdomain       = var.subdomain
+    root_domain     = var.root_domain
+    time_zone       = var.time_zone
+    vault_addr      = var.vault_addr
+    vault_role_id   = var.vault_role_id
+    vault_secret_id = var.vault_secret_id
   }
 }
 

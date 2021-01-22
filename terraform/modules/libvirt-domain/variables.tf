@@ -22,6 +22,12 @@ variable "subdomain" {
   default     = "ocp"
 }
 
+variable "vault_addr" {
+  description = "Vault server address"
+  type        = string
+  default     = "https://vault.oswee.com"
+}
+
 variable "instance_count" {
   description = ""
   type        = number
@@ -78,3 +84,14 @@ variable "network_name" {
   default     = "default-network"
 }
 
+variable "vault_role_id" {
+  description = "AppRole role ID"
+  type        = string
+  default     = ""
+}
+
+variable "vault_secret_id" {
+  description = "AppRole Secret ID"
+  type        = string
+  default     = ""
+}
