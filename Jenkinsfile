@@ -86,7 +86,7 @@ pipeline {
           ) {
             script {
               sh """#!/bin/bash
-                ${env.TERRAFORM_HOME}/terraform destroy -tagrget=module.libvirt_domain.libvirt_domain.domain -input=false -auto-approve
+                ${env.TERRAFORM_HOME}/terraform destroy -target=module.libvirt_domain.libvirt_domain.domain -input=false -auto-approve
               """
               sh """#!/bin/bash
                 ${env.TERRAFORM_HOME}/terraform apply -input=false -auto-approve
