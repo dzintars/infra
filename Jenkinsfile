@@ -133,7 +133,7 @@ pipeline {
     stage('Ansible play') {
       steps {
         dir('./ansible') {
-          ansiblePlaybook becomeUser: 'dzintars', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml', vaultCredentialsId: 'AnsibleVaultPass'
+          ansiblePlaybook becomeUser: 'dzintars', installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml', vaultCredentialsId: 'AnsibleVaultPass'
         }
       }
     }

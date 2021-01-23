@@ -1,6 +1,6 @@
 ---
 
-ansible_ssh_user     : 'dzintars'
+ansible_ssh_user     : 'fedora'
 ansible_become_pass  : '{{ vault_ansible_become_pass }}'
 
 pull_secret          : '{{ vault_pull_secret | to_json }}'
