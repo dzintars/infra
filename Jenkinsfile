@@ -5,7 +5,6 @@ pipeline {
     TF_WORKSPACE = 'default' //Sets the Terraform Workspace
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
-    ANSIBLE_HOME = tool name: 'ansible', type: 'ansible'
     BUCKET = 'terraform'
   }
   stages {
