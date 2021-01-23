@@ -6,7 +6,7 @@ pipeline {
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
-    ANSIBLE_VAULT_PASSWORD_FILE = '.vault_pass.txt'
+    // ANSIBLE_VAULT_PASSWORD_FILE = ${ansible_vault_pass}
   }
   stages {
     stage('Terraform Init') {
