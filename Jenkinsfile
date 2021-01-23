@@ -1,9 +1,11 @@
 pipeline {
   agent any
   environment {
+    VAULT_URL = 'https://vault.oswee.com'
     TF_WORKSPACE = 'default' //Sets the Terraform Workspace
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
+    ANSIBLE_HOME = tool name: 'ansible', type: 'ansible'
     BUCKET = 'terraform'
   }
   stages {
@@ -16,7 +18,7 @@ pipeline {
             configuration: [
               timeout: 60,
               vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
+              vaultUrl: ${env.VAULT_URL}
             ],
             vaultSecrets: [
               [path: 'oswee/minio',
@@ -44,7 +46,7 @@ pipeline {
             configuration: [
               timeout: 60,
               vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
+              vaultUrl: ${env.VAULT_URL}
             ],
             vaultSecrets: [
               [path: 'oswee/vault',
@@ -74,7 +76,7 @@ pipeline {
             configuration: [
               timeout: 60,
               vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
+              vaultUrl: ${env.VAULT_URL}
             ],
             vaultSecrets: [
               [path: 'oswee/vault',
@@ -130,7 +132,28 @@ pipeline {
     // }
     stage('Bazel build') {
       steps {
-        sh 'bazelisk --version'
+        dir('./ansible') {
+          withVault(
+            configuration: [
+              timeout: 60,
+              vaultCredentialId: 'vault-token',
+              vaultUrl: ${env.VAULT_URL}
+            ],
+            vaultSecrets: [
+              [path: 'oswee/ansible',
+                secretValues: [
+                  [envVar: 'ANSIBLE_VAULT_PASSWORD_FILE', vaultKey: 'vault_pass'],
+                ],
+              ]
+            ]
+          ) {
+            script {
+              sh """#!/bin/bash
+                ${env.ANSIBLE_HOME}/ansible-playbook play/demo.yml
+              """
+            }
+          }
+        }
       }
     }
   }

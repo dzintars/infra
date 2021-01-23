@@ -6,7 +6,7 @@
   tasks:
   - name: get service facts
     service_facts:
-        
+
 #   - name: check named-chroot status
 #     fail:
 #       msg: Bind (named-chroot) is not installed, why? It should have been there!
@@ -40,12 +40,12 @@
     debug:
       var: ansible_facts.services["{{ item }}"]
     loop:
-      - named-chroot.service
-      - dhcpd.service
-      - firewalld.service
-      - matchbox.service
-      - tftp.service
-      - haproxy.service
+    - named-chroot.service
+    - dhcpd.service
+    - firewalld.service
+    - matchbox.service
+    - tftp.service
+    - haproxy.service
 
 #   - name: check TFTP status
 #     fail:
