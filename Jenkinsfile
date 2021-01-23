@@ -148,9 +148,7 @@ pipeline {
             ]
           ) {
             script {
-              sh """#!/bin/bash
-                ${env.ANSIBLE_HOME}/ansible-playbook play/demo.yml
-              """
+              ansiblePlaybook becomeUser: 'dzintars', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml'
             }
           }
         }
