@@ -6,6 +6,7 @@ pipeline {
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
+    ANSIBLE_VAULT_PASSWORD_FILE = '.vault_pass.txt'
   }
   stages {
     stage('Terraform Init') {
@@ -132,24 +133,7 @@ pipeline {
     stage('Bazel build') {
       steps {
         dir('./ansible') {
-          withVault(
-            // configuration: [
-            //   timeout: 60,
-            //   vaultCredentialId: 'vault-token',
-            //   vaultUrl: ${env.VAULT_URL}
-            // ],
-            vaultSecrets: [
-              [path: 'oswee/ansible',
-                secretValues: [
-                  [envVar: 'ANSIBLE_VAULT_PASSWORD_FILE', vaultKey: 'vault_pass'],
-                ],
-              ]
-            ]
-          ) {
-            script {
-              ansiblePlaybook becomeUser: 'dzintars', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml'
-            }
-          }
+          ansiblePlaybook becomeUser: 'dzintars', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml'
         }
       }
     }
