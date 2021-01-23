@@ -1,7 +1,7 @@
 ---
 - name: Jenkins pipeline demo
-  hosts: WORKSTATION
-  connection: local
+  hosts: BASTION
+  # connection: local
   gather_facts: no
   become: no
 
