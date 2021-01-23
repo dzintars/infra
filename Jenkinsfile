@@ -14,11 +14,11 @@ pipeline {
         dir('./terraform/env/dev') {
           sh '$TERRAFORM_HOME/terraform --version'
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: ${env.VAULT_URL}
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/minio',
                 secretValues: [
@@ -42,11 +42,11 @@ pipeline {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: ${env.VAULT_URL}
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/vault',
                 secretValues: [
@@ -72,11 +72,11 @@ pipeline {
       steps {
         dir('./terraform/env/dev') {
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: ${env.VAULT_URL}
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/vault',
                 secretValues: [
@@ -133,11 +133,11 @@ pipeline {
       steps {
         dir('./ansible') {
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: ${env.VAULT_URL}
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/ansible',
                 secretValues: [
