@@ -1,10 +1,12 @@
 pipeline {
   agent any
   environment {
+    VAULT_URL = 'https://vault.oswee.com'
     TF_WORKSPACE = 'default' //Sets the Terraform Workspace
     TF_IN_AUTOMATION = 'true'
     TERRAFORM_HOME = tool name: 'terraform-0.14.4', type: 'terraform'
     BUCKET = 'terraform'
+    // ANSIBLE_VAULT_PASSWORD_FILE = ${ansible_vault_pass}
   }
   stages {
     stage('Terraform Init') {
@@ -13,11 +15,11 @@ pipeline {
         dir('./terraform/env/dev') {
           sh '$TERRAFORM_HOME/terraform --version'
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/minio',
                 secretValues: [
@@ -41,11 +43,11 @@ pipeline {
         dir('./terraform/env/dev') {
           // sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='terraform.tfvars'"
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/vault',
                 secretValues: [
@@ -71,11 +73,11 @@ pipeline {
       steps {
         dir('./terraform/env/dev') {
           withVault(
-            configuration: [
-              timeout: 60,
-              vaultCredentialId: 'vault-token',
-              vaultUrl: 'https://vault.oswee.com'
-            ],
+            // configuration: [
+            //   timeout: 60,
+            //   vaultCredentialId: 'vault-token',
+            //   vaultUrl: ${env.VAULT_URL}
+            // ],
             vaultSecrets: [
               [path: 'oswee/vault',
                 secretValues: [
@@ -130,7 +132,9 @@ pipeline {
     // }
     stage('Bazel build') {
       steps {
-        sh 'bazelisk --version'
+        dir('./ansible') {
+          ansiblePlaybook becomeUser: 'dzintars', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'play/demo.yml', vaultCredentialsId: 'AnsibleVaultPass'
+        }
       }
     }
   }

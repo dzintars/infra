@@ -74,15 +74,16 @@ runcmd:
   - [ systemctl, restart, sshd.service ]
 
 users:
-#   - name: terraform
+  - name: terraform
+  - name: ansible
   - name: fedora
-#   - name: test
-#     sudo: ['ALL=(ALL) NOPASSWD:ALL']
-#     groups: users, wheel
-#     shell: /bin/bash
-#     ssh_import_id:
+  - name: ops
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: users, wheel
+    shell: /bin/bash
 #     lock_passwd: false
 #     passwd: $6$J.GyJJBeV05c7FkF$Y2poMCgFMT.kgQpkMaraj70idTEOSlZJKXApUs9eoYnANJB.s326Co6C3s7qhVevOXtMDOAuQ3TX2TjORAQSi. #"pass"
+#     ssh_import_id:
 
 ssh_deletekeys: true
 
