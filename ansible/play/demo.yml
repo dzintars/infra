@@ -2,9 +2,15 @@
 - name: Jenkins pipeline demo
   hosts: BASTION
   # connection: local
-  gather_facts: no
+  gather_facts: yes
   become: no
 
   tasks:
-  - name: Check alacritty path
-    command: which alacritty
+  - name: Debug
+    ansible.builtin.debug:
+      msg:
+      - "Hello"
+
+  - name: Facts
+    ansible.builtin.debug:
+      var: ansible_facts
