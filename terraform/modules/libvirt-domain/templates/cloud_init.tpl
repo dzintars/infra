@@ -78,8 +78,7 @@ runcmd:
   - [ systemctl, restart, sshd.service ]
 
 users:
-  - name: ansible
-  - name: ops
+  - name: ${user}
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: users, wheel
     shell: /bin/bash

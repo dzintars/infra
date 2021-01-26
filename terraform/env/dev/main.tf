@@ -23,6 +23,7 @@ module "bastion" {
   vault_addr      = "https://vault.oswee.com"
   vault_role_id   = module.vault-ssh.approle.role
   vault_secret_id = module.vault-ssh.approle.secret
+  user            = "ansible"
 }
 
 module "vault" {
@@ -31,4 +32,6 @@ module "vault" {
 
 module "vault-ssh" {
   source = "../../modules/vault-ssh"
+
+  user            = "ansible"
 }
