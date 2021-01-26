@@ -14,3 +14,7 @@
   - name: Facts
     ansible.builtin.debug:
       var: ansible_facts
+
+  roles:
+  - role: haproxy
+    tags: [haproxy]

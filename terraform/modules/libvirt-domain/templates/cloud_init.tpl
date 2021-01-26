@@ -41,19 +41,26 @@ write_files:
     permissions: '0644'
     owner: root:root
   - content: |
+      [Unit]
+      Description=Sign a new host cert on boot, then daily
       [Service]
       ExecStart=/bin/sh /etc/vault/sign-host-cert.sh
       Restart=on-failure
       RestartSec=20
       Type=forking
+    path: /etc/systemd/system/sign-host-certificate.service
+    permissions: '0644'
+    owner: root:root
+  - content: |
       [Unit]
-      Description=Sign a new host cert on boot, then weekly
+      Description=Sign a new host cert on boot, then daily
       [Timer]
-      OnCalendar=weekly
+      OnCalendar=daily
       Persistent=true
+      Unit=sign-host-certificate.service
       [Install]
       WantedBy=timers.target
-    path: /etc/systemd/system/sign-host-certificate.service
+    path: /etc/systemd/system/sign-host-certificate.timer
     permissions: '0644'
     owner: root:root
 
@@ -61,22 +68,17 @@ runcmd:
   - [ systemctl, daemon-reload ]
   - [ systemctl, enable, qemu-guest-agent ]
   - [ systemctl, start, qemu-guest-agent ]
-  # Terraform does not support DSA and ED25519
-  - [ rm, -R, /etc/ssh/ssh_host_dsa*]
-  - [ rm, -R, /etc/ssh/ssh_host_ed25519*]
   - [ curl, -o, /etc/ssh/trusted-user-ca-keys.pem, "https://vault.oswee.com/v1/ssh-client-signer/public_key" ]
   - [ chmod, 0600, /etc/ssh/trusted-user-ca-keys.pem ]
   - [ sed, -i, -e, "$aTrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem", /etc/ssh/sshd_config ]
-  - [ systemctl, enable, sign-host-certificate.service ]
-  - [ systemctl, start, sign-host-certificate.service ]
+  - [ systemctl, enable, sign-host-certificate.timer ]
+  - [ systemctl, start, sign-host-certificate.timer ]
   - [ sed, -i, -e, "$aHostKey /etc/ssh/ssh_host_ecdsa_key", /etc/ssh/sshd_config ]
   - [ sed, -i, -e, "$aHostCertificate /etc/ssh/ssh_host_ecdsa_key-cert.pub", /etc/ssh/sshd_config ]
   - [ systemctl, restart, sshd.service ]
 
 users:
-  - name: terraform
   - name: ansible
-  - name: fedora
   - name: ops
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: users, wheel
