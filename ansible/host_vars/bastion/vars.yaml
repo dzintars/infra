@@ -1,7 +1,7 @@
 ---
 
-ansible_ssh_user     : 'fedora'
-ansible_become_pass  : '{{ vault_ansible_become_pass }}'
+ansible_ssh_user     : 'ansible'
+# ansible_become_pass  : '{{ vault_ansible_become_pass }}'
 
 pull_secret          : '{{ vault_pull_secret | to_json }}'
 ssh_key              : '{{ vault_ssh_key }}'
