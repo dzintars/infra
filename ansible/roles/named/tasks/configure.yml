@@ -21,6 +21,7 @@
   template:
     src: '{{ cluster_name }}/resolv.conf.j2'
     dest: /etc/resolv.conf
+    setype: named_conf_t
     owner: root
     group: root
     mode: 0644
