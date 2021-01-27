@@ -7,6 +7,7 @@ hostname: ${hostname}
 packages:
   - qemu-guest-agent
   - jq
+  - firewalld
 
 write_files:
   - content: |

@@ -44,69 +44,69 @@ listen stats # Define a listen section called "stats"
 
 
 
-frontend {{ cluster.name }}-kubernetes-api-server
+frontend {{ cluster_name }}-kubernetes-api-server
     mode tcp
     option tcplog
     # option tcp-check
     # option forwardfor
-    bind api.{{ cluster.name }}.{{ cluster.fqdn }}:6443
-    default_backend {{ cluster.name }}-kubernetes-api-server
+    bind api.{{ cluster_name }}.{{ fqdn }}:6443
+    default_backend {{ cluster_name }}-kubernetes-api-server
 
-backend {{ cluster.name }}-kubernetes-api-server
+backend {{ cluster_name }}-kubernetes-api-server
     balance source
     mode tcp
-    server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
-    server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
-    server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
-    server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:6443 check
+    server bootstrap-0 bootstrap-0.{{ cluster_name }}.{{ fqdn }}:6443 check
+    server master-0 master-0.{{ cluster_name }}.{{ fqdn }}:6443 check
+    server master-1 master-1.{{ cluster_name }}.{{ fqdn }}:6443 check
+    server master-2 master-2.{{ cluster_name }}.{{ fqdn }}:6443 check
 
 
 
-frontend {{ cluster.name }}-machine-config-server
+frontend {{ cluster_name }}-machine-config-server
     mode tcp
     option tcplog
     # option forwardfor
     # timeout client 1m
-    bind api.{{ cluster.name }}.{{ cluster.fqdn }}:22623
-    default_backend {{ cluster.name }}-machine-config-server
+    bind api.{{ cluster_name }}.{{ fqdn }}:22623
+    default_backend {{ cluster_name }}-machine-config-server
 
-backend {{ cluster.name }}-machine-config-server
+backend {{ cluster_name }}-machine-config-server
     balance source
     mode tcp
     # log global
     # timeout connect 10s
     # timeout server 1m
-    server {{ cluster.nodes['bootstrap-0'].name }} {{ cluster.nodes['bootstrap-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
-    server {{ cluster.nodes['master-0'].name }} {{ cluster.nodes['master-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
-    server {{ cluster.nodes['master-1'].name }} {{ cluster.nodes['master-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
-    server {{ cluster.nodes['master-2'].name }} {{ cluster.nodes['master-2'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:22623 check
+    server bootstrap-0 bootstrap-0.{{ cluster_name }}.{{ fqdn }}:22623 check
+    server master-0 master-0.{{ cluster_name }}.{{ fqdn }}:22623 check
+    server master-1 master-1.{{ cluster_name }}.{{ fqdn }}:22623 check
+    server master-2 master-2.{{ cluster_name }}.{{ fqdn }}:22623 check
 
 
 
-frontend {{ cluster.name }}-router-http
+frontend {{ cluster_name }}-router-http
     mode tcp
     option tcplog
     # option forwardfor
-    bind apps.{{ cluster.name }}.{{ cluster.fqdn }}:80
-    default_backend {{ cluster.name }}-router-http
+    bind apps.{{ cluster_name }}.{{ fqdn }}:80
+    default_backend {{ cluster_name }}-router-http
 
-backend {{ cluster.name }}-router-http
+backend {{ cluster_name }}-router-http
     balance source
     mode tcp
-    server {{ cluster.nodes['infnod-0'].name }} {{ cluster.nodes['infnod-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:80 check
-    server {{ cluster.nodes['infnod-1'].name }} {{ cluster.nodes['infnod-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:80 check
+    server infnod-0 infnod-0.{{ cluster_name }}.{{ fqdn }}:80 check
+    server infnod-1 infnod-1.{{ cluster_name }}.{{ fqdn }}:80 check
 
 
 
-frontend {{ cluster.name }}-router-https
+frontend {{ cluster_name }}-router-https
     mode tcp
     option tcplog
     # option forwardfor
-    bind apps.{{ cluster.name }}.{{ cluster.fqdn }}:443
-    default_backend {{ cluster.name }}-router-https
+    bind apps.{{ cluster_name }}.{{ fqdn }}:443
+    default_backend {{ cluster_name }}-router-https
 
-backend {{ cluster.name }}-router-https
+backend {{ cluster_name }}-router-https
     balance source
     mode tcp
-    server {{ cluster.nodes['infnod-0'].name }} {{ cluster.nodes['infnod-0'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:443 check
-    server {{ cluster.nodes['infnod-1'].name }} {{ cluster.nodes['infnod-1'].name }}.{{ cluster.name }}.{{ cluster.fqdn }}:443 check
+    server infnod-0 infnod-0.{{ cluster_name }}.{{ fqdn }}:443 check
+    server infnod-1 infnod-1.{{ cluster_name }}.{{ fqdn }}:443 check
