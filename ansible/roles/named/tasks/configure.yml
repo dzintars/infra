@@ -2,6 +2,7 @@
 # tasks file for roles/named
 
 - name: copy named.conf and zone files
+  become: yes
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
@@ -16,6 +17,7 @@
   notify: restart named
 
 - name: deploy resolv.conf template
+  become: yes
   template:
     src: '{{ cluster_name }}/resolv.conf.j2'
     dest: /etc/resolv.conf
@@ -27,6 +29,7 @@
     - restart NetworkManager
 
 - name: Add an Ethernet connection with static IP configuration
+  become: yes
   nmcli:
     conn_name: eth0
     type: ethernet
