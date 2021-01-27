@@ -10,14 +10,14 @@
     setype: named_conf_t
     mode: '0644'
   loop:
-    - {src: 'named.conf.j2', dest: '/etc/named.conf'}
-    - {src: 'ocp.example.com.zone.j2', dest: '/var/named/{{ cluster.name }}.{{ cluster.fqdn }}.zone'}
-    - {src: '1.168.192.in-addr.arpa.zone.j2', dest: "/var/named/{{ cluster.network | ipaddr('revdns') | regex_replace('^[0-9]+\\.', '') }}zone"}
+    - {src: '{{ cluster_name }}/named.conf.j2', dest: '/etc/named.conf'}
+    - {src: '{{ cluster_name }}/ocp.example.com.zone.j2', dest: '/var/named/{{ cluster_name }}.{{ fqdn }}.zone'}
+    - {src: '{{ cluster_name }}/1.168.192.in-addr.arpa.zone.j2', dest: "/var/named/{{ network | ipaddr('revdns') | regex_replace('^[0-9]+\\.', '') }}zone"}
   notify: restart named
 
 - name: deploy resolv.conf template
   template:
-    src: resolv.conf.j2
+    src: '{{ cluster_name }}/resolv.conf.j2'
     dest: /etc/resolv.conf
     owner: root
     group: root
@@ -28,10 +28,10 @@
 
 - name: Add an Ethernet connection with static IP configuration
   nmcli:
-    conn_name: enp1s0
+    conn_name: eth0
     type: ethernet
-    dns4: 192.168.1.254
-    dns4_search: ocp.oswee.com
+    dns4: '{{ network }}.254'
+    dns4_search: '{{ cluster_name }}.{{ fqdn }}'
     state: present
   notify:
     - restart NetworkManager
