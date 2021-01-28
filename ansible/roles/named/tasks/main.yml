@@ -9,12 +9,14 @@
 
 - name: configure
   import_tasks: configure.yml
+  become: yes
   tags:
     - named:setup
     - named:setup:config
 
 - name: start
   import_tasks: start.yml
+  become: yes
   tags:
     - named:setup
     - named:setup:start
