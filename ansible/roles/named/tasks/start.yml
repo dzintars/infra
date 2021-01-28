@@ -1,7 +1,6 @@
 ---
 
 - name: make sure a named is running
-  become: yes
   systemd:
     state: started
     name: named-chroot
