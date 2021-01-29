@@ -2,7 +2,6 @@
 # tasks file for roles/jenkins
 
 - name: install rpm key
-  become: yes
   rpm_key:
     state: present
     key: "{{ item }}"
@@ -10,27 +9,23 @@
     - https://pkg.jenkins.io/redhat/jenkins.io.key
 
 - name: Install Jenkins repo
-  become: yes
   get_url:
     url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
     dest: /etc/yum.repos.d/jenkins.repo
 
 - name: install packages
-  become: yes
   dnf:
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
 
 - name: Create Jenkins system group
-  become: yes
   group:
     name: jenkins
     state: present
     system: yes
 
 - name: Create Jenkins user
-  become: yes
   user:
     name: jenkins
     home: /var/lib/jenkins
@@ -41,7 +36,6 @@
   # TODO: Add the henkins to the libvirt group!
 
 - name: allowing firewall service rules
-  become: true
   firewalld:
     service: '{{ item }}'
     permanent: yes
@@ -52,7 +46,6 @@
     - jenkins
 
 - name: allowing firewall ports
-  become: true
   firewalld:
     port: "{{ jenkins_http_port }}/tcp"
     permanent: yes
@@ -61,7 +54,6 @@
     - restart firewalld
 
 - name: Generate an Jenkins OpenSSH ECDSA keypair
-  become: yes
   community.crypto.openssh_keypair:
     path: /var/lib/jenkins/.ssh
     comment: jenkins@workstation
