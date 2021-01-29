@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu -o pipefail
+
+token_path=/root/.vault-token
+vault_addr=https://vault.{{ root_domain }}
+ssh_pub_key_path=/var/lib/jenkins/.ssh/id_ecdsa_key.pub
+ssh_cert_path=/var/lib/jenkins/.ssh/id_ecdsa_key-cert.pub
+
+curl -sS \
+  -X POST \
+  -d @- "$vault_addr/v1/auth/approle/login" <<-EOF | jq -r '.auth.client_token' > $token_path
+{
+"role_id": "{{ jenkins_approle_role_id }}",
+"secret_id": "{{ jenkins_approle_secret_id }}"
+}
+EOF
+
+curl -sS \
+  -H "X-Vault-Token: $(cat $token_path)" \
+  -X POST \
+  -d @- "$vault_addr/v1/ssh-client-signer/sign/clientrole" <<-EOF | jq -r .data.signed_key > $ssh_cert_path
+{
+  "public_key": "$(cat $ssh_pub_key_path)",
+  "cert_type": "user"
+}
+EOF
+chmod 0640 $ssh_cert_path
+
