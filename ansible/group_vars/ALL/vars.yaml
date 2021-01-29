@@ -3,6 +3,9 @@
 ansible_python_interpreter : "/usr/bin/python3.9"
 
 fqdn                       : "oswee.com"
+root_domain                : "oswee.com"
 cluster_name               : "ocp"
 network                    : "192.168.122"
 ntp_server                 : lv.pool.ntp.org
+jenkins_approle_role_id    : '{{ vault_jenkins_approle_role_id }}'
+jenkins_approle_secret_id  : '{{ vault_jenkins_approle_secret_id }}'
