@@ -20,7 +20,7 @@
 
 - name: add {{ become_user }} to libvirt group
   become: true
-  user: 
+  user:
     name: "{{ become_user }}"
     groups:
       - libvirt
@@ -38,7 +38,7 @@
 
 - name: start libvirtd service
   become: true
-  service: 
+  service:
     name: libvirtd
     state: started
     enabled: yes
