@@ -6,3 +6,5 @@ ExecStart=/bin/sh /etc/vault/sign-jenkins-ssh-cert.sh
 Restart=on-failure
 RestartSec=20
 Type=forking
+User=jenkins
+Group=jenkins
