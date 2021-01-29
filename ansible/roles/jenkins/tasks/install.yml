@@ -60,32 +60,15 @@
   notify:
     - restart firewalld
 
-- name: Copy Jenkins systemd unit
+- name: Generate an Jenkins OpenSSH ECDSA keypair
   become: yes
-  copy:
-    src: jenkins.service
-    dest: /etc/systemd/system/jenkins.service
-    mode: '0644'
-
-- name: just force systemd to re-execute itself (2.8 and above)
-  become: yes
-  systemd:
-    daemon_reexec: yes
-
-- name: copy config template
-  become: yes
-  template:
-    src: jenkins.j2
-    dest: /etc/sysconfig/jenkins
-    owner: root
-    group: root
+  community.crypto.openssh_keypair:
+    path: /var/lib/jenkins/.ssh
+    comment: jenkins@workstation
+    type: ecdsa
+    size: 521
+    force: yes
+    state: present
+    group: jenkins
+    owner: jenkins
     mode: 0600
-    backup: yes
-
-- name: Make sure a jenkins.service is enabled and running
-  become: yes
-  systemd:
-    name: jenkins
-    enabled: yes
-    state: started
-
