@@ -7,9 +7,8 @@
     - jenkins:setup
     - jenkins:setup:install
 
-# - name: configure
-#   import_tasks: configure.yml
-#   tags:
-#     - jenkins:setup
-#     - jenkins:setup:config
-
+- name: configure
+  import_tasks: configure.yml
+  tags:
+    - jenkins:setup
+    - jenkins:setup:config
