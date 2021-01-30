@@ -1,16 +1,18 @@
 # Error handling
 
-## INFO Waiting up to 30m0s for the Kubernetes API at https://api.ocp.oswee.local:6443...
+```sh
+INFO Waiting up to 30m0s for the Kubernetes API at https://api.ocp.oswee.local:6443...
+```
 
-Ssh into bootstrap `ssh core@bootstrap-0.ocp.example.local` and check error there
+SSH into bootstrap `ssh core@bootstrap-0.ocp.example.local` and check error there
 
-## Error in non-bootstrap machine
+### Error in non-bootstrap machine
 
 ```sh
 [*     ] A start job is running for Ignition (disks) (10min 17s / no limit)[  619.297494] ignition[636]: GET https://api-int.ocp.oswee.local:22623/config/worker: attempt #128
 ```
 
-## Console (Web UI) not working
+### Console (Web UI) not working
 
 Execute `oc get co` and you probably will see that `authentication` operator failed and so `console` is stuck as well.
 
@@ -92,7 +94,7 @@ In this scenario, i got authentication and console operator running and i can lo
 But now i have issue to boot Compute nodes. It seems they are looking for ignition configs at http://api-int.ocp.example.com:22623/config/worker but by some reason, there is nothing at that location. I need to check that.
 
 
-## @ early bootstrap stage:
+### At early bootstrap stage:
 
 ```sh
 [***   ] A start job is running for Ignition (disks) (37min 33s / no limit)[ 2315.213418] ignition[574]: GET https://api-int.ocp.example.com:22623/config/master: attempt #455
@@ -103,7 +105,7 @@ I found this blog article:
 
 https://www.techbeatly.com/2019/07/openshift-4-libvirt-upi-installation.html/
 
-This lead me to some activity in master nodes. Haproxy semanage port section.
+This lead me to some activity in master nodes. #HAProxy #semanage port section.
 
 Ececute this commands on your Bastion
 
@@ -123,7 +125,7 @@ Resolution for me was:
 `sudo ss -lntu`
 `sudo lsof -i`
 
-## Some guest VMs does not reboot
+### Some guest VMs does not reboot
 
 When ignition process is happening, guest VMs does reboot, but some of them stuck to shut down.
 
@@ -132,13 +134,10 @@ They all should be `qemu:qemu`.
 
 Resolved by adding `sudo: yes` in Ansible module.
 
-## Guest VMs does not automatically boot second time
+### Guest VMs does not automatically boot second time
 
-To boot hem, i should launch them mannually. Not a big deal, but would likt to solve this.
+To boot them, i should launch them mannually. Not a big deal, but would like to solve this.
 Currently i have no solution and it's low priority.
-
-
-
 
 ```sh
 ping oauth-openshift.apps.ocp.example.com
@@ -165,11 +164,11 @@ rtt min/avg/max/mdev = 0.106/0.109/0.113/0.011 ms
 ```
 
 
-## Not accessible
+### Not accessible
 http://api-int.ocp.example.com:22623/config/worker
 
 
-## DHCP
+### DHCP
 
 ```sh
 fatal: [192.168.1.254]: FAILED! => {"changed": false, "msg": "Unable to start service dhcpd: Job for dhcpd.service failed because the control process exited with error code.\nSee \"systemctl status dhcpd.service\" and \"journalctl -xe\" for details.\n"}
@@ -187,20 +186,20 @@ or IPv6
 sudo dhcpd -d -6 -cf /etc/dhcp/dhcpd6.con
 ```
 
-## Matchbox
+### Matchbox
 
 Error reading directory
 
 SOLUTION: `sudo chmod 0755 -R /var/lib/matchbox`
 
-## Named
+### Named
 
 binding TCP socket: permission denied
 
 SOLUTION: Restart service `systemctl restart named-chroot.service`
 SOLUTION: Check `/etc/resolv.conf` file.
 
-## HAProxy
+### HAProxy
 
 ```sh
 Nov 20 01:03:26 bastion.ocp.example.local haproxy[1164]: [ALERT] 323/010326 (1164) : parsing [/etc/haproxy/haproxy.cfg:52] : 'bind' : invalid address: 'api.ocp.example.local' in 'api.ocp.example.local:6443'
@@ -228,7 +227,7 @@ How to check DHCP
 dhcdrop -t -i virbr0 00:1a:4a:16:01:28
 ```
 
-## Git
+### Git
 
 ```
 ssh_askpass: exec(/usr/libexec/openssh/ssh-askpass): No such file or directory
@@ -239,7 +238,7 @@ SOLUTION: [SO - Git error: “Host Key Verification Failed”](https://stackover
 
 Check ~/.ssh/known_hosts file
 
-## Master nodes does not boot up because they can't get its configs
+### Master nodes does not boot up because they can't get its configs
 
 ```sh
 [**    ] A start job is running for Ignition (disks) (5min 2s / no limit)[  304.127891] ignition[651]: GET https://api-int.ocp.example.local:22623/config/master: attempt #65

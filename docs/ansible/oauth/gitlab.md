@@ -22,10 +22,12 @@ Wait a minute or few
 Sign Out from OpenShift Console UI
 You should see now "GitLab" Sign In option
 
-e2ef3f2e946e40a6c5d8db6b3aa7f54b168c38e9000b0ce444ef6d28a9dc15c3
-5ee7071129aba7e9b5ade6fe506931a09f8b60fd2a0e51b5885f4b4ff514b212
-
-
+```sh
 cat ~/.acme.sh/yourdomain/yourdomain.cer ~/.acme.sh/yourdomain/yourdomain.key ~/.acme.sh/yourdomain/ca.cer > /tmp/cloudapps.router.pem
+```
+```sh
 cat /home/dzintars/letsencrypt/fullchain.pem /home/dzintars/letsencrypt/privkey.pem /home/dzintars/letsencrypt/chain.pem > /tmp/cloudapps.router.pem
+```
+```sh
 oc secrets new router-certs tls.crt=/tmp/cloudapps.router.pem tls.key=/home/dzintars/letsencrypt/privkey.pem -o json --type='kubernetes.io/tls' --confirm | oc replace -f -
+```
