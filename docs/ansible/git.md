@@ -6,4 +6,4 @@ Host key verification failed.
 fatal: Could not read from remote repository.
 ```
 
-SOLUTION: `~/.ssh/known_hosts` should know IPs and signatures of Git (GitHub) servers.
+SOLUTION: `~/.ssh/known_hosts` should know IPs and signatures of Git #GitHub servers.

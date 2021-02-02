@@ -2,7 +2,6 @@
 # tasks file for roles/jenkins
 
 - name: install rpm key
-  become: yes
   rpm_key:
     state: present
     key: "{{ item }}"
@@ -10,27 +9,23 @@
     - https://pkg.jenkins.io/redhat/jenkins.io.key
 
 - name: Install Jenkins repo
-  become: yes
   get_url:
     url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
     dest: /etc/yum.repos.d/jenkins.repo
 
 - name: install packages
-  become: yes
   dnf:
     name: "{{ item }}"
     state: latest
   loop: "{{ packages }}"
 
 - name: Create Jenkins system group
-  become: yes
   group:
     name: jenkins
     state: present
     system: yes
 
 - name: Create Jenkins user
-  become: yes
   user:
     name: jenkins
     home: /var/lib/jenkins
@@ -41,7 +36,6 @@
   # TODO: Add the henkins to the libvirt group!
 
 - name: allowing firewall service rules
-  become: true
   firewalld:
     service: '{{ item }}'
     permanent: yes
@@ -52,7 +46,6 @@
     - jenkins
 
 - name: allowing firewall ports
-  become: true
   firewalld:
     port: "{{ jenkins_http_port }}/tcp"
     permanent: yes
@@ -60,32 +53,14 @@
   notify:
     - restart firewalld
 
-- name: Copy Jenkins systemd unit
-  become: yes
-  copy:
-    src: jenkins.service
-    dest: /etc/systemd/system/jenkins.service
-    mode: '0644'
-
-- name: just force systemd to re-execute itself (2.8 and above)
-  become: yes
-  systemd:
-    daemon_reexec: yes
-
-- name: copy config template
-  become: yes
-  template:
-    src: jenkins.j2
-    dest: /etc/sysconfig/jenkins
-    owner: root
-    group: root
+- name: Generate an Jenkins OpenSSH ECDSA keypair
+  community.crypto.openssh_keypair:
+    path: /var/lib/jenkins/.ssh
+    comment: jenkins@workstation
+    type: ecdsa
+    size: 521
+    force: yes
+    state: present
+    group: jenkins
+    owner: jenkins
     mode: 0600
-    backup: yes
-
-- name: Make sure a jenkins.service is enabled and running
-  become: yes
-  systemd:
-    name: jenkins
-    enabled: yes
-    state: started
-

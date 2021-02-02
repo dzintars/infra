@@ -7,12 +7,14 @@ This is a good article how to copy your ssh key into main clipboard
 ```sh
 xclip -sel clip < ~/.ssh/id_rsa.pub
 ```
+`xclip` will not work on Wayland
 
 ```sh
 ssh-keygen -t rsa -b 4096 -C "username@example.com"
 ssh-copy-id -i ~/.ssh/id_rsa user@host
 ssh-add ~/.ssh/id_rsa
 ```
+Prefer to use ecdsa or ed25519 keys. Terraform does not support ed25519.
 
 Enter passphrase for key '/home/dzintars/.ssh/id_rsa':
 
@@ -22,14 +24,18 @@ Create default key named "id_rsa"
 ## Keys for GitHub
 
 ```sh
+# create new key
 ssh-keygen -f ~/.ssh/github-username -t rsa -b 4096 -C "username@example.com"
+# start the ssh-agent for current terminal session
 eval "$(ssh-agent -s)"
+# add the generated key to the ssh agent.
 ssh-add ~/.ssh/github-username
 ```
 
 If you can't push code to GitHub due to `git@github.com: Permission denied (publickey)` error, then it probably means that you should add your key to SSH agent.
 There is way to add key permanantly so you don't need to do so after every reboot, but IMO this creates security holes.
-For me it is not a big deal to add keys after every reboot as i reboot once per week or so.
+For me it is not a big deal to add keys after every terminal run. For ZSH there is a `ssh-agent` plugin which will start ssh-agent automatically for every termainal session. If SSH keys has no passpharse, then those keys will be loaded automatically.
+Use passpharse! If your keys will get leaked, then everybody can use them.
 
 ## Setup multiple SSH identities for different Git accounts
 

@@ -1,6 +1,7 @@
 # Certbot
 
-Nice YouTube video on how to create wildcard TLS certificates [link](https://www.youtube.com/watch?v=3D4-MWG1Bew)
+Nice YouTube video on how to create wildcard TLS certificates
+https://www.youtube.com/watch?v=3D4-MWG1Bew
 
 ```sh
 sudo certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory -d example.com -d *.example.com -d *.ocp.example.com -d *.apps.ocp.example.com -d *.api.ocp.example.com
@@ -20,7 +21,7 @@ host -t txt _acme-challenge.example.com
 
 or you can use [MX Toolbox service](https://mxtoolbox.com/SuperTool.aspx)
 
-Booth solutions should return your TXT value.
+Booth solutions should return your new TXT value.
 
 IMPORTANT NOTES:
 

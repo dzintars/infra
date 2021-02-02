@@ -1,0 +1,100 @@
+{
+  "main": {
+    "id": "5809da6f645819bc",
+    "type": "split",
+    "children": [
+      {
+        "id": "1d5a144b5dc1ce3d",
+        "type": "leaf",
+        "active": true,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "index.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "535cf6bfa5ad4db9",
+    "type": "split",
+    "children": [
+      {
+        "id": "345766eb03fbff56",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f6fcb84751e1192e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "a975ebc9365d442c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "cb15cd8bd3dcf3ae",
+    "type": "split",
+    "children": [
+      {
+        "id": "7bae0ebc48de2d53",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d79237eb007a20c9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "index.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "lastOpenFiles": [
+    "index.md",
+    "ansible/dhcp.md",
+    "ansible/fedora/ignition.md",
+    "ansible/oauth/gitlab.md",
+    "ansible/commands.md",
+    "ansible/containers.md",
+    "ansible/xorg.md",
+    "ansible/video.md",
+    "ansible/trash.md",
+    "ansible/TODO.md"
+  ]
+}

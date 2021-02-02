@@ -16,3 +16,12 @@ output "approle" {
     secret = module.vault-ssh.approle.secret
   }
 }
+
+output "jenkins" {
+  description = "Jenkins approle parameters"
+  value = {
+    id = module.vault-ssh.jenkins.id
+    role = module.vault-ssh.jenkins.role
+    secret = module.vault-ssh.jenkins.secret
+  }
+}

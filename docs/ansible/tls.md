@@ -3,6 +3,7 @@
 ```sh
 sudo certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory -d example.com -d *.example.com -d *.ocp.example.com -d *.apps.ocp.example.com -d *.api.ocp.example.com
 ```
+If using ZSH, probably you want to wrap `*.example.com` into double quotes.
 
 IMPORTANT NOTES:
 

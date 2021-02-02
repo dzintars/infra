@@ -16,4 +16,18 @@ let g:closetag_regions = {
 " === Markdown ===
 let g:markdown_fenced_languages = ['html', 'go', 'typescript', 'javascript', 'json', 'css', 'bash=sh']
 
+" === VimWiki ===
+let g:vimwiki_list = [
+  \ {},
+  \ {
+  \   'path': '~/code/github.com/dzintars/infra/docs/',
+  \   'syntax': 'markdown',
+  \   'ext': '.md'
+  \ },
+  \ {
+  \   'path': '~/code/github.com/dzintars/obsidian/',
+  \   'syntax': 'markdown',
+  \   'ext': '.md'}
+  \ ]
+
 " au! BufWritePost $MYVIMRC source % " auto source when writing to init.vim alternatively you can run :source $MYVIMRC
