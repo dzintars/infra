@@ -9,3 +9,11 @@ output "approle" {
     secret = vault_approle_auth_backend_role_secret_id.instance.secret_id
   }
 }
+
+output "jenkins" {
+  value = {
+    id = vault_approle_auth_backend_role.jenkins.id
+    role = vault_approle_auth_backend_role.jenkins.role_id
+    secret = vault_approle_auth_backend_role_secret_id.jenkins.secret_id
+  }
+}
