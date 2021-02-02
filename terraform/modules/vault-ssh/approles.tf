@@ -16,7 +16,7 @@ data "vault_policy_document" "instance" {
   }
 }
 
-data "vault_policy_document" "jekins" {
+data "vault_policy_document" "jenkins" {
   rule {
     path         = "ssh-client-signer/sign/clientrole"
     capabilities = ["update"]
