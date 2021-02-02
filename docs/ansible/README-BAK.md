@@ -71,45 +71,45 @@ sudo dnf install -y python3-netaddr
 
 ```sh
 virt-install \
-    --connect qemu:///system \
-    --name bootstrap.ocp.example.local \
-    --description 'RedHat CoreOS bootstrap node' \
-    --accelerate \
-    --vcpus 2 \
-    --cpu host \
-    --ram 2048 \
-    --disk path=/home/dzintars/kvm/pools/test/bootstrap.ocp.example.local,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
-    --pxe \
-    --network bridge=virbr0,model=virtio \
-    --prompt \
-    --mac 00:1a:4a:16:01:28 \
-    --os-type linux \
-    --os-variant virtio26 \
-    --console pty,target_type=serial \
-    --nographics \
-    --boot hd,network \
-    --debug
+  --connect qemu:///system \
+  --name bootstrap.ocp.example.local \
+  --description 'RedHat CoreOS bootstrap node' \
+  --accelerate \
+  --vcpus 2 \
+  --cpu host \
+  --ram 2048 \
+  --disk path=/home/dzintars/kvm/pools/test/bootstrap.ocp.example.local,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
+  --pxe \
+  --network bridge=virbr0,model=virtio \
+  --prompt \
+  --mac 00:1a:4a:16:01:28 \
+  --os-type linux \
+  --os-variant virtio26 \
+  --console pty,target_type=serial \
+  --nographics \
+  --boot hd,network \
+  --debug
 ```
 
 ```sh
 virt-install \
-    --connect qemu:///system \
-    --name workstation.setup \
-    --description 'RedHat CoreOS bootstrap node' \
-    --accelerate \
-    --vcpus 2 \
-    --cpu host \
-    --ram 2048 \
-    --disk path=/home/dzintars/kvm/pools/test/workstation.setup,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
-    --pxe \
-    --network bridge=virbr0,model=virtio \
-    --prompt \
-    --os-type linux \
-    --os-variant virtio26 \
-    --console pty,target_type=serial \
-    --nographics \
-    --boot hd,network \
-    --debug
+  --connect qemu:///system \
+  --name workstation.setup \
+  --description 'RedHat CoreOS bootstrap node' \
+  --accelerate \
+  --vcpus 2 \
+  --cpu host \
+  --ram 2048 \
+  --disk path=/home/dzintars/kvm/pools/test/workstation.setup,size=10,cache=writeback,format=qcow2,io=threads,bus=virtio  \
+  --pxe \
+  --network bridge=virbr0,model=virtio \
+  --prompt \
+  --os-type linux \
+  --os-variant virtio26 \
+  --console pty,target_type=serial \
+  --nographics \
+  --boot hd,network \
+  --debug
 ```
 
 curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux-4.2.7.tar.gz | tar -xzf - -C /usr/local/bin/ oc
