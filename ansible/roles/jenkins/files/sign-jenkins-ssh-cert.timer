@@ -2,7 +2,7 @@
 Description=Sign a new host cert on boot, then daily
 
 [Timer]
-OnCalendar=daily
+OnCalendar=hourly
 Persistent=true
 Unit=sign-jenkins-ssh-cert.service
 
