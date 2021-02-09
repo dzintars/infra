@@ -40,12 +40,14 @@ bind -n S-Right next-window
 # Enable mouse mode
 set -g mouse on
 
+set-option -g focus-events on
+
 # NeoVim ERROR: escape-time (500) is higher than 300ms
 set-option -sg escape-time 10
 
 # True color for the Vim
-set -g default-terminal "tmux-256color"
-set -ga terminal-overrides ",*256col*:Tc"
+set-option  -g default-terminal "tmux-256color"
+set-option -gas terminal-overrides ',alacritty:RGB'
 
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'

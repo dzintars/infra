@@ -11,7 +11,7 @@ nnoremap <Leader>g :Rg<CR>
 nnoremap <Leader>t :Tags<CR>
 nnoremap <Leader>m :Marks<CR>
 
-" Extra key bindings to open found files into splits
+" Default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
@@ -33,3 +33,24 @@ xnoremap <C-l> <C-w>l
 
 "nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 "nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+" ===== Clipboard =====
+" Clipboard in the Wayland is tricky
+" https://www.reddit.com/r/vim/comments/hge0qw/for_those_who_are_still_struggling_with_waylands/
+
+" vmap <silent> y y:call system("wl-copy", @@)<CR>
+
+" if !empty($WAYLAND_DISPLAY)
+"   let g:clipboard = {
+"     \   'name': 'wayland-strip-carriage',
+"     \   'copy': {
+"     \      '+': 'wl-copy --foreground --type text/plain',
+"     \      '*': 'wl-copy --foreground --type text/plain --primary',
+"     \    },
+"     \   'paste': {
+"     \      '+': {-> systemlist('wl-paste --no-newline | tr -d "\r"')},
+"     \      '*': {-> systemlist('wl-paste --no-newline --primary | tr -d "\r"')},
+"     \   },
+"     \   'cache_enabled': 1,
+"     \ }
+" endif

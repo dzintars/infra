@@ -22,6 +22,7 @@
     - "$HOME/.config/nvim/plugins.d"
     - "$HOME/.config/nvim/plugged"
     - "$HOME/.config/nvim/sessions"
+    - "$HOME/.config/nvim/themes"
     - "$HOME/.config/nvim/undodir"
     - "$HOME/.config/yamllint"
 
@@ -47,7 +48,8 @@
     - { src: "keys.vim.j2", dest: "$HOME/.config/nvim/keys.vim" }
     - { src: "plugins.vim.j2", dest: "$HOME/.config/nvim/plugins.vim" }
     - { src: "settings.vim.j2", dest: "$HOME/.config/nvim/settings.vim" }
-    - { src: "theme.vim.j2", dest: "$HOME/.config/nvim/theme.vim" }
+    - { src: "gruvbox.vim.j2", dest: "$HOME/.config/nvim/themes/gruvbox.vim" }
+    - { src: "base16-gruvbox-dark-hard.vim.j2", dest: "$HOME/.config/nvim/themes/base16-gruvbox-dark-hard.vim" }
   notify: Install plugins
 
 - name: copy files
