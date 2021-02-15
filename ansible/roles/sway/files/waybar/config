@@ -35,18 +35,18 @@
     "interval": 1,
   },
 
-	"clock#1": {
+  "clock#1": {
     "format": "{:%a}",
     "tooltip": false
   },
 
-	"clock#2": {
+  "clock#2": {
     "format": "{:%H:%M:%S}",
     "tooltip": false,
     "interval": 1
   },
 
-	"clock#3": {
+  "clock#3": {
     "format": "{:%m-%d}",
     "tooltip": false
   },
@@ -78,20 +78,20 @@
     "format": ""
   },
 
-	"memory": {
+  "memory": {
     "interval": 5,
     "format": " {used:0.1f}/{total:0.1f}G"
   },
 
-	"cpu": {
+  "cpu": {
     "interval": 5,
     "format": " {usage:2}%",
     "on-click": "alacritty -e htop"
   },
 
-	"disk": {
+  "disk": {
     "interval": 5,
-    "format": "Disk{percentage_used:2}%",
+    "format": "Disk {percentage_used:2}%",
     "path": "/"
   },
 }
