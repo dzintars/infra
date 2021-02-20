@@ -1,16 +1,33 @@
 ---
 # tasks file for roles/vagrant
 
-- name: download Hashicorp Vagrant
-  unarchive:
-    src: https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_linux_amd64.zip
-    dest: /tmp
-    remote_src: yes
+- name: Install packages
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    "{{ packages }}"
 
-- name: copy Vault binary
-  become: yes
-  copy:
-    src: /tmp/vagrant
-    dest: /usr/local/bin
-    mode: a+x
-    remote_src: yes
+- name: Install Vagrant
+  dnf:
+    name: "{{ vagrant_rpm }}"
+    state: latest
+    disable_gpg_check: yes
+
+# - name: Download Hashicorp Vagrant
+#   unarchive:
+#     src: "{{ vagrant_archive }}"
+#     dest: /tmp
+#     remote_src: yes
+
+# - name: Copy Vagrant binary
+#   copy:
+#     src: /tmp/vagrant
+#     dest: /usr/local/bin
+#     mode: a+x
+#     remote_src: yes
+
+- name: Install Vagrant-Libvirt plugin
+  command: vagrant plugin install vagrant-libvirt
+  environment:
+    CONFIGURE_ARGS: "{{ with_libvirt_include }} {{ with_libvirt_lib }}"

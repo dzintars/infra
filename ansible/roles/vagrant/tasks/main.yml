@@ -3,6 +3,7 @@
 
 - name: Install Vagrant
   import_tasks: install.yml
+  become: yes
   tags:
     - vagrant:setup
     - vagrant:setup:install

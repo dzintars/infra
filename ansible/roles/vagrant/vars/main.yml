@@ -7,4 +7,7 @@ packages:
   - libvirt
   - libvirt-devel
   - libxml2-devel
+  - libxslt-devel
+  - libguestfs-tools-c
   - ruby-devel
+  # - "{{ vagrant_rpm }}"
