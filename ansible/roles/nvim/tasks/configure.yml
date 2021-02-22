@@ -42,6 +42,7 @@
     - { src: "plugins.d/50-fzf.vim.j2", dest: "$HOME/.config/nvim/plugins.d/50-fzf.vim" }
     - { src: "autocmd.vim.j2", dest: "$HOME/.config/nvim/autocmd.vim" }
     - { src: "coc-settings.json.j2", dest: "$HOME/.config/nvim/coc-settings.json" }
+    - { src: "filetype.vim.j2", dest: "$HOME/.config/nvim/filetype.vim" }
     - { src: "funcs.vim.j2", dest: "$HOME/.config/nvim/funcs.vim" }
     - { src: "general.vim.j2", dest: "$HOME/.config/nvim/general.vim" }
     - { src: "init.vim.j2", dest: "$HOME/.config/nvim/init.vim" }
