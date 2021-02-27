@@ -3,6 +3,7 @@
 
 - name: Install
   import_tasks: install.yml
+  # become: yes
   tags:
     - minecraft:setup
     - minecraft:setup:install

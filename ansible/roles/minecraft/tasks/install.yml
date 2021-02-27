@@ -12,43 +12,49 @@
 - name: download minecraft launcher
   unarchive:
     src: https://launcher.mojang.com/download/Minecraft.tar.gz
-    dest: $HOME
+    dest: "/home/{{ become_user }}"
     remote_src: yes
 
 - name: create minecraft symlink
   become: yes
   file:
-    src: $HOME/minecraft-launcher/minecraft-launcher
+    src: "/home/{{ become_user }}/minecraft-launcher/minecraft-launcher"
     path: /usr/local/bin/minecraft-launcher
     state: link
     force: yes
 
 - name: download Minecraft Forge
   get_url:
-    url: https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.5-36.0.1/forge-1.16.5-36.0.1-installer.jar
-    dest: $HOME/Downloads/
+    url: https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2854/forge-1.12.2-14.23.5.2854-installer.jar
+    dest: "/home/{{ become_user }}/Downloads/"
     mode: '0700'
 
 - name: create mods directory
   file:
-    path: $HOME/.minecraft/mods
+    path: "/home/{{ become_user }}/.minecraft/mods"
     state: directory
     mode: '0755'
 
 - name: download Kami Blue client (Highway Worker Tools)
   get_url:
-    url: https://github.com/Avanatiker/client/releases/download/2.01.xx-dev-ht-v07/client-2.01.xx-dev-ht-v07.jar
-    dest: $HOME/.minecraft/mods/
+    url: https://github.com/Avanatiker/client/releases/download/2.02.xx-dev-ht-v09.7/client-2.02.xx-dev-ht-v09.7.jar
+    dest: "/home/{{ become_user }}/.minecraft/mods/"
     mode: '0700'
 
 - name: download Impact client
   get_url:
-    url: 'https://impactclient.net/?brady-money-grubbing-completed=true&platform=jar'
-    dest: $HOME/.minecraft/mods/
+    url: 'https://impactclient.net/ImpactInstaller.jar'
+    dest: "/home/{{ become_user }}/.minecraft/mods/"
     mode: '0700'
 
 - name: download OptiFine mod
   get_url:
-    url: 'https://optifine.net/downloadx?f=OptiFine_1.16.4_HD_U_G5.jar&x=7f5101cbb46c8575b40a7fda14326017'
-    dest: $HOME/.minecraft/mods/
+    url: 'https://optifine.net/downloadx?f=OptiFine_1.12.2_HD_U_G5.jar&x=c8c960781cbdfe2a8d383f5dccda4874'
+    dest: "/home/{{ become_user }}/.minecraft/mods/"
     mode: '0700'
+
+- name: Copy Minecraft desktop launcher
+  copy:
+    src: minecraft.desktop
+    dest: "/home/{{ become_user }}/.local/share/applications/minecraft.desktop"
+    mode: '0644'
