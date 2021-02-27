@@ -18,8 +18,6 @@
       tags: [espanso]
     - role: openshift
       tags: [openshift]
-    - role: libvirt
-      tags: [libvirt]
     - role: go
       tags: [go]
     - role: protoc
@@ -77,8 +75,6 @@
       tags: [sway]
     - role: minecraft
       tags: [minecraft]
-    - role: vagrant
-      tags: [vagrant]
     - role: terraform
       tags: [terraform]
     - role: spire
