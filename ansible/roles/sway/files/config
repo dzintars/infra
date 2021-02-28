@@ -27,6 +27,9 @@ set $menu wofi --show run
 set $lock_path ~/.config/sway/lock.sh
 set $idle_path ~/.config/sway/idle.sh
 
+# Hide the mouse pointer
+seat * hide_cursor 6000
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
