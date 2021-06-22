@@ -5,8 +5,12 @@ endif
 
 call plug#begin(stdpath('data') . '/plugged')
 
+" Theme
 " Plug 'morhetz/gruvbox'
-Plug 'gruvbox-community/gruvbox' " Community fork of the original Gruvbox theme
+" Plug 'gruvbox-community/gruvbox' " Community fork of the original Gruvbox theme
+Plug 'chriskempson/base16-vim'
+
+" Bling
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
@@ -17,6 +21,7 @@ Plug 'tpope/vim-commentary' " gcc Comments
 " Plug 'jiangmiao/auto-pairs' " Insert quotes, brackets, etc in pairs (not the best DX)
 Plug 'alvan/vim-closetag'
 Plug 'tpope/vim-surround' " Change surroundings in pairs
+Plug 'junegunn/vim-peekaboo'  " Preview the registers
 
 " JavaScript
 Plug 'pangloss/vim-javascript'

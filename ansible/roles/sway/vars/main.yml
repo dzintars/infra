@@ -12,6 +12,7 @@ packages:
   - wl-clipboard
   - slurp
   - grim
+  - swappy
   - breeze-cursor-theme
   - breeze-icon-theme
 
@@ -20,4 +21,3 @@ mountpoints:
   - /mnt/external
   - /mnt/backups
   - /mnt/nextcloud
-

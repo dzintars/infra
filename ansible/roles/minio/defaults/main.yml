@@ -1,5 +1,0 @@
----
-# defaults file for roles/minio
-
-user: minio
-group: minio

@@ -15,6 +15,7 @@ packages:
   - remmina
   - ffmpeg
   - obs-studio
+  - vlc # For OBS
   - keepassxc
   - libreoffice
   - htop
@@ -33,4 +34,3 @@ packages:
   - nmap
   - ripgrep
   - the_silver_searcher
-

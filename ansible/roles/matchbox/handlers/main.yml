@@ -1,5 +1,0 @@
----
-# handlers file for install_matchbox
-
-- name: Restart Firewalld
-  service: name=firewalld state=restarted

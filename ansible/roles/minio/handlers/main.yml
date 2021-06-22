@@ -1,9 +1,0 @@
----
-# handlers file for roles/minio
-
-- name: Restart firewalld
-  become: true
-  systemd:
-    name: firewalld
-    state: restarted
-    daemon_reload: yes

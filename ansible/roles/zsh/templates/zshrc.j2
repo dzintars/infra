@@ -84,9 +84,9 @@ POWERLEVEL9K_CUSTOM_FEDORA_ICON_FOREGROUND=015
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions ssh-agent)
+plugins=(git zsh-autosuggestions ssh-agent vi-mode)
 
-# zstyle :omz:plugins:ssh-agent identities github ansible postservice
+# zstyle :omz:plugins:ssh-agent identities github ansible
 
 source $ZSH/oh-my-zsh.sh
 
@@ -119,3 +119,6 @@ source $ZSH/oh-my-zsh.sh
 export FZF_DEFAULT_OPS="--extended --height 40% --layout=reverse --border"
 
 autoload -U +X bashcompinit && bashcompinit
+
+# Enable vi mode
+bindkey -v

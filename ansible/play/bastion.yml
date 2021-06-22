@@ -12,18 +12,11 @@
   #   private: no
 
   roles:
-    # - role: debug
-    #   tags: [debug]
     - role: named
       tags: [named]
       # become: true
     - role: bertvv.tftp
       tags: [tftp]
-      # become: true
-    # - role: setup_firewalld
-    #   tags: [firewalld]
-    # - role: setup_selinux
-    #   tags: [selinux]
     - role: dhcpd
       tags: [dhcpd]
       # become: true

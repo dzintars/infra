@@ -18,14 +18,12 @@
       tags: [espanso]
     - role: openshift
       tags: [openshift]
-    - role: libvirt
-      tags: [libvirt]
     - role: go
       tags: [go]
     - role: protoc
       tags: [protoc]
-    - role: haproxy
-      tags: [haproxy]
+    # - role: haproxy
+    #   tags: [haproxy]
     - role: certbot
       tags: [certbot]
     - role: nvim
@@ -44,10 +42,10 @@
       tags: [i3wm]
     - role: git
       tags: [git]
-    - role: vault
-      tags: [vault]
-    - role: mariadb
-      tags: [mariadb]
+    # - role: vault
+    #   tags: [vault]
+    # - role: mariadb
+    #   tags: [mariadb]
     # - role: geerlingguy.mysql
     #   become: yes
     #   tags: [mariadb]
@@ -77,13 +75,11 @@
       tags: [sway]
     - role: minecraft
       tags: [minecraft]
-    - role: vagrant
-      tags: [vagrant]
     - role: terraform
       tags: [terraform]
     - role: spire
       tags: [spire]
-    - role: minio
-      tags: [minio]
-    - role: jenkins
-      tags: [jenkins]
+    # - role: minio
+    #   tags: [minio]
+    # - role: jenkins
+    #   tags: [jenkins]
