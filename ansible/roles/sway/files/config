@@ -43,6 +43,7 @@ output * bg /usr/share/backgrounds/tharsus.jpg fill
 
 output 'Dell Inc. DELL U2913WM 5YD8C328433L' pos 0 0
 output 'Dell Inc. DELL U2312HM 59DJP1AQFPQL' pos 2560 0 transform 270
+output 'Goldstar Company Ltd LG ULTRAWIDE 0x00000101' pos 3640 0
 focus output 'Dell Inc. DELL U2913WM 5YD8C328433L'
 
 
@@ -111,7 +112,8 @@ input "type:keyboard" {
     bindsym $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    #bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec wlogout
 
     # Open Ranger file manager
     bindsym $mod+Shift+Return exec alacritty -e ranger
@@ -119,7 +121,7 @@ input "type:keyboard" {
     bindsym $mod+p move workspace to output right
 
     # Lock the screen
-	  bindsym Control+$mod+l exec $lock_path
+    bindsym Control+$mod+l exec $lock_path
 
     bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%; exec --no-startup-id pactl set-sink-volume 1 +5%
     bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%; exec --no-startup-id pactl set-sink-volume 1 -5%
@@ -282,13 +284,16 @@ bindsym $mod+r mode "resize"
 # Key bindings: Printscreen
 # ***********************
 
-# bindsym Print exec grim ~/Pictures/Printscreens/screen-"$(date +%s)".png
-# bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +%s)".png
-
+# Capture all displays to the clipboard
 bindsym Print exec grim - | wl-copy
-bindsym Shift+Print exec grim ~/Pictures/Printscreens/scren-"$(date +'%m.%d.%y %T')".png
-bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
-bindsym Shift+Alt+Print exec exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +'%m.%d.%y %T')".png
+# Capture all displays and save in the file
+bindsym Shift+Print exec grim ~/Pictures/Printscreens/screen-"$(date +'%m.%d.%y %T')".png
+# Select the screen area to capture into clipboard
+#bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
+# Select the screen area and open it into Swappy
+bindsym Alt+Print exec grim -g "$(slurp)" - | swappy -f -
+# Select the screen area and save it into the file
+#bindsym Alt+Shift+Print exec grim -g "$(slurp)" ~/Pictures/Printscreens/screen-"$(date +'%m.%d.%y %T')".png
 
 # ***********************
 # Status Bar:
