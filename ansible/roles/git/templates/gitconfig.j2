@@ -9,6 +9,11 @@
   co = checkout
   p = push
   c = commit
+
+  # Take all uncommitted and un-staged changes currently in the working
+  # directory and add them to the previous commit, amending it before pushing the change up
+  caa = commit -a --amend -C HEAD
+
   tags = tag -l
   cap = commit --amend --patch
   a = add
@@ -35,4 +40,4 @@
   defaultBranch = main
 
 [gpg]
-  program = /usr/bin/gpg2
+  program = gpg2
