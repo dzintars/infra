@@ -1,16 +1,16 @@
 ---
 # wireguard_address      : 10.8.0.2/24
 # wireguard_endpoint     : ""
-ansible_ssh_user       : dzintars
+ansible_ssh_user       : '{{ vault_become_user }}'
 # ansible_become         : true
 # ansible_become_method  : sudo
 # ansible_become_user    : root
 ansible_become_pass    : '{{ vault_ansible_become_pass }}'
 ansible_ssh_user_pass  : '{{ vault_ansible_ssh_user_pass }}'
-become_user            : dzintars
-become_user_group      : dzintars
-become_user_full_name  : Dzintars Klavins
-become_user_email      : dzintars.klavins@gmail.com
+become_user            : '{{ vault_become_user }}'
+become_user_email      : '{{ vault_become_user_email }}'
+become_user_full_name  : '{{ vault_become_user_full_name }}'
+become_user_group      : '{{ vault_become_user }}'
 ssh_key                : '{{ vault_ssh_key }}'
 name                   : workstation
 host                   : 2
@@ -19,4 +19,4 @@ libvirt_dir_images     : $HOME/kvm/images
 libvirt_dir_pools      : /var/lib/libvirt/pools
 disk_format            : qcow2
 network_interface      : virbr0
-
+gpg_signing_key_fingerprint: '{{ vault_gpg_signing_key_fingerprint }}'
