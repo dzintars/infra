@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Author: Dzintars Klavins
 # This script will setup bridge connection to enable KVM bridge networking
@@ -9,10 +9,10 @@
 
 export NETWORK_ETHERNET_DEVICE="eno1"
 export NETWORK_ETHERNET_CONNECTION="eno1"
-export NETWORK_BRIDGE_CONNECTION="virbr0"
-export NETWORK_GW_ADDRESS="192.168.1.1"
-export NETWORK_IP_ADDRESS="192.168.1.2"
-export NETWORK_DNS_ADDRESES="192.168.1.254,1.1.1.1"
+export NETWORK_BRIDGE_CONNECTION="br0"
+export NETWORK_GW_ADDRESS="192.168.0.1"
+export NETWORK_IP_ADDRESS="192.168.0.2"
+export NETWORK_DNS_ADDRESES="1.1.1.1,8.8.8.8"
 
 # General cleanup
 
