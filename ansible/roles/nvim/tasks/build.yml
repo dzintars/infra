@@ -1,0 +1,46 @@
+---
+# task file for roles/nvim
+
+- name: Install build  prerequisites
+  become: true
+  dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+    "{{ build_packages }}"
+
+- name: Clone NeoVim repository
+  ansible.builtin.git:
+    repo: https://github.com/neovim/neovim.git
+    dest: $HOME/code/github.com/neovim/neovim
+    version: master
+    depth: 1
+
+- name: Register nvim_exists
+  stat:
+    path: /usr/local/bin/nvim
+  register: nvim_check
+
+- name: Cleanup build artifacts
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - $HOME/code/github.com/neovim/neovim/.deps
+    - $HOME/code/github.com/neovim/neovim/build
+  when: not nvim_check.stat.exists
+
+- name: Build NeoVim
+  community.general.make:
+    chdir: "/home/{{ become_user }}/code/github.com/neovim/neovim"
+    target: nvim
+    params:
+      CMAKE_BUILD_TYPE=RelWithDebInfo
+  when: not nvim_check.stat.exists
+
+- name: Install Neovim
+  become: yes
+  community.general.make:
+    chdir: "/home/{{ become_user }}/code/github.com/neovim/neovim"
+    target: install
+  when: not nvim_check.stat.exists

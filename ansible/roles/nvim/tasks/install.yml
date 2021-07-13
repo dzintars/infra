@@ -1,5 +1,5 @@
 ---
-# tasks file for nvim
+# tasks file for roles/nvim
 
 - name: Install packages
   become: true

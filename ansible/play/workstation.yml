@@ -18,8 +18,8 @@
       tags: [espanso]
     - role: openshift
       tags: [openshift]
-    - role: go
-      tags: [go]
+#    - role: go
+#      tags: [go]
     - role: protoc
       tags: [protoc]
     # - role: haproxy

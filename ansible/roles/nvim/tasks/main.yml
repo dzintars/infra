@@ -1,19 +1,26 @@
 ---
 # tasks file for roles/nvim
 
-- name: Install NeoVim
-  import_tasks: install.yml
+
+- name: Build NeoVim
+  import_tasks: build.yml
   tags:
     - nvim:setup
-    - nvim:setup:install
+    - nvim:setup:build
 
-- name: Update configuration
-  import_tasks: configure.yml
-  tags:
-    - nvim:setup
-    - nvim:setup:config
+#- name: Install NeoVim
+#  import_tasks: install.yml
+#  tags:
+#    - nvim:setup
+#    - nvim:setup:install
 
-- name: Remove Neovim
-  import_tasks: remove.yml
-  tags:
-    - nvim:remove
+#- name: Update configuration
+#  import_tasks: configure.yml
+#  tags:
+#    - nvim:setup
+#    - nvim:setup:config
+
+#- name: Remove Neovim
+#  import_tasks: remove.yml
+#  tags:
+#    - nvim:remove
