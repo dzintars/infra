@@ -2,12 +2,23 @@
 # task file for roles/nvim
 
 - name: Install build  prerequisites
-  become: true
-  dnf:
+  become: yes
+  ansible.builtin.dnf:
     name: "{{ item }}"
     state: present
   loop:
     "{{ build_packages }}"
+
+- name: Get package facts
+  ansible.builtin.package_facts:
+    manager: rpm
+
+- name: Remove default NeoVim package if exists
+  become: yes
+  ansible.builtin.dnf:
+    name: neovim
+    state: absent
+  when: "'neovim' in ansible_facts.packages"
 
 - name: Clone NeoVim repository
   ansible.builtin.git:
@@ -15,32 +26,32 @@
     dest: $HOME/code/github.com/neovim/neovim
     version: master
     depth: 1
-
-- name: Register nvim_exists
-  stat:
-    path: /usr/local/bin/nvim
-  register: nvim_check
+  register: nvim_repo
 
 - name: Cleanup build artifacts
   file:
     path: "{{ item }}"
     state: absent
   loop:
-    - $HOME/code/github.com/neovim/neovim/.deps
-    - $HOME/code/github.com/neovim/neovim/build
-  when: not nvim_check.stat.exists
+    - "/home{{ become_user }}/code/github.com/neovim/neovim/.deps"
+    - "/home/{{ become_user }}/code/github.com/neovim/neovim/build"
+  when: nvim_repo.changed
 
-- name: Build NeoVim
+- name: Build NeoVim from source
   community.general.make:
     chdir: "/home/{{ become_user }}/code/github.com/neovim/neovim"
     target: nvim
     params:
       CMAKE_BUILD_TYPE=RelWithDebInfo
-  when: not nvim_check.stat.exists
+  when:
+    - nvim_repo.changed
+    - "'neovim' not in ansible_facts.packages"
 
-- name: Install Neovim
+- name: Install latest version of NeoVim
   become: yes
   community.general.make:
     chdir: "/home/{{ become_user }}/code/github.com/neovim/neovim"
     target: install
-  when: not nvim_check.stat.exists
+  when:
+    - nvim_repo.changed
+    - "'neovim' not in ansible_facts.packages"
