@@ -1,7 +1,0 @@
----
-# vars file for roles/tmux
-
-packages:
-  - tmux
-  - tmux-powerline
-  - powerline-fonts
