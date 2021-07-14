@@ -8,17 +8,23 @@
     - nvim:setup
     - nvim:setup:build
 
-#- name: Install NeoVim
-#  import_tasks: install.yml
-#  tags:
-#    - nvim:setup
-#    - nvim:setup:install
+- name: Setup Vim Plug
+  import_tasks: vim-plug.yml
+  tags:
+    - nvim:setup
+    - nvim:setup:vimplug
 
-#- name: Update configuration
-#  import_tasks: configure.yml
-#  tags:
-#    - nvim:setup
-#    - nvim:setup:config
+- name: Setup Install packages
+  import_tasks: packages.yml
+  tags:
+    - nvim:setup
+    - nvim:setup:packages
+
+- name: Update configuration
+  import_tasks: configure.yml
+  tags:
+    - nvim:setup
+    - nvim:setup:config
 
 #- name: Remove Neovim
 #  import_tasks: remove.yml

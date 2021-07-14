@@ -1,13 +1,13 @@
 ---
 # tasks file for roles/nvim
 
-- name: Install packages
-  become: true
-  dnf:
-    name: "{{ item }}"
-    state: latest
-  loop:
-    "{{ packages }}"
+#- name: Install packages
+#  become: true
+#  dnf:
+#    name: "{{ item }}"
+#    state: latest
+#  loop:
+#    "{{ packages }}"
 
 # - name: Determine if vim plug is installed for neovim
 #   stat:
@@ -30,14 +30,4 @@
     dest: "$HOME/.local/share/nvim/site/autoload/"
     # owner: "{{ become_user }}"
     force: yes
-
-- name: Install Neovim package globally.
-  yarn:
-    name: neovim@latest
-    global: yes
-
-- name: Install pynvim python package
-  pip:
-    name: pynvim
-    state: forcereinstall
 

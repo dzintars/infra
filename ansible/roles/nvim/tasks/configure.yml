@@ -51,7 +51,8 @@
     - { src: "settings.vim.j2", dest: "$HOME/.config/nvim/settings.vim" }
     - { src: "gruvbox.vim.j2", dest: "$HOME/.config/nvim/themes/gruvbox.vim" }
     - { src: "base16-gruvbox-dark-hard.vim.j2", dest: "$HOME/.config/nvim/themes/base16-gruvbox-dark-hard.vim" }
-  notify: Install plugins
+  notify:
+    - vim-plug install
 
 - name: copy files
   copy:
@@ -68,6 +69,7 @@
 #   raw: nvim "+UpdateRemotePlugins --sync" +qa &>/dev/null
 #   changed_when: no
 
+# TODO: I don't think this should be there at all.
 - name: add vim alias
   lineinfile:
     path: $HOME/.zshrc

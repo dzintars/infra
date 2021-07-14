@@ -16,7 +16,6 @@ build_packages:
   - gettext
 
 packages:
-  - neovim
   - python3-neovim
   - fzf
   - ripgrep

@@ -1,0 +1,13 @@
+---
+# tasks file for roles/nvim
+
+- name: Install Neovim package globally.
+  community.general.yarn:
+    name: neovim@latest
+    global: yes
+
+- name: Install pynvim python package
+  ansible.builtin.pip:
+    name: pynvim
+    state: forcereinstall
+
