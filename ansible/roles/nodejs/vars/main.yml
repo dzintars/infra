@@ -1,7 +1,0 @@
----
-# vars file for roles/nodejs
-
-packages:
-  - gcc-c++
-  - make
-  - nodejs
