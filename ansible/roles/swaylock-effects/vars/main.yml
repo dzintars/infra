@@ -1,0 +1,13 @@
+---
+# vars file for roles/swaylock-effects
+
+requirements:
+  - meson
+  - wayland-devel
+  - wayland-protocols-devel
+  - libxkbcommon-devel
+  - cairo-devel
+  - gdk-pixbuf2
+  - pam
+  - scdoc
+  - git
