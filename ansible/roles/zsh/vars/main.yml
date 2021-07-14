@@ -1,7 +1,0 @@
----
-# vars file for roles/zsh
-
-packages:
-  - zsh
-  # Tar is required by powerlevel10k gitstatus module
-  - tar
