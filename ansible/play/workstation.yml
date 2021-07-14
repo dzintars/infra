@@ -83,3 +83,7 @@
     #   tags: [minio]
     # - role: jenkins
     #   tags: [jenkins]
+    - role: fonts
+      tags: [fonts]
+    - role: swaylock-effects
+      tags: [swaylock-effects]
