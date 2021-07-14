@@ -1,5 +1,0 @@
----
-# vars file for roles/alacritty
-
-packages:
-  - alacritty
