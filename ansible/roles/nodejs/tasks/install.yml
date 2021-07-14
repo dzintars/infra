@@ -15,12 +15,6 @@
     state: latest
   loop: "{{ packages }}"
 
-#- name: Install Yarn package globally
-#  become: yes
-#  npm:
-#    name: yarn@latest
-#    global: yes
-
 #- name: Install TypeScript package globally
 #  yarn:
 #    name: typescript@latest
