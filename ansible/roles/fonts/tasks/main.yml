@@ -1,8 +1,0 @@
----
-# tasks file for roles/fonts
-
-- name: Copy fonts
-  ansible.builtin.copy:
-    src: 'fonts/'
-    dest: "/home/{{ become_user }}/.fonts/"
-    mode: '0644'
