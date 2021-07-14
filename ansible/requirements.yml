@@ -1,5 +1,5 @@
 ---
-roles:
-  - name: dzintars.podman
-  - name: bertvv.tftp
-  - name: community.libvirt
+#roles:
+#  - name: dzintars.podman
+#  - name: bertvv.tftp
+#  - name: community.libvirt
