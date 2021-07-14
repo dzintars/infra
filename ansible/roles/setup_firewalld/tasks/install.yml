@@ -1,5 +1,0 @@
----
-
-- name: debug message
-  debug:
-    msg: System debug message - {{ cluster.fqdn }}
