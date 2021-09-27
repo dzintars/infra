@@ -12,8 +12,8 @@
       tags: [bastion]
     - role: network
       tags: [network]
-    - role: bazel
-      tags: [bazel]
+    # - role: bazel
+    #   tags: [bazel]
     - role: espanso
       tags: [espanso]
     - role: openshift
@@ -26,22 +26,22 @@
     #   tags: [haproxy]
     - role: certbot
       tags: [certbot]
-    - role: nvim
-      tags: [nvim]
+    # - role: nvim
+    #   tags: [nvim]
     - role: nvidia
       tags: [nvidia]
-    - role: nodejs
-      tags: [nodejs]
-    - role: ranger
-      tags: [ranger]
-    - role: alacritty
-      tags: [alacritty]
+    # - role: nodejs
+    #   tags: [nodejs]
+    # - role: ranger
+    #   tags: [ranger]
+    # - role: alacritty
+    #   tags: [alacritty]
     - role: lightdm
       tags: [lightdm]
     - role: i3wm
       tags: [i3wm]
-    - role: git
-      tags: [git]
+    # - role: git
+    #   tags: [git]
     # - role: vault
     #   tags: [vault]
     # - role: mariadb
@@ -53,8 +53,8 @@
       tags: [xorg]
     - role: polybar
       tags: [polybar]
-    - role: zsh
-      tags: [zsh]
+    # - role: zsh
+    #   tags: [zsh]
     - role: dzintars.podman
       tags: [podman]
     - role: containers
@@ -63,16 +63,16 @@
       tags: [code]
     - role: common
       tags: [common]
-    - role: tmux
-      tags: [tmux]
+    # - role: tmux
+    #   tags: [tmux]
     - role: pulseaudio
       tags: [pulseaudio]
     - role: ansible
       tags: [ansible]
     - role: obsidian
       tags: [obsidian]
-    - role: sway
-      tags: [sway]
+    # - role: sway
+    #   tags: [sway]
     - role: minecraft
       tags: [minecraft]
     - role: terraform
@@ -83,7 +83,7 @@
     #   tags: [minio]
     # - role: jenkins
     #   tags: [jenkins]
-    - role: fonts
-      tags: [fonts]
-    - role: swaylock-effects
-      tags: [swaylock-effects]
+    # - role: fonts
+    #   tags: [fonts]
+    # - role: swaylock-effects
+    #   tags: [swaylock-effects]
